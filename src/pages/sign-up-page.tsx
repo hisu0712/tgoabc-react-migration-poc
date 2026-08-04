@@ -4,7 +4,7 @@ import { useSignUp } from "@/hooks/mutations/auth/use-sign-up";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
 import { useForm, type FieldErrors } from "react-hook-form";
-import { signUpSchema, type SignUpFormValues } from "@/schemas/sign-up";
+import { signUpSchema, type SignUpFormValues } from "@/schemas/sign-up.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 
@@ -15,7 +15,7 @@ export default function SignUpPage() {
   });
 
   const { mutate: signUp, isPending: isSignUpPending } = useSignUp({
-    onSuccess: () => navigate("/sign-up/complete"),
+    onSuccess: () => navigate("/sign-up/complete", { replace: true }),
     onError: (error) => {
       const message = generateErrorMessage(error);
       toast.error(message, {
