@@ -78,6 +78,11 @@ export default function SignInPage() {
           <Input placeholder="인증번호" />
         </TabsContent>
       </Tabs>
+
+      <div>
+        <p>회원이 아니신가요?</p>
+        <Link to={"/sign-up"}>회원가입 하기</Link>
+      </div>
     </div>
   );
 }

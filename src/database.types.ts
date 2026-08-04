@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      customer: {
+        Row: {
+          birth_date: string
+          created_at: string
+          email: string
+          gender: string
+          id: string
+        }
+        Insert: {
+          birth_date: string
+          created_at?: string
+          email: string
+          gender: string
+          id?: string
+        }
+        Update: {
+          birth_date?: string
+          created_at?: string
+          email?: string
+          gender?: string
+          id?: string
+        }
+        Relationships: []
+      }
       member: {
         Row: {
           created_at: string
@@ -37,6 +61,80 @@ export type Database = {
           phone?: string
         }
         Relationships: []
+      }
+      member_customer_mapping: {
+        Row: {
+          created_at: string
+          customer_id: string
+          id: number
+          member_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string
+          id?: number
+          member_id?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          id?: number
+          member_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "member_customer_mapping_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_customer_mapping_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "member"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shop: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: number
+          member_id: string
+          name: string
+          phone: string | null
+          profile: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: number
+          member_id?: string
+          name: string
+          phone?: string | null
+          profile?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          id?: number
+          member_id?: string
+          name?: string
+          phone?: string | null
+          profile?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: true
+            referencedRelation: "member"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
