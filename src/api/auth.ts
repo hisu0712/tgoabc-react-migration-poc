@@ -41,3 +41,12 @@ export async function signInWithPassword({
   if (error) throw error;
   return data;
 }
+
+export async function findId({ name, phone }: { name: string; phone: string }) {
+  const { data, error } = await supabase.functions.invoke("find-id", {
+    body: { name, phone },
+  });
+
+  if (error) throw error;
+  return data;
+}

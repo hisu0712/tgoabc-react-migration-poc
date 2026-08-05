@@ -6,7 +6,8 @@ import { generateErrorMessage } from "@/lib/error";
 import {
   signInWithPasswordSchema,
   type SignInWithPasswordFormValues,
-} from "@/schemas/sign-in-with-password.schema";
+} from "@/schemas/auth.schema";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldErrors } from "react-hook-form";
 import { Link } from "react-router";

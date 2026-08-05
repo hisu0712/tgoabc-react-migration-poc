@@ -4,9 +4,9 @@ import { useSignUp } from "@/hooks/mutations/auth/use-sign-up";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
 import { useForm, type FieldErrors } from "react-hook-form";
-import { signUpSchema, type SignUpFormValues } from "@/schemas/sign-up.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
+import { signUpSchema, type SignUpFormValues } from "@/schemas/auth.schema";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
