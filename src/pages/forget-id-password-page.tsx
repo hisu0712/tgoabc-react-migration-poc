@@ -3,14 +3,23 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFindId } from "@/hooks/mutations/auth/use-find-id";
 import { findIdSchema, type FindIdFormValues } from "@/schemas/auth.schema";
+import { useOpenAlertModal } from "@/store/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type FieldErrors } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function ForgetIdPasswordPage() {
+  const openAlertModal = useOpenAlertModal();
+  const navigate = useNavigate();
+
   const { mutate: findId, isPending: isFindIdPending } = useFindId({
-    // 성공하면 이메일 포함된 알람 모달창
-    // 실패하면 에러 문구 toast 노출
+    onSuccess: (data) =>
+      openAlertModal({
+        title: "아이디 찾기",
+        description: `검색결과 아이디는 아래와 같습니다. ${data.email}`,
+        onPositive: () => navigate("/sign-in"),
+      }),
   });
 
   const { register, handleSubmit } = useForm<FindIdFormValues>({
