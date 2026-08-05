@@ -64,7 +64,7 @@ export default function SignInPage() {
 
             <div className="flex justify-between">
               <div>아이디 기억</div>
-              <Link to={"/forget-password"}>아이디/비밀번호 찾기</Link>
+              <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
             </div>
 
             <Button disabled={isSignInWithPasswordPending} type="submit">
