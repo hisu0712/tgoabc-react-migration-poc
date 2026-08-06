@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { email, z } from "zod";
 import {
   emailField,
   nameField,
@@ -34,3 +34,23 @@ export const findIdSchema = z.object({
 });
 
 export type FindIdFormValues = z.infer<typeof findIdSchema>;
+
+// find-password
+export const findPasswordSchema = z.object({
+  email: emailField,
+});
+
+export type FindPasswordFormValues = z.infer<typeof findPasswordSchema>;
+
+// reset-password
+export const resetPasswordSchema = z
+  .object({
+    password: passwordField,
+    repassword: passwordField,
+  })
+  .refine((data) => data.password === data.repassword, {
+    message: "비밀번호가 일치하지 않습니다.",
+    path: ["repassword"],
+  });
+
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
