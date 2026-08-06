@@ -6,7 +6,14 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "sonner";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -15,5 +22,5 @@ createRoot(document.getElementById("root")!).render(
       <Toaster />
       <App />
     </QueryClientProvider>
-  </BrowserRouter>
+  </BrowserRouter>,
 );

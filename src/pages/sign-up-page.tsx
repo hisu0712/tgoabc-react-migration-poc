@@ -56,20 +56,20 @@ export default function SignUpPage() {
             />
           </li>
           <li>
+            <div>휴대전화</div>
+            <Input
+              disabled={isSignUpPending}
+              placeholder="휴대전화 번호를 -없이 입력해주세요"
+              {...register("phone")}
+            />
+          </li>
+          <li>
             <div>비밀번호</div>
             <Input
               disabled={isSignUpPending}
               type="password"
               placeholder="비밀번호 입력"
               {...register("password")}
-            />
-          </li>
-          <li>
-            <div>휴대전화</div>
-            <Input
-              disabled={isSignUpPending}
-              placeholder="휴대전화 번호를 -없이 입력해주세요"
-              {...register("phone")}
             />
           </li>
           <li>

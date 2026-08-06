@@ -1,9 +1,10 @@
-import { email, z } from "zod";
+import { z } from "zod";
 import {
   emailField,
   nameField,
   passwordField,
   phoneField,
+  shopNameField,
 } from "./common.schema";
 
 // sign-up
@@ -12,7 +13,7 @@ export const signUpSchema = z.object({
   email: emailField,
   password: passwordField,
   phone: phoneField,
-  shopName: z.string().trim().min(1, "매장명을 입력해주세요."),
+  shopName: shopNameField,
 });
 
 export type SignUpFormValues = z.infer<typeof signUpSchema>;

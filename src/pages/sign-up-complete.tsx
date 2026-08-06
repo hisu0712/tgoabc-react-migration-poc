@@ -1,6 +1,6 @@
 import GlobalLoader from "@/components/global-loader";
 import { Button } from "@/components/ui/button";
-import { useShopData } from "@/hooks/hooks/queries/use-shop-data";
+import { useShopData } from "@/hooks/queries/use-shop-data";
 import { useSession } from "@/store/session";
 import { Navigate, useNavigate } from "react-router";
 

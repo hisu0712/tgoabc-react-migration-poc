@@ -24,3 +24,5 @@ export const phoneField = z
     phoneRegex,
     "올바른 휴대전화 번호 형식이 아닙니다. (-없이 숫자만 입력)",
   );
+
+export const shopNameField = z.string().trim().min(1, "매장명을 입력해주세요.");

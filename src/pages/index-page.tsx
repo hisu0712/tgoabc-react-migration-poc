@@ -1,13 +1,21 @@
+import { useSession } from "@/store/session";
+import { Link } from "react-router";
+
 export default function IndexPage() {
+  const session = useSession();
+
   return (
     <div>
       <main className="ly_content">
         <div className="bl_info hp_flexSbCenter hp_mbXL">
           <div className="hp_flexCol">
             <p className="bl_info_msg hp_mbXXS">오늘의 분석을 시작해보세요</p>
-            <strong className="bl_info_user hp_mbXS" data-username="티고뷰티샵">
+            <Link
+              to={`/members/${session?.user.id}/info`}
+              className="bl_info_user hp_mbXS"
+            >
               티고뷰티샵 님
-            </strong>
+            </Link>
             <div className="ly_flex hp_gapXXS">
               <svg className="el_icon el_icon__barChartS hp_cDarkGray">
                 <use href="/assets/icon/svg/sprite.svg#ico_barChart"></use>
