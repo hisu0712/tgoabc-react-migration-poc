@@ -5,6 +5,7 @@ import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
 import { useMemberData } from "@/hooks/queries/use-member-info-data";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMemo } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
@@ -29,14 +30,24 @@ export default function MemberInfoPage() {
       },
     });
 
-  const { register, handleSubmit, formState } = useForm<MemberFormValues>({
+  const memberFormValues = useMemo(
+    () =>
+      member
+        ? {
+            name: member.name,
+            phone: member.phone,
+          }
+        : undefined,
+    [member],
+  );
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isDirty },
+  } = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
-    values: member
-      ? {
-          name: member.name,
-          phone: member.phone,
-        }
-      : undefined,
+    values: memberFormValues,
   });
 
   if (isFetchMemberLoading) return <GlobalLoader />;
@@ -44,7 +55,7 @@ export default function MemberInfoPage() {
   if (!userId) return <Navigate to={"/"} />;
 
   const onSubmit = (values: MemberFormValues) => {
-    if (!formState.isDirty) {
+    if (!isDirty) {
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
       return;
     }

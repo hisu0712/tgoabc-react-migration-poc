@@ -1,8 +1,19 @@
+import { useOpenAlertModal } from "@/store/alert";
 import { useSession } from "@/store/session";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function IndexPage() {
   const session = useSession();
+  const navigate = useNavigate();
+  const openAlertModal = useOpenAlertModal();
+
+  const handleShopEditClick = () => {
+    openAlertModal({
+      title: "내 매장 등록",
+      description: "매장 정보를 입력해 주세요 고객 안내와 홍보에 활용돼요",
+      onPositive: () => navigate(`/members/${session?.user.id}/shop`),
+    });
+  };
 
   return (
     <div>
@@ -23,9 +34,9 @@ export default function IndexPage() {
               <p className="el_caption">고객 12명 · 분석수 128건</p>
             </div>
           </div>
-          <div className="bl_info_logo">
+          <div onClick={handleShopEditClick} className="bl_info_logo">
             <img src="/assets/images/customer_profile__joa.png" alt="" />
-            <span className="bl_info_plus"></span>
+            <span className="bl_info_plus">플러스</span>
           </div>
         </div>
         <div className="bl_card bl_add">

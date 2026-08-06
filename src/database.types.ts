@@ -101,30 +101,33 @@ export type Database = {
       shop: {
         Row: {
           address: string | null
+          address_detail: string | null
           created_at: string
           id: number
+          logo_url: string | null
           member_id: string
           name: string
           phone: string | null
-          profile: string | null
         }
         Insert: {
           address?: string | null
+          address_detail?: string | null
           created_at?: string
           id?: number
+          logo_url?: string | null
           member_id?: string
           name: string
           phone?: string | null
-          profile?: string | null
         }
         Update: {
           address?: string | null
+          address_detail?: string | null
           created_at?: string
           id?: number
+          logo_url?: string | null
           member_id?: string
           name?: string
           phone?: string | null
-          profile?: string | null
         }
         Relationships: [
           {

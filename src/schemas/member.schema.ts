@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { nameField, phoneField, shopNameField } from "./common.schema";
 
-// member-info
+// member
 export const memberSchema = z.object({
   name: nameField,
   phone: phoneField,
