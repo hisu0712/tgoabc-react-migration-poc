@@ -8,3 +8,5 @@ export const QUERY_KEYS = {
     byId: (userId: string) => ["member", userId],
   },
 };
+
+export const BUCKET_NAME = "uploads";

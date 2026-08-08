@@ -11,6 +11,7 @@ import { useMemo, useRef, useState, type ChangeEvent } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
 import { Navigate, useParams } from "react-router";
 import { toast } from "sonner";
+import defaultShop from "@/assets/default-shop.png";
 
 type Image = { file: File; previewUrl: string };
 
@@ -19,7 +20,7 @@ export default function MemberShopPage() {
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
 
-  const [logoImage, setLogoImage] = useState<Image | null>(null);
+  const [shopImage, setShopImage] = useState<Image | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: shop, isLoading: isFetchShopLoading } = useShopData(
@@ -63,11 +64,12 @@ export default function MemberShopPage() {
   if (!userId) return <Navigate to={"/"} />;
 
   const onSubmit = (values: ShopFormValues) => {
-    if (!isDirty) {
+    if (!isDirty && !shopImage) {
+      // 이미지 변경 감지 해야함
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
       return;
     }
-    updateShop({ userId, ...values });
+    updateShop({ userId, shopImageFile: shopImage?.file, ...values });
   };
   const onInvalid = (errors: FieldErrors<ShopFormValues>) => {
     const firstError = Object.values(errors)[0];
@@ -80,17 +82,17 @@ export default function MemberShopPage() {
     if (!e.target.files) return;
     const file = e.target.files[0];
 
-    if (logoImage) {
-      URL.revokeObjectURL(logoImage.previewUrl);
+    if (shopImage) {
+      URL.revokeObjectURL(shopImage.previewUrl);
     }
 
-    setLogoImage({
+    setShopImage({
       file,
       previewUrl: URL.createObjectURL(file),
     });
   };
 
-  const handleDeleteLogoClick = () => {
+  const handleDeleteShopImageClick = () => {
     openAlertModal({
       title: "로고 삭제",
       description: "선택한 로고 이미지를 삭제하시겠습니까?",
@@ -159,10 +161,12 @@ export default function MemberShopPage() {
                 accept="image/*"
                 className="hidden"
               />
-
-              <img src={logoImage?.previewUrl || ""} alt="매장 이미지" />
+              <img
+                src={shopImage?.previewUrl || shop?.logo_url || defaultShop}
+                alt="매장 이미지"
+              />
               <div
-                onClick={handleDeleteLogoClick}
+                onClick={handleDeleteShopImageClick}
                 className="bl_form_imgDelete"
               >
                 x
