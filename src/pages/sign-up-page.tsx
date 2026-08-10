@@ -7,11 +7,26 @@ import { useForm, type FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 import { signUpSchema, type SignUpFormValues } from "@/schemas/auth.schema";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<SignUpFormValues>({
+  const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      shopName: "",
+    },
   });
 
   const { mutate: signUp, isPending: isSignUpPending } = useSignUp({
@@ -28,64 +43,106 @@ export default function SignUpPage() {
     signUp(values);
   };
 
-  const onInvalid = (errors: FieldErrors<SignUpFormValues>) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError?.message) {
-      toast.error(firstError.message, { position: "top-center" });
-    }
-  };
-
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-        <ul className="flex flex-col gap-3">
-          <li>
-            <div>이름</div>
-            <Input
-              disabled={isSignUpPending}
-              placeholder="이름 입력"
-              {...register("name")}
-            />
-          </li>
-          <li>
-            <div>이메일</div>
-            <Input
-              disabled={isSignUpPending}
-              placeholder="example@abc.com"
-              {...register("email")}
-            />
-          </li>
-          <li>
-            <div>휴대전화</div>
-            <Input
-              disabled={isSignUpPending}
-              placeholder="휴대전화 번호를 -없이 입력해주세요"
-              {...register("phone")}
-            />
-          </li>
-          <li>
-            <div>비밀번호</div>
-            <Input
-              disabled={isSignUpPending}
-              type="password"
-              placeholder="비밀번호 입력"
-              {...register("password")}
-            />
-          </li>
-          <li>
-            <div>매장명</div>
-            <Input
-              disabled={isSignUpPending}
-              placeholder="매장명 입력"
-              {...register("shopName")}
-            />
-          </li>
-        </ul>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>이름</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSignUpPending}
+                    placeholder="이름 입력"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button disabled={isSignUpPending} type="submit">
-          다음
-        </Button>
-      </form>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>이메일</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSignUpPending}
+                    placeholder="example@abc.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>휴대전화</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSignUpPending}
+                    placeholder="휴대전화 번호를 -없이 입력해주세요"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>비밀번호</FormLabel>
+                <FormControl>
+                  <Input
+                    type="password"
+                    disabled={isSignUpPending}
+                    placeholder="비밀번호 입력"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="shopName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>매장명</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isSignUpPending}
+                    placeholder="매장명 입력"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button disabled={isSignUpPending} type="submit">
+            다음
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }

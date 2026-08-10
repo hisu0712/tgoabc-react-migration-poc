@@ -5,6 +5,14 @@ import { useUpdateShop } from "@/hooks/mutations/shop/use-update-shop";
 import { useShopData } from "@/hooks/queries/use-shop-data";
 import { shopSchema, type ShopFormValues } from "@/schemas/shop.schema";
 import { useOpenAlertModal } from "@/store/alert";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
@@ -12,6 +20,7 @@ import { useForm, type FieldErrors } from "react-hook-form";
 import { Navigate, useParams } from "react-router";
 import { toast } from "sonner";
 import defaultShop from "@/assets/default-shop.png";
+import { Label } from "@/components/ui/label";
 
 type Image = { file: File; previewUrl: string };
 
@@ -50,15 +59,13 @@ export default function MemberShopPage() {
     [shop],
   );
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isDirty },
-  } = useForm<ShopFormValues>({
-    // formState.isDirty 구독을 첫 렌더링 시 실행 -> 이후 입력값 onChange 일때 리렌더링 방지를 위해 useMemo 사용
+  const form = useForm<ShopFormValues>({
     resolver: zodResolver(shopSchema),
     values: shopFormValues,
   });
+  const {
+    formState: { isDirty },
+  } = form;
 
   if (isFetchShopLoading) return <GlobalLoader />;
   if (!userId) return <Navigate to={"/"} />;
@@ -70,12 +77,6 @@ export default function MemberShopPage() {
       return;
     }
     updateShop({ userId, shopImageFile: shopImage?.file, ...values });
-  };
-  const onInvalid = (errors: FieldErrors<ShopFormValues>) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError?.message) {
-      toast.error(firstError.message, { position: "top-center" });
-    }
   };
 
   const handleSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
@@ -107,42 +108,84 @@ export default function MemberShopPage() {
       <p>매장 정보를 입력해주세요</p>
       <p>고객 안내 및 홍보에 활용돼요</p>
 
-      <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-        <ul>
-          <li>
-            <div>매장명</div>
-            <Input
-              disabled={isUpdateShopPending}
-              placeholder="매장명을 입력해주세요"
-              {...register("name")}
-            />
-          </li>
-          <li>
-            <div>매장 전화번호</div>
-            <p>고객앱에서 전화 문의 시 사용돼요.</p>
-            <Input
-              disabled={isUpdateShopPending}
-              placeholder="매장 전화번호를 -없이 입력해주세요"
-              {...register("phone")}
-            />
-          </li>
-          <li>
-            <div>매장 주소</div>
-            <p>고객앱에서 매장 위치 안내에 사용돼요.</p>
-            <Input
-              disabled={isUpdateShopPending}
-              placeholder="도로명 주소를 입력해주세요"
-              {...register("address")}
-            />
-            <p>주소 검색</p>
-            <Input
-              disabled={isUpdateShopPending}
-              placeholder="상세주소를 입력해주세요"
-              {...register("address_detail")}
-            />
-          </li>
-          <li>
-            <div>매장 로고</div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>매장명</FormLabel>
+                <FormControl>
+                  <Input
+                    disabled={isUpdateShopPending}
+                    placeholder="매장명을 입력해주세요"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>매장 전화번호</FormLabel>
+                <p>고객앱에서 전화 문의 시 사용돼요.</p>
+                <FormControl>
+                  <Input
+                    disabled={isUpdateShopPending}
+                    placeholder="전화번호를 -없이 입력해주세요"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>매장 주소</FormLabel>
+                <p>고객앱에서 전화 문의 시 사용돼요.</p>
+                <div>주소 검색</div>
+                <FormControl>
+                  <Input
+                    disabled={isUpdateShopPending}
+                    placeholder="도로명 주소를 입력해주세요"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="address_detail"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    disabled={isUpdateShopPending}
+                    placeholder="상세주소를 입력해주세요"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid gap-2">
+            <Label>매장 로고</Label>
             <p>
               매장앱과 고객앱에 노출되는 이미지예요.매장을 대표하는 로고 이미지
               사용을 추천해요.
@@ -172,13 +215,13 @@ export default function MemberShopPage() {
                 x
               </div>
             </div>
-          </li>
-        </ul>
+          </div>
 
-        <Button disabled={isUpdateShopPending} type="submit">
-          저장하기
-        </Button>
-      </form>
+          <Button disabled={isUpdateShopPending} type="submit">
+            저장하기
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }

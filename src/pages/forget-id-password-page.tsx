@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFindId } from "@/hooks/mutations/auth/use-find-id";
 import { useResetPassword } from "@/hooks/mutations/auth/use-reset-password-for-email";
@@ -37,7 +45,7 @@ export default function ForgetIdPasswordPage() {
           position: "top-center",
         });
       }
-      resetFindIdField();
+      findIdForm.reset();
     },
   });
 
@@ -47,95 +55,128 @@ export default function ForgetIdPasswordPage() {
         toast.info("인증 메일이 잘 발송되었습니다.", {
           position: "top-center",
         });
-        resetFindPasswordField();
+        findPasswordForm.reset();
       },
       onError: (error) => {
         const message = generateErrorMessage(error);
         toast.error(message, {
           position: "top-center",
         });
-        resetFindPasswordField();
+        findPasswordForm.reset();
       },
     });
 
-  const {
-    register: registerFindId,
-    handleSubmit: handleFindIdSubmit,
-    reset: resetFindIdField,
-  } = useForm<FindIdFormValues>({
+  const findIdForm = useForm<FindIdFormValues>({
     resolver: zodResolver(findIdSchema),
+    defaultValues: { name: "", phone: "" },
   });
 
   const onFindIdSubmit = (values: FindIdFormValues) => {
     findId(values);
   };
-  const onFindIdInvalid = (errors: FieldErrors<FindIdFormValues>) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError?.message) {
-      toast.error(firstError.message, { position: "top-center" });
-    }
-  };
 
-  const {
-    register: registerFindPassword,
-    handleSubmit: handleFindPasswordSubmit,
-    reset: resetFindPasswordField,
-  } = useForm<FindPasswordFormValues>({
+  const findPasswordForm = useForm<FindPasswordFormValues>({
     resolver: zodResolver(findPasswordSchema),
+    defaultValues: { email: "" },
   });
 
   const onFindPasswordSubmit = (values: FindPasswordFormValues) => {
     resetPassword(values.email);
   };
-  const onFindPasswordInvalid = (
-    errors: FieldErrors<FindPasswordFormValues>,
-  ) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError?.message) {
-      toast.error(firstError.message, { position: "top-center" });
-    }
-  };
 
   return (
     <div>
-      <Tabs defaultValue="password" className="w-full">
+      <Tabs defaultValue="id" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger value="id">아이디 찾기</TabsTrigger>
           <TabsTrigger value="password">비밀번호 찾기</TabsTrigger>
         </TabsList>
 
         <TabsContent value="id" className="w-full">
-          <form onSubmit={handleFindIdSubmit(onFindIdSubmit, onFindIdInvalid)}>
-            <Input
-              disabled={isFindIdPending}
-              placeholder="이름 입력"
-              {...registerFindId("name")}
-            />
-            <Input
-              disabled={isFindIdPending}
-              placeholder="휴대전화 번호를 -없이 입력해주세요"
-              {...registerFindId("phone")}
-            />
+          <Form {...findIdForm}>
+            <form
+              id="find-id-form"
+              onSubmit={findIdForm.handleSubmit(onFindIdSubmit)}
+            >
+              <FormField
+                control={findIdForm.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>이름</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isFindIdPending}
+                        placeholder="이름 입력"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button type="submit">아이디 찾기</Button>
-          </form>
+              <FormField
+                control={findIdForm.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>휴대전화</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isFindIdPending}
+                        placeholder="휴대전화 번호를 -없이 입력해주세요"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
+            <Button
+              disabled={isFindIdPending}
+              form="find-id-form"
+              type="submit"
+            >
+              아이디 찾기
+            </Button>
+          </Form>
         </TabsContent>
 
         <TabsContent value="password">
-          <form
-            onSubmit={handleFindPasswordSubmit(
-              onFindPasswordSubmit,
-              onFindPasswordInvalid,
-            )}
-          >
-            <Input
-              disabled={isResetPasswordPending}
-              placeholder="example@abc.com"
-              {...registerFindPassword("email")}
-            />
+          <Form {...findPasswordForm}>
+            <form
+              id="find-password-form"
+              onSubmit={findPasswordForm.handleSubmit(onFindPasswordSubmit)}
+            >
+              <FormField
+                control={findPasswordForm.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>이메일(아이디)</FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isResetPasswordPending}
+                        placeholder="example@abc.com"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </form>
 
-            <Button type="submit">인증 메일 요청하기</Button>
-          </form>
+            <Button
+              disabled={isResetPasswordPending}
+              form="find-password-form"
+              type="submit"
+            >
+              인증 메일 요청하기
+            </Button>
+          </Form>
         </TabsContent>
       </Tabs>
     </div>

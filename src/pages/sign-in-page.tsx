@@ -1,4 +1,12 @@
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSignInWithPassword } from "@/hooks/mutations/auth/use-sign-in-with-password";
@@ -24,21 +32,13 @@ export default function SignInPage() {
       },
     });
 
-  const { register, handleSubmit } = useForm<SignInWithPasswordFormValues>({
+  const form = useForm<SignInWithPasswordFormValues>({
     resolver: zodResolver(signInWithPasswordSchema),
+    defaultValues: { email: "", password: "" },
   });
 
   const onMemberSubmit = (values: SignInWithPasswordFormValues) => {
     signInWithPassword(values);
-  };
-
-  const onMemberInvalid = (
-    errors: FieldErrors<SignInWithPasswordFormValues>,
-  ) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError?.message) {
-      toast.error(firstError.message, { position: "top-center" });
-    }
   };
 
   return (
@@ -50,28 +50,53 @@ export default function SignInPage() {
         </TabsList>
 
         <TabsContent value="member" className="flex flex-col gap-2">
-          <form onSubmit={handleSubmit(onMemberSubmit, onMemberInvalid)}>
-            <Input
-              disabled={isSignInWithPasswordPending}
-              placeholder="이메일(아이디) 입력"
-              {...register("email")}
-            />
-            <Input
-              disabled={isSignInWithPasswordPending}
-              type="password"
-              placeholder="비밀번호 입력"
-              {...register("password")}
-            />
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onMemberSubmit)}>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        disabled={isSignInWithPasswordPending}
+                        placeholder="이메일(아이디) 입력"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <div className="flex justify-between">
-              <div>아이디 기억</div>
-              <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
-            </div>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        disabled={isSignInWithPasswordPending}
+                        type="password"
+                        placeholder="비밀번호 입력"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button disabled={isSignInWithPasswordPending} type="submit">
-              로그인
-            </Button>
-          </form>
+              <div className="flex justify-between">
+                <div>아이디 기억</div>
+                <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
+              </div>
+
+              <Button disabled={isSignInWithPasswordPending} type="submit">
+                로그인
+              </Button>
+            </form>
+          </Form>
         </TabsContent>
 
         <TabsContent value="customer" className="flex flex-col gap-2">

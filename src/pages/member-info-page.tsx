@@ -1,9 +1,19 @@
 import GlobalLoader from "@/components/global-loader";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
 import { useMemberData } from "@/hooks/queries/use-member-info-data";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
+import { useOpenAlertModal } from "@/store/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
@@ -13,6 +23,7 @@ import { toast } from "sonner";
 export default function MemberInfoPage() {
   const { userId } = useParams();
   const navigate = useNavigate();
+  const openAlertModal = useOpenAlertModal();
 
   const {
     data: member,
@@ -41,14 +52,13 @@ export default function MemberInfoPage() {
     [member],
   );
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isDirty },
-  } = useForm<MemberFormValues>({
+  const form = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
     values: memberFormValues,
   });
+  const {
+    formState: { isDirty },
+  } = form; // formState은 구독 안 된 속성은 아예 내부적으로 값 추적/계산 자체를 스킵
 
   if (isFetchMemberLoading) return <GlobalLoader />;
   if (isFetchMemberError) return <Navigate to={"/"} />;
@@ -61,51 +71,70 @@ export default function MemberInfoPage() {
     }
     updateMember({ userId, ...values });
   };
-  const onInvalid = (errors: FieldErrors<MemberFormValues>) => {
-    const firstError = Object.values(errors)[0];
-    if (firstError?.message) {
-      toast.error(firstError.message, { position: "top-center" });
-    }
-  };
 
   const handleDeleteUser = () => {
     // 근데 여기서 user 을 삭제 해야함 그래야 member, shop 같이 삭제됨
+    openAlertModal({
+      title: "회원 탈퇴",
+      description:
+        "앱에 저장된 모든 데이터가 영구적으로 삭제됩니다. 계정을 정말 삭제하시겠어요?",
+      // onPositive: () => {}
+    });
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit, onInvalid)}>
-        <ul>
-          <li>
-            <div>이름</div>
-            <Input placeholder="이름 입력" {...register("name")} />
-          </li>
-          <li>
-            <div>이메일</div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>이름</FormLabel>
+                <FormControl>
+                  <Input placeholder="이름 입력" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid gap-2">
+            <Label>이메일</Label>
             <Input readOnly value={member?.email} />
-          </li>
-          <li>
-            <div>휴대전화</div>
-            <Input
-              placeholder="휴대전화 번호를 -없이 입력해주세요"
-              {...register("phone")}
-            />
-          </li>
-          <li>
-            <div>비밀번호</div>
-            {/* 비밀번호는 안불러오는데 그냥 ui 상 노출만 하려고 */}
-            <Input readOnly type="password" value="111111" />
-            {/* 여기서 기존 비밀번호 확인해야하는데, 그리고 홈으로 보내지 않고 이 페이지로 돌아오거나  */}
+          </div>
+
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>휴대전화</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="휴대전화 번호를 -없이 입력해주세요"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="grid gap-2">
+            <Label>비밀번호</Label>
             <div onClick={() => navigate("/reset-password")}>변경하기</div>
-          </li>
-        </ul>
+            <Input readOnly type="password" value="111111" />
+          </div>
 
-        <div>회원 탈퇴</div>
+          <div onClick={handleDeleteUser}>회원 탈퇴</div>
 
-        <Button disabled={isUpdateMemberPending} type="submit">
-          수정하기
-        </Button>
-      </form>
+          <Button disabled={isUpdateMemberPending} type="submit">
+            수정하기
+          </Button>
+        </form>
+      </Form>
     </div>
   );
 }
