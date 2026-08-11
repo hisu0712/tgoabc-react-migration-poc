@@ -42,8 +42,6 @@ export async function updateShop({
     });
   }
 
-  console.log(newShopImageUrl);
-
   const { data, error } = await supabase
     .from("shop")
     .update({

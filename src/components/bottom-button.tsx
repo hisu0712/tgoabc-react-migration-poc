@@ -7,7 +7,7 @@ export default function BottomButton({
 }: ComponentProps<typeof Button>) {
   return (
     <div className="bg-background fixed inset-x-0 bottom-0 z-[101] w-full px-7 pt-5 pb-10">
-      <Button className={`w-full py-6 ${className ?? ""}`} {...props} />
+      <Button className={`w-full py-6 text-lg ${className ?? ""}`} {...props} />
     </div>
   );
 }

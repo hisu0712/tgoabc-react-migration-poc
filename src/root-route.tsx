@@ -7,7 +7,7 @@ import SignUpCompletePage from "./pages/sign-up-complete";
 import GuestOnlyLayout from "./components/layout/guest-only-layout";
 import MemberOnlyLayout from "./components/layout/member-only-layout";
 import CustomerDetailPage from "./pages/customer-detail-page";
-import CustomerAddPage from "./pages/customer-add-page";
+import CustomerNewPage from "./pages/customer-new-page";
 import CustomerInfoPage from "./pages/customer-info-page";
 import CustomerListPage from "./pages/customer-list-page";
 import MemberInfoPage from "./pages/member-info-page";
@@ -40,7 +40,7 @@ export default function RootRoute() {
           <Route path="/members/:userId/info" element={<MemberInfoPage />} />
           <Route path="/members/:userId/shop" element={<MemberShopPage />} />
 
-          <Route path="/customers/new" element={<CustomerAddPage />} />
+          <Route path="/customers/new" element={<CustomerNewPage />} />
         </Route>
 
         <Route element={<GlobalLayoutWithBottomNav />}>

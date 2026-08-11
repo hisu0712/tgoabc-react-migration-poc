@@ -39,7 +39,7 @@ export default function IndexPage() {
             <span className="bl_info_plus">플러스</span>
           </div>
         </div>
-        <div className="bl_card bl_add">
+        <Link to={"/customers/new"} className="bl_card bl_add">
           <img src="/assets/icon/ico_addCustomer.svg" />
           <div>
             <div className="hp_fwSb hp_mbXXS">고객 추가하기</div>
@@ -47,7 +47,7 @@ export default function IndexPage() {
               빠른 고객 정보 입력 후 등록!
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* 분석 메뉴 */}
         <div className="ly_grid bl_mainMenu_unit">
