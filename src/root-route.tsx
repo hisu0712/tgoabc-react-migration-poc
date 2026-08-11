@@ -15,27 +15,43 @@ import PersonalAnalysisResultPage from "./pages/personal-analysis-result-page";
 import PersonalAnalysisPhotoPage from "./pages/personal-analysis-photo-page";
 import MemberShopPage from "./pages/member-shop-page";
 import ResetPasswordPage from "./pages/reset-password-page";
+import GlobalLayout from "./components/layout/global-layout";
+import GlobalLayoutWithBottomNav from "./components/layout/global-layout-with-bottom-nav";
 
 export default function RootRoute() {
   return (
     <Routes>
       <Route element={<GuestOnlyLayout />}>
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/forget-id-password" element={<ForgetIdPasswordPage />} />
+        <Route element={<GlobalLayout />}>
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route
+            path="/forget-id-password"
+            element={<ForgetIdPasswordPage />}
+          />
+        </Route>
       </Route>
 
       <Route element={<MemberOnlyLayout />}>
-        <Route path="/sign-up/complete" element={<SignUpCompletePage />} />
-        <Route path="/reset-password" element={<ResetPasswordPage />} />
+        <Route element={<GlobalLayout />}>
+          <Route path="/sign-up/complete" element={<SignUpCompletePage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-        <Route path="/" element={<IndexPage />} />
-        <Route path="/members/:userId/info" element={<MemberInfoPage />} />
-        <Route path="/members/:userId/shop" element={<MemberShopPage />} />
+          <Route path="/members/:userId/info" element={<MemberInfoPage />} />
+          <Route path="/members/:userId/shop" element={<MemberShopPage />} />
 
-        <Route path="/customers" element={<CustomerListPage />} />
-        <Route path="/customers/new" element={<CustomerAddPage />} />
-        <Route path="/customers/:customerId" element={<CustomerDetailPage />} />
+          <Route path="/customers/new" element={<CustomerAddPage />} />
+        </Route>
+
+        <Route element={<GlobalLayoutWithBottomNav />}>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/customers" element={<CustomerListPage />} />
+          <Route
+            path="/customers/:customerId"
+            element={<CustomerDetailPage />}
+          />
+        </Route>
+
         <Route
           path="/customers/:customerId/edit"
           element={<CustomerInfoPage />}

@@ -1,9 +1,8 @@
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSignUp } from "@/hooks/mutations/auth/use-sign-up";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
 import { signUpSchema, type SignUpFormValues } from "@/schemas/auth.schema";
@@ -15,6 +14,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import BottomButton from "@/components/bottom-button";
+import HeaderNav from "@/components/header-nav";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -45,8 +46,19 @@ export default function SignUpPage() {
 
   return (
     <div>
+      <HeaderNav title="회원가입" />
+
+      <div className="mb-5 font-semibold">
+        <p>회원님의</p>
+        <p>필수 정보를 입력해 주세요</p>
+      </div>
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+        <form
+          id="sign-up-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid gap-3"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -137,12 +149,16 @@ export default function SignUpPage() {
               </FormItem>
             )}
           />
-
-          <Button disabled={isSignUpPending} type="submit">
-            다음
-          </Button>
         </form>
       </Form>
+
+      <BottomButton
+        disabled={isSignUpPending}
+        form="sign-up-form"
+        type="submit"
+      >
+        다음
+      </BottomButton>
     </div>
   );
 }

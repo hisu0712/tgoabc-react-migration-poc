@@ -21,6 +21,9 @@ import { Navigate, useParams } from "react-router";
 import { toast } from "sonner";
 import defaultShop from "@/assets/default-shop.png";
 import { Label } from "@/components/ui/label";
+import BottomButton from "@/components/bottom-button";
+import HeaderNav from "@/components/header-nav";
+import FormHint from "@/components/form-hint";
 
 type Image = { file: File; previewUrl: string };
 
@@ -103,13 +106,19 @@ export default function MemberShopPage() {
 
   return (
     <div>
-      <h1>매장 정보</h1>
+      <HeaderNav title="매장 정보" />
 
-      <p>매장 정보를 입력해주세요</p>
-      <p>고객 안내 및 홍보에 활용돼요</p>
+      <div className="mb-5 font-semibold">
+        <p>매장 정보를 입력해주세요</p>
+        <p>고객 안내 및 홍보에 활용돼요</p>
+      </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+        <form
+          id="shop-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid gap-3"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -134,7 +143,7 @@ export default function MemberShopPage() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>매장 전화번호</FormLabel>
-                <p>고객앱에서 전화 문의 시 사용돼요.</p>
+                <FormHint>고객앱에서 전화 문의 시 사용돼요.</FormHint>
                 <FormControl>
                   <Input
                     disabled={isUpdateShopPending}
@@ -153,7 +162,7 @@ export default function MemberShopPage() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>매장 주소</FormLabel>
-                <p>고객앱에서 전화 문의 시 사용돼요.</p>
+                <FormHint>고객앱에서 매장 위치 안내에 사용돼요.</FormHint>
                 <div>주소 검색</div>
                 <FormControl>
                   <Input
@@ -186,10 +195,10 @@ export default function MemberShopPage() {
 
           <div className="grid gap-2">
             <Label>매장 로고</Label>
-            <p>
+            <FormHint>
               매장앱과 고객앱에 노출되는 이미지예요.매장을 대표하는 로고 이미지
               사용을 추천해요.
-            </p>
+            </FormHint>
             <div
               onClick={() => {
                 if (fileInputRef.current) fileInputRef.current.click();
@@ -216,12 +225,16 @@ export default function MemberShopPage() {
               </div>
             </div>
           </div>
-
-          <Button disabled={isUpdateShopPending} type="submit">
-            저장하기
-          </Button>
         </form>
       </Form>
+
+      <BottomButton
+        disabled={isUpdateShopPending}
+        form="shop-form"
+        type="submit"
+      >
+        저장
+      </BottomButton>
     </div>
   );
 }

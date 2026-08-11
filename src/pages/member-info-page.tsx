@@ -1,5 +1,6 @@
+import BottomButton from "@/components/bottom-button";
 import GlobalLoader from "@/components/global-loader";
-import { Button } from "@/components/ui/button";
+import HeaderNav from "@/components/header-nav";
 import {
   Form,
   FormControl,
@@ -84,8 +85,14 @@ export default function MemberInfoPage() {
 
   return (
     <div>
+      <HeaderNav title="계정 정보" />
+
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-3">
+        <form
+          id="member-info-form"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid gap-3"
+        >
           <FormField
             control={form.control}
             name="name"
@@ -129,12 +136,16 @@ export default function MemberInfoPage() {
           </div>
 
           <div onClick={handleDeleteUser}>회원 탈퇴</div>
-
-          <Button disabled={isUpdateMemberPending} type="submit">
-            수정하기
-          </Button>
         </form>
       </Form>
+
+      <BottomButton
+        disabled={isUpdateMemberPending}
+        form="member-info-form"
+        type="submit"
+      >
+        수정
+      </BottomButton>
     </div>
   );
 }

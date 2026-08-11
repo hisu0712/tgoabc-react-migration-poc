@@ -7,12 +7,28 @@ const Toaster = ({ ...props }: ToasterProps) => {
   return (
     <Sonner
       theme={theme as ToasterProps["theme"]}
+      richColors
       className="toaster group"
+      toastOptions={{ classNames: { toast: "!p-3" } }}
       style={
         {
+          "--border-radius": "var(--radius)",
+
           "--normal-bg": "var(--popover)",
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
+
+          "--info-bg": "color-mix(in oklab, var(--muted) 80%, white)",
+          "--info-text": "var(--muted-foreground)",
+          "--info-border": "var(--muted)",
+
+          "--success-bg": "color-mix(in oklab, var(--primary) 80%, white)",
+          "--success-text": "var(--primary-foreground)",
+          "--success-border": "var(--primary)",
+
+          "--error-bg": "color-mix(in oklab, var(--destructive) 80%, white)",
+          "--error-text": "var(--destructive-foreground)",
+          "--error-border": "var(--destructive)",
         } as React.CSSProperties
       }
       {...props}

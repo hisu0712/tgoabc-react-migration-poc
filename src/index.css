@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "pretendard/dist/web/variable/pretendardvariable.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -43,21 +44,22 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: oklch(0.9816 0.0086 264.52); /* #f6f9ff */
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --primary: oklch(0.5303 0.2067 277.63); /* #5653df */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9649 0.0029 264.54); /* #f2f3f5 */
+  --secondary-foreground: oklch(0.7316 0 0); /* #a8a8a8 */
+  --muted: oklch(0.9649 0.0029 264.54); /* #f2f3f5 */
+  --muted-foreground: oklch(0.7316 0 0); /* #a8a8a8 */
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
+  --destructive: oklch(0.6065 0.1867 18.46); /* #db4455 */
+  --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -83,15 +85,16 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  --primary: oklch(0.922 0 0); /* 커스텀 필요 (추후 변경) */
+  --primary-foreground: oklch(0.205 0 0); /* 커스텀 필요 (추후 변경) */
+  --secondary: oklch(0.269 0 0); /* 커스텀 필요 (추후 변경) */
+  --secondary-foreground: oklch(0.985 0 0); /* 커스텀 필요 (추후 변경) */
+  --muted: oklch(0.269 0 0); /* 커스텀 필요 (추후 변경) */
+  --muted-foreground: oklch(0.708 0 0); /* 커스텀 필요 (추후 변경) */
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --destructive: oklch(0.704 0.191 22.216); /* 커스텀 필요 (추후 변경) */
+  --destructive-foreground: oklch(1 0 0); /* 커스텀 필요 (추후 변경) */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
@@ -116,5 +119,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Pretendard", sans-serif;
   }
 }

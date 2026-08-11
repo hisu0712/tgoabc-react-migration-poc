@@ -21,8 +21,9 @@ import {
 import { useOpenAlertModal } from "@/store/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionsHttpError } from "@supabase/supabase-js";
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import HeaderNav from "@/components/header-nav";
 import { toast } from "sonner";
 
 export default function ForgetIdPasswordPage() {
@@ -86,16 +87,19 @@ export default function ForgetIdPasswordPage() {
 
   return (
     <div>
+      <HeaderNav title="아이디 / 비밀번호 찾기" />
+
       <Tabs defaultValue="id" className="w-full">
         <TabsList className="w-full">
           <TabsTrigger value="id">아이디 찾기</TabsTrigger>
           <TabsTrigger value="password">비밀번호 찾기</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="id" className="w-full">
+        <TabsContent value="id">
           <Form {...findIdForm}>
             <form
               id="find-id-form"
+              className="grid gap-2"
               onSubmit={findIdForm.handleSubmit(onFindIdSubmit)}
             >
               <FormField
@@ -134,10 +138,12 @@ export default function ForgetIdPasswordPage() {
                 )}
               />
             </form>
+
             <Button
               disabled={isFindIdPending}
               form="find-id-form"
               type="submit"
+              className="w-full"
             >
               아이디 찾기
             </Button>
@@ -173,6 +179,7 @@ export default function ForgetIdPasswordPage() {
               disabled={isResetPasswordPending}
               form="find-password-form"
               type="submit"
+              className="w-full"
             >
               인증 메일 요청하기
             </Button>
