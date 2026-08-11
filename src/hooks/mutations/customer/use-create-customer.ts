@@ -1,9 +1,9 @@
 import { createCustomer } from "@/api/customer";
-import type { UseMutationCallback } from "@/type";
+import type { CustomerEntity, UseMutationCallback } from "@/type";
 import { useMutation } from "@tanstack/react-query";
 
-export function useCreateCustomer<CustomerEntity>(
-  callbacks?: UseMutationCallback,
+export function useCreateCustomer(
+  callbacks?: UseMutationCallback<CustomerEntity>,
 ) {
   return useMutation({
     mutationFn: createCustomer,
