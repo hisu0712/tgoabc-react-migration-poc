@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCreateCustomer } from "@/hooks/mutations/customer/use-create-customer";
+import { GENDER_FORM_VALUES } from "@/lib/constants";
 import { formatBirthDateInput } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import {
@@ -22,11 +23,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
-
-const GENDER_FORM_VALUES = [
-  { value: "M", label: "남" },
-  { value: "F", label: "여" },
-] as const;
 
 export default function CustomerNewPage() {
   const navigate = useNavigate();
@@ -44,12 +40,12 @@ export default function CustomerNewPage() {
   const { mutate: createCustomer, isPending: isCreateCustomerPending } =
     useCreateCustomer({
       onSuccess: (createdCustomer) => {
-        toast.success("고객이 등록되었습니다.", {position: "top-center"})
-        navigate(`/customers/${createdCustomer!.id}`)
+        toast.success("고객이 등록되었습니다.", { position: "top-center" });
+        navigate(`/customers/${createdCustomer!.id}`);
       },
       onError: () => {
-        toast.error("고객 등록에 실패했습니다.", {position: "top-center"})
-      }
+        toast.error("고객 등록에 실패했습니다.", { position: "top-center" });
+      },
     });
 
   const onSubmit = (values: CustomerFormValues) => {

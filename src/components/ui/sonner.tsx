@@ -18,7 +18,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
           "--normal-text": "var(--popover-foreground)",
           "--normal-border": "var(--border)",
 
-          "--info-bg": "color-mix(in oklab, var(--muted) 80%, white)",
+          "--info-bg": "var(--popover)",
           "--info-text": "var(--muted-foreground)",
           "--info-border": "var(--muted)",
 

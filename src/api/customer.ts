@@ -37,3 +37,27 @@ export async function createCustomer({
   if (error) throw error;
   return data;
 }
+
+export async function updateCustomer({
+  customerId,
+  name,
+  email,
+  birthDate,
+  gender,
+}: {
+  customerId: string;
+  name?: string;
+  email?: string;
+  birthDate?: string;
+  gender?: Gender;
+}) {
+  const { data, error } = await supabase
+    .from("customer")
+    .update({ name, email, birth_date: birthDate, gender })
+    .eq("id", customerId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}

@@ -17,7 +17,7 @@ import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
 import { useOpenAlertModal } from "@/store/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 

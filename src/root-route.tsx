@@ -41,6 +41,10 @@ export default function RootRoute() {
           <Route path="/members/:userId/shop" element={<MemberShopPage />} />
 
           <Route path="/customers/new" element={<CustomerNewPage />} />
+          <Route
+            path="/customers/:customerId/edit"
+            element={<CustomerInfoPage />}
+          />
         </Route>
 
         <Route element={<GlobalLayoutWithBottomNav />}>
@@ -51,11 +55,6 @@ export default function RootRoute() {
             element={<CustomerDetailPage />}
           />
         </Route>
-
-        <Route
-          path="/customers/:customerId/edit"
-          element={<CustomerInfoPage />}
-        />
 
         {/* /personal-analysis/photo?customerId=123 쿼리스트링 사용 예정 */}
         <Route

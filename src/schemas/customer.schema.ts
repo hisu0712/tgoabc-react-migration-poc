@@ -5,7 +5,7 @@ import { emailField, nameField } from "./common.schema";
 
 dayjs.extend(customParseFormat);
 
-// new-customer
+// customer
 export const customerSchema = z.object({
   name: nameField,
   email: emailField,
