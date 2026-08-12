@@ -1,11 +1,43 @@
+import { useShopData } from "@/hooks/queries/use-shop-data";
 import { useOpenAlertModal } from "@/store/alert";
 import { useSession } from "@/store/session";
+import { BarChart2, ChevronRight, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+import defaultShop from "@/assets/default-shop.png";
+import icoAddCustomer from "@/assets/ico_addCustomer.svg";
+import { Card, CustomerListCard, LinkCard } from "@/components/card";
+import memuScalp from "@/assets/menu_scalp.png";
+import memuPersonal from "@/assets/menu_personal.png";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 
 export default function IndexPage() {
   const session = useSession();
   const navigate = useNavigate();
   const openAlertModal = useOpenAlertModal();
+
+  const { data: shop, error, isPending } = useShopData(session!.user.id);
+
+  const recentCustomers = [
+    {
+      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
+      name: "문현준",
+      phone: "0444",
+    },
+    {
+      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
+      name: "문현준",
+      phone: "0444",
+    },
+    {
+      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
+      name: "문현준",
+      phone: "0444",
+    },
+  ];
 
   const handleShopEditClick = () => {
     openAlertModal({
@@ -17,85 +49,97 @@ export default function IndexPage() {
 
   return (
     <div>
-      <main className="ly_content">
-        <div className="bl_info hp_flexSbCenter hp_mbXL">
-          <div className="hp_flexCol">
-            <p className="bl_info_msg hp_mbXXS">오늘의 분석을 시작해보세요</p>
-            <Link
-              to={`/members/${session?.user.id}/info`}
-              className="bl_info_user hp_mbXS"
-            >
-              티고뷰티샵 님
-            </Link>
-            <div className="ly_flex hp_gapXXS">
-              <svg className="el_icon el_icon__barChartS hp_cDarkGray">
-                <use href="/assets/icon/svg/sprite.svg#ico_barChart"></use>
-              </svg>
-              <p className="el_caption">고객 12명 · 분석수 128건</p>
-            </div>
-          </div>
-          <div onClick={handleShopEditClick} className="bl_info_logo">
-            <img src="/assets/images/customer_profile__joa.png" alt="" />
-            <span className="bl_info_plus">플러스</span>
+      <div className="mb-5 flex items-center justify-between">
+        <div className="flex flex-col">
+          <p className="mb-0.5 text-lg">오늘의 분석을 시작해보세요</p>
+          <Link
+            to={`/members/${session?.user.id}/info`}
+            className="text-primary mb-1 flex items-center text-2xl font-bold"
+          >
+            {shop?.name} 님
+            <ChevronRight className="size-7" strokeWidth={1.5} />
+          </Link>
+          <div className="text-muted-foreground flex items-end gap-1">
+            <BarChart2 className="size-5" />
+            <p className="text-md leading-none">고객 12명 · 분석수 128건</p>
           </div>
         </div>
-        <Link to={"/customers/new"} className="bl_card bl_add">
-          <img src="/assets/icon/ico_addCustomer.svg" />
+        <div onClick={handleShopEditClick} className="relative size-23">
+          <img
+            className="h-full w-full overflow-hidden rounded-full object-cover"
+            src={shop?.logo_url || defaultShop}
+            alt={shop?.name}
+          />
+          <span className="bg-card absolute right-0 bottom-0 h-[25%] w-[25%] rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)]">
+            <Plus
+              className="text-primary absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2"
+              strokeWidth={2.3}
+            />
+          </span>
+        </div>
+      </div>
+
+      <LinkCard
+        to={"/customers/new"}
+        variant={"gradient"}
+        className="mb-3 flex items-center gap-5"
+      >
+        <img src={icoAddCustomer} className="size-15" />
+        <div>
+          <div className="text-lg font-semibold">고객 추가하기</div>
+          <div className="opacity-80">빠른 고객 정보 입력 후 등록!</div>
+        </div>
+      </LinkCard>
+
+      <div className="mb-7 grid grid-cols-2 gap-3">
+        <Card className="pr-0 pb-0">
           <div>
-            <div className="hp_fwSb hp_mbXXS">고객 추가하기</div>
-            <div className="hp_fzS hp_fwR hp_op80">
-              빠른 고객 정보 입력 후 등록!
+            <div className="text-primary mb-1 text-xl leading-tight font-semibold tracking-tight">
+              <div>두피 분석</div>
+              <div>바로가기</div>
             </div>
+            <div className="text-muted-foreground">바로 시작하기</div>
           </div>
-        </Link>
+          <div className="">
+            <img
+              className="ml-auto h-33"
+              src={memuScalp}
+              alt="두피 분석 이미지"
+            />
+          </div>
+        </Card>
+        <Card className="pr-0 pb-0">
+          <div>
+            <div className="text-feature-2 mb-1 text-xl leading-tight font-semibold tracking-tight">
+              <div>퍼스널 컬러</div>
+              <div>바로가기</div>
+            </div>
+            <div className="text-muted-foreground">나의 퍼스널 컬러는?</div>
+          </div>
+          <div className="">
+            <img
+              className="ml-auto h-33"
+              src={memuPersonal}
+              alt="퍼스널컬러 분석 이미지"
+            />
+          </div>
+        </Card>
+      </div>
 
-        {/* 분석 메뉴 */}
-        <div className="ly_grid bl_mainMenu_unit">
-          <div className="bl_card bl_mainMenu">
-            <div>
-              <div className="hp_cBlue hp_mbXXS">
-                <div className="el_title">두피 분석</div>
-                <div className="el_title">바로가기</div>
-              </div>
-              <div className="el_caption">바로 시작하기</div>
-            </div>
-            <div className="bl_mainMenu_img">
-              <img src="/assets/images/test_menuS.png" alt="" />
-            </div>
-          </div>
-          <div className="bl_card bl_mainMenu">
-            <div>
-              <div className="hp_cPurple hp_mbXXS">
-                <div className="el_title">퍼스널 컬러</div>
-                <div className="el_title">바로가기</div>
-              </div>
-              <div className="el_caption">나의 퍼스널 컬러는?</div>
-            </div>
-            <div className="bl_mainMenu_img">
-              <img src="/assets/images/test_menuP.png" alt="" />
-            </div>
-          </div>
-        </div>
-
-        {/* 최근 분석 목록 (최대 5명) */}
-        <div className="hp_fzL hp_fwSb hp_mbXS">최근 분석 목록</div>
-        <div className="bl_menuRecent js_swiperCustomer">
-          <div className="swiper-wrapper">
-            <div className="swiper-slide bl_listCard bl_card">
-              <div className="el_roundMark el_roundMark__blue">K</div>
-              <div className="bl_listCard_ttl">김티젠</div>
-            </div>
-            <div className="swiper-slide bl_listCard bl_card">
-              <div className="el_roundMark el_roundMark__red">D</div>
-              <div className="bl_listCard_ttl">김티고</div>
-            </div>
-            <div className="swiper-slide bl_listCard bl_card">
-              <div className="el_roundMark el_roundMark__blue">K</div>
-              <div className="bl_listCard_ttl">김티나</div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <div className="mb-2 text-lg font-semibold">최근 분석 목록</div>
+      <Carousel>
+        <CarouselContent>
+          {recentCustomers.map((customer) => (
+            <CarouselItem key={customer.id} className="basis-auto pl-2">
+              <CustomerListCard
+                id={customer.id}
+                name={customer.name}
+                phone={customer.phone}
+              />
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </div>
   );
 }

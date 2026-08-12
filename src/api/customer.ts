@@ -1,6 +1,17 @@
 import { supabase } from "@/lib/supabase";
 import type { Gender } from "@/type";
 
+export async function fetchCustomer(customerId: string) {
+  const { data, error } = await supabase
+    .from("customer")
+    .select("*")
+    .eq("id", customerId)
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export async function createCustomer({
   name,
   email,

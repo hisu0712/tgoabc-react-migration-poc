@@ -6,5 +6,6 @@ export function useMemberData(userId?: string) {
   return useQuery({
     queryKey: QUERY_KEYS.member.byId(userId!),
     queryFn: () => fetchMember(userId!),
+    enabled: !!userId,
   });
 }

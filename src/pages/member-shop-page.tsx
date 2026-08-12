@@ -16,7 +16,7 @@ import {
 import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Navigate, useParams } from "react-router";
 import { toast } from "sonner";
 import defaultShop from "@/assets/default-shop.png";

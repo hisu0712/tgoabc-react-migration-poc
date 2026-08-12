@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
-import { useMemberData } from "@/hooks/queries/use-member-info-data";
+import { useMemberData } from "@/hooks/queries/use-member-data";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
 import { useOpenAlertModal } from "@/store/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,9 +61,9 @@ export default function MemberInfoPage() {
     formState: { isDirty },
   } = form; // formState은 구독 안 된 속성은 아예 내부적으로 값 추적/계산 자체를 스킵
 
+  if (!userId) return <Navigate to={"/"} />;
   if (isFetchMemberLoading) return <GlobalLoader />;
   if (isFetchMemberError) return <Navigate to={"/"} />;
-  if (!userId) return <Navigate to={"/"} />;
 
   const onSubmit = (values: MemberFormValues) => {
     if (!isDirty) {
