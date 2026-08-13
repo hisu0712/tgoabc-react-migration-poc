@@ -1,11 +1,11 @@
 export const QUERY_KEYS = {
   shop: {
     all: ["shop"],
-    byId: (userId: string) => ["shop", userId],
+    byId: (memberId: string) => ["shop", memberId],
   },
   member: {
     all: ["member"],
-    byId: (userId: string) => ["member", userId],
+    byId: (memberId: string) => ["member", memberId],
   },
   customer: {
     all: ["customer"],

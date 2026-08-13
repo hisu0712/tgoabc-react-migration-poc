@@ -1,10 +1,10 @@
 import { supabase } from "@/lib/supabase";
 
-export async function fetchMember(userId: string) {
+export async function fetchMember(memberId: string) {
   const { data, error } = await supabase
     .from("member")
     .select("*")
-    .eq("id", userId)
+    .eq("id", memberId)
     .single();
 
   if (error) throw error;
@@ -12,18 +12,18 @@ export async function fetchMember(userId: string) {
 }
 
 export async function updateMember({
-  userId,
+  memberId,
   name,
   phone,
 }: {
-  userId: string;
+  memberId: string;
   name?: string;
   phone?: string;
 }) {
   const { data, error } = await supabase
     .from("member")
     .update({ name, phone })
-    .eq("id", userId)
+    .eq("id", memberId)
     .select()
     .single();
 

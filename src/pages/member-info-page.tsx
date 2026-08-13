@@ -22,7 +22,7 @@ import { Navigate, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
 export default function MemberInfoPage() {
-  const { userId } = useParams();
+  const { memberId } = useParams();
   const navigate = useNavigate();
   const openAlertModal = useOpenAlertModal();
 
@@ -30,7 +30,7 @@ export default function MemberInfoPage() {
     data: member,
     isLoading: isFetchMemberLoading,
     isError: isFetchMemberError,
-  } = useMemberData(userId);
+  } = useMemberData(memberId);
 
   const { mutate: updateMember, isPending: isUpdateMemberPending } =
     useUpdateMember({
@@ -61,7 +61,7 @@ export default function MemberInfoPage() {
     formState: { isDirty },
   } = form; // formState은 구독 안 된 속성은 아예 내부적으로 값 추적/계산 자체를 스킵
 
-  if (!userId) return <Navigate to={"/"} />;
+  if (!memberId) return <Navigate to={"/"} />;
   if (isFetchMemberLoading) return <GlobalLoader />;
   if (isFetchMemberError) return <Navigate to={"/"} />;
 
@@ -70,10 +70,10 @@ export default function MemberInfoPage() {
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
       return;
     }
-    updateMember({ userId, ...values });
+    updateMember({ memberId, ...values });
   };
 
-  const handleDeleteUser = () => {
+  const handleDeleteMember = () => {
     // 근데 여기서 user 을 삭제 해야함 그래야 member, shop 같이 삭제됨
     openAlertModal({
       title: "회원 탈퇴",
@@ -135,7 +135,7 @@ export default function MemberInfoPage() {
             <Input readOnly type="password" value="111111" />
           </div>
 
-          <div onClick={handleDeleteUser}>회원 탈퇴</div>
+          <div onClick={handleDeleteMember}>회원 탈퇴</div>
         </form>
       </Form>
 

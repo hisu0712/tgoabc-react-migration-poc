@@ -1,11 +1,11 @@
 import { supabase } from "@/lib/supabase";
 import { deleteImagesInPath, uploadImage } from "./image";
 
-export async function fetchShop(userId: string) {
+export async function fetchShop(memberId: string) {
   const { data, error } = await supabase
     .from("shop")
     .select("*")
-    .eq("member_id", userId)
+    .eq("member_id", memberId)
     .single();
 
   if (error) throw error;
@@ -13,14 +13,14 @@ export async function fetchShop(userId: string) {
 }
 
 export async function updateShop({
-  userId,
+  memberId,
   name,
   phone,
   address,
   address_detail,
   shopImageFile,
 }: {
-  userId: string;
+  memberId: string;
   name: string;
   phone?: string;
   address?: string;
@@ -28,13 +28,13 @@ export async function updateShop({
   shopImageFile?: File;
 }) {
   if (shopImageFile) {
-    await deleteImagesInPath(`${userId}/shop`);
+    await deleteImagesInPath(`${memberId}/shop`);
   }
 
   let newShopImageUrl;
   if (shopImageFile) {
     const fileExtension = shopImageFile.name.split(".").pop() || "webp";
-    const filePath = `${userId}/shop/${new Date().getTime()}-${crypto.randomUUID()}.${fileExtension}`;
+    const filePath = `${memberId}/shop/${new Date().getTime()}-${crypto.randomUUID()}.${fileExtension}`;
 
     newShopImageUrl = await uploadImage({
       file: shopImageFile,
@@ -51,7 +51,7 @@ export async function updateShop({
       address_detail,
       logo_url: newShopImageUrl,
     })
-    .eq("member_id", userId)
+    .eq("member_id", memberId)
     .select()
     .single();
 

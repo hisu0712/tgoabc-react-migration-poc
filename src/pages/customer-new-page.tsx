@@ -53,7 +53,7 @@ export default function CustomerNewPage() {
     });
 
   const onSubmit = (values: CustomerFormValues) => {
-    createCustomer({ userId: session!.user.id, ...values });
+    createCustomer({ memberId: session!.user.id, ...values });
   };
 
   return (

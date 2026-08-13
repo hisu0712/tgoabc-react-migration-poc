@@ -28,7 +28,7 @@ import FormHint from "@/components/form-hint";
 type Image = { file: File; previewUrl: string };
 
 export default function MemberShopPage() {
-  const { userId } = useParams();
+  const { memberId } = useParams();
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
 
@@ -71,7 +71,7 @@ export default function MemberShopPage() {
   } = form;
 
   if (isFetchShopLoading) return <GlobalLoader />;
-  if (!userId) return <Navigate to={"/"} />;
+  if (!memberId) return <Navigate to={"/"} />;
 
   const onSubmit = (values: ShopFormValues) => {
     if (!isDirty && !shopImage) {
@@ -79,7 +79,7 @@ export default function MemberShopPage() {
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
       return;
     }
-    updateShop({ userId, shopImageFile: shopImage?.file, ...values });
+    updateShop({ memberId, shopImageFile: shopImage?.file, ...values });
   };
 
   const handleSelectImage = (e: ChangeEvent<HTMLInputElement>) => {

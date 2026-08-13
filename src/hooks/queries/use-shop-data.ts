@@ -2,9 +2,9 @@ import { fetchShop } from "@/api/shop";
 import { QUERY_KEYS } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
-export function useShopData(userId?: string) {
+export function useShopData(memberId?: string) {
   return useQuery({
-    queryKey: QUERY_KEYS.shop.byId(userId!),
-    queryFn: () => fetchShop(userId!),
+    queryKey: QUERY_KEYS.shop.byId(memberId!),
+    queryFn: () => fetchShop(memberId!),
   });
 }

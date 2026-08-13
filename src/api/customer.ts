@@ -36,13 +36,13 @@ export async function fetchCustomer(customerId: string) {
     for each row execute procedure public.handle_new_customer();
 */
 export async function createCustomer({
-  userId,
+  memberId,
   name,
   email,
   birthDate,
   gender,
 }: {
-  userId: string;
+  memberId: string;
   name: string;
   email: string;
   birthDate: string;
@@ -63,7 +63,7 @@ export async function createCustomer({
       .from("member_customer_mapping")
       .select("id")
       .eq("customer_id", existingCustomer.id)
-      .eq("member_id", userId)
+      .eq("member_id", memberId)
       .maybeSingle();
 
     if (findMappingError) throw findMappingError;
@@ -75,7 +75,7 @@ export async function createCustomer({
     // 3. 고객은 있지만 이 회원과의 매핑이 없는 경우 (-> mapping만 추가)
     const { error: insertMappingError } = await supabase
       .from("member_customer_mapping")
-      .insert({ member_id: userId, customer_id: existingCustomer.id });
+      .insert({ member_id: memberId, customer_id: existingCustomer.id });
 
     if (insertMappingError) throw insertMappingError;
 
@@ -122,16 +122,16 @@ export async function updateCustomer({
 }
 
 export async function unlinkCustomer({
-  userId,
+  memberId,
   customerId,
 }: {
-  userId: string;
+  memberId: string;
   customerId: string;
 }) {
   const { error } = await supabase
     .from("member_customer_mapping")
     .delete()
-    .eq("member_id", userId)
+    .eq("member_id", memberId)
     .eq("customer_id", customerId);
 
   if (error) throw error;
