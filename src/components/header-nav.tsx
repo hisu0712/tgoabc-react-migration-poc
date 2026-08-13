@@ -20,7 +20,7 @@ export default function HeaderNav({ title, rightSlot, backTo }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-[100] mb-5">
+    <header className="sticky top-0 z-10 mb-5">
       <div className="bg-background relative h-17">
         <button
           type="button"
