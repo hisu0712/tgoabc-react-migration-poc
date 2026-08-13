@@ -15,7 +15,7 @@ import {
 } from "@/schemas/customer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomerData from "@/hooks/queries/use-customer-data";
-import { Navigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 import GlobalLoader from "@/components/global-loader";
 import { useMemo } from "react";
 import { toast } from "sonner";
@@ -28,10 +28,14 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import FormHint from "@/components/form-hint";
 import { Trash2 } from "lucide-react";
+import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-customer";
+import { useSession } from "@/store/session";
 
 export default function CustomerInfoPage() {
+  const session = useSession();
   const { customerId } = useParams();
   const openAlertModal = useOpenAlertModal();
+  const navigate = useNavigate();
 
   const {
     data: customer,
@@ -48,6 +52,16 @@ export default function CustomerInfoPage() {
         toast.error("정보 수정에 실패했습니다.", { position: "top-center" });
       },
     });
+
+  const { mutate: unlinkCustomer } = useUnlinkCustomer({
+    onSuccess: () => {
+      toast.success("고객이 삭제되었습니다.", { position: "top-center" });
+      navigate("/", { replace: true });
+    },
+    onError: () => {
+      toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
+    },
+  });
 
   const customerFormValues = useMemo(
     () =>
@@ -87,7 +101,9 @@ export default function CustomerInfoPage() {
     openAlertModal({
       title: "고객 삭제",
       description: "고객을 삭제하시겠습니까? *삭제 후 되돌릴 수 없습니다.",
-      // onPositive: () => {}
+      onPositive: () => {
+        unlinkCustomer({ userId: session!.user.id, customerId });
+      },
     });
   };
 

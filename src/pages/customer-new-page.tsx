@@ -19,12 +19,14 @@ import {
   customerSchema,
   type CustomerFormValues,
 } from "@/schemas/customer.schema";
+import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function CustomerNewPage() {
+  const session = useSession();
   const navigate = useNavigate();
 
   const form = useForm<CustomerFormValues>({
@@ -39,17 +41,19 @@ export default function CustomerNewPage() {
 
   const { mutate: createCustomer, isPending: isCreateCustomerPending } =
     useCreateCustomer({
-      onSuccess: (createdCustomer) => {
+      onSuccess: (createdCustomerId) => {
         toast.success("고객이 등록되었습니다.", { position: "top-center" });
-        navigate(`/customers/${createdCustomer!.id}`);
+        navigate(`/customers/${createdCustomerId}`);
       },
-      onError: () => {
-        toast.error("고객 등록에 실패했습니다.", { position: "top-center" });
+      onError: (error) => {
+        toast.error(error.message || "고객 등록에 실패했습니다.", {
+          position: "top-center",
+        });
       },
     });
 
   const onSubmit = (values: CustomerFormValues) => {
-    createCustomer({ ...values });
+    createCustomer({ userId: session!.user.id, ...values });
   };
 
   return (

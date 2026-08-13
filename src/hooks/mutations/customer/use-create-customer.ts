@@ -3,12 +3,12 @@ import type { CustomerEntity, UseMutationCallback } from "@/type";
 import { useMutation } from "@tanstack/react-query";
 
 export function useCreateCustomer(
-  callbacks?: UseMutationCallback<CustomerEntity>,
+  callbacks?: UseMutationCallback<CustomerEntity["id"]>,
 ) {
   return useMutation({
     mutationFn: createCustomer,
-    onSuccess: (createdCustomer) => {
-      if (callbacks?.onSuccess) callbacks.onSuccess(createdCustomer);
+    onSuccess: (createdCustomerId) => {
+      if (callbacks?.onSuccess) callbacks.onSuccess(createdCustomerId);
     },
     onError: (error) => {
       if (callbacks?.onError) callbacks.onError(error);
