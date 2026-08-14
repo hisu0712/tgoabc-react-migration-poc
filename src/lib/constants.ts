@@ -15,6 +15,7 @@ export const QUERY_KEYS = {
       memberId,
       keyword,
     ],
+    memberCount: (memberId: string) => ["customer", "count", memberId],
     byId: (customerId: string) => ["customer", customerId],
   },
 };

@@ -164,3 +164,16 @@ export async function fetchCustomersByMember({
   if (error) throw error;
   return data;
 }
+
+export async function fetchCustomerCountByMember(memberId: string) {
+  const { count, error } = await supabase
+    .from("customer")
+    .select("*, member_customer_mapping!inner(member_id)", {
+      count: "exact", // PostgREST가 "총 몇 건 매치되는지"를 어떤 방식으로 셀지 정하는 옵션
+      head: true,
+    })
+    .eq("member_customer_mapping.member_id", memberId);
+
+  if (error) throw error;
+  return count;
+}

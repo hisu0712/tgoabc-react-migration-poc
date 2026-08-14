@@ -1,10 +1,15 @@
 import { useShopData } from "@/hooks/queries/use-shop-data";
 import { useOpenAlertModal } from "@/store/alert";
 import { useSession } from "@/store/session";
-import { BarChart2, ChevronRight, Plus } from "lucide-react";
+import { BarChart2, ChevronRight, Plus, Zap } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import defaultShop from "@/assets/default-shop.png";
+import defaultShop from "@/assets/customer_profile__joa.png";
 import icoAddCustomer from "@/assets/ico_addCustomer.svg";
+import icoHomeDesigner from "@/assets/memberhome_designer.png";
+import icoHomeMsg from "@/assets/memberhome_msg.png";
+import icoHomeScanner from "@/assets/memberhome_scanner.png";
+import icoHomeUse from "@/assets/memberhome_use.png";
+import icoThunder from "@/assets/thunder.png";
 import { Card, CustomerListCard, LinkCard } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
@@ -13,31 +18,17 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import HeaderHomeNav from "@/components/header-home-nav";
+import useCustomerCount from "@/hooks/queries/use-customer-count-data";
 
 export default function IndexPage() {
   const session = useSession();
   const navigate = useNavigate();
   const openAlertModal = useOpenAlertModal();
 
-  const { data: shop, error, isPending } = useShopData(session!.user.id);
-
-  const recentCustomers = [
-    {
-      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
-      name: "문현준",
-      phone: "0444",
-    },
-    {
-      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
-      name: "문현준",
-      phone: "0444",
-    },
-    {
-      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
-      name: "문현준",
-      phone: "0444",
-    },
-  ];
+  // 여기 error, isPending 일시에 처리해야함
+  const { data: customerCount } = useCustomerCount(session!.user.id);
+  const { data: shop } = useShopData(session!.user.id);
 
   const handleShopEditClick = () => {
     openAlertModal({
@@ -49,6 +40,8 @@ export default function IndexPage() {
 
   return (
     <div>
+      <HeaderHomeNav />
+
       <div className="mb-5 flex items-center justify-between">
         <div className="flex flex-col">
           <p className="mb-0.5 text-lg">오늘의 분석을 시작해보세요</p>
@@ -61,10 +54,12 @@ export default function IndexPage() {
           </Link>
           <div className="text-muted-foreground flex items-end gap-1">
             <BarChart2 className="size-5" />
-            <p className="text-md leading-none">고객 12명 · 분석수 128건</p>
+            <p className="text-md leading-none">
+              고객 {customerCount}명 · 분석수 128건
+            </p>
           </div>
         </div>
-        <div onClick={handleShopEditClick} className="relative size-23">
+        <div onClick={handleShopEditClick} className="relative size-20">
           <img
             className="h-full w-full overflow-hidden rounded-full object-cover"
             src={shop?.logo_url || defaultShop}
@@ -82,16 +77,18 @@ export default function IndexPage() {
       <LinkCard
         to={"/customers/new"}
         variant={"gradient"}
-        className="mb-3 flex items-center gap-5"
+        className="mb-3 flex items-center gap-4"
       >
-        <img src={icoAddCustomer} className="size-15" />
+        <img src={icoAddCustomer} className="size-10" />
         <div>
-          <div className="text-lg font-semibold">고객 추가하기</div>
+          <div className="text-lg leading-tight font-semibold">
+            고객 추가하기
+          </div>
           <div className="opacity-80">빠른 고객 정보 입력 후 등록!</div>
         </div>
       </LinkCard>
 
-      <div className="mb-7 grid grid-cols-2 gap-3">
+      <div className="mb-5 grid grid-cols-2 gap-3">
         <Card className="pr-0 pb-0">
           <div>
             <div className="text-primary mb-1 text-xl leading-tight font-semibold tracking-tight">
@@ -126,18 +123,70 @@ export default function IndexPage() {
         </Card>
       </div>
 
+      <div className="mb-5 grid grid-cols-4 justify-between md:grid-cols-5">
+        <div className="hidden whitespace-nowrap md:block">
+          <div className="flex items-center text-lg font-semibold">
+            스마트 퀵 메뉴
+            <img className="size-5" src={icoThunder} alt="천둥 아이콘" />
+          </div>
+          <p className="text-muted-foreground text-sm">
+            어떤 작업을 시작할까요?
+          </p>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <div className="bg-muted rounded-3xl p-1">
+            <img
+              className="size-13"
+              src={icoHomeScanner}
+              alt="스캐너 메뉴 이미지"
+            />
+          </div>
+          <span className="text-sm">스캐너</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <div className="bg-muted rounded-3xl p-1">
+            <img
+              className="size-13"
+              src={icoHomeMsg}
+              alt="메시지 메뉴 이미지"
+            />
+          </div>
+          <span className="text-sm">메시지</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <div className="bg-muted rounded-3xl p-1">
+            <img
+              className="size-13"
+              src={icoHomeDesigner}
+              alt="디자이너 메뉴 이미지"
+            />
+          </div>
+          <span className="text-sm">디자이너</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <div className="bg-muted rounded-3xl p-1">
+            <img
+              className="size-13"
+              src={icoHomeUse}
+              alt="앱 사용법 메뉴 이미지"
+            />
+          </div>
+          <span className="text-sm">앱 사용법</span>
+        </div>
+      </div>
+
       <div className="mb-2 text-lg font-semibold">최근 분석 목록</div>
       <Carousel>
         <CarouselContent>
-          {recentCustomers.map((customer) => (
+          {/* {recentCustomers.map((customer) => (
             <CarouselItem key={customer.id} className="basis-auto pl-2">
               <CustomerListCard
                 id={customer.id}
                 name={customer.name}
-                phone={customer.phone}
+                email={customer.phone}
               />
             </CarouselItem>
-          ))}
+          ))} */}
         </CarouselContent>
       </Carousel>
     </div>
