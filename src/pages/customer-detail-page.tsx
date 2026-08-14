@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import HeaderHomeNav from "@/components/header-home-nav";
 
 export default function CustomerDetailPage() {
   const { customerId } = useParams();
@@ -28,6 +29,8 @@ export default function CustomerDetailPage() {
 
   return (
     <main>
+      <HeaderHomeNav />
+
       <div className="mb-5 flex items-end justify-between">
         <div className="text-2xl font-semibold">
           <Link

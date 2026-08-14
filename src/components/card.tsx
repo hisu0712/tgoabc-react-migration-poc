@@ -42,27 +42,27 @@ function LinkCard({
 function CustomerListCard({
   id,
   name,
-  phone,
+  email,
 }: {
   id: string;
   name: string;
-  phone: string;
+  email: string;
 }) {
   return (
     <LinkCard
       to={`/customers/${id}`}
       className="flex items-center justify-between gap-2"
     >
-      <div className="flex items-center gap-1">
-        <div className="bg-primary/10 text-primary flex size-6 items-center justify-center rounded-full leading-none">
+      <div className="flex items-center gap-2">
+        <div className="bg-primary/10 text-primary flex size-6 items-center justify-center rounded-full text-sm leading-none font-semibold">
           K
         </div>
-        <div className="flex gap-0.5">
+        <div className="flex gap-0.5 text-lg">
           <span>{name}</span>
-          <span>({phone})</span>
+          <span>({email.split("@")[0]})</span>
         </div>
       </div>
-      <ChevronRight className="size-6" strokeWidth={1.5} />
+      <ChevronRight className="size-8" strokeWidth={1.2} />
     </LinkCard>
   );
 }
