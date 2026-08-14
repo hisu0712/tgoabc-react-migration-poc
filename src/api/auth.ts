@@ -18,6 +18,10 @@ export async function signOut() {
   security definer set search_path = public
   as $$
   begin
+    if new.raw_user_meta_data->>'account_type' = 'customer' then -- 고객용 계정
+      return new; 
+    end if;
+
     insert into public.member (id, email, name, phone)
       values (
         new.id,

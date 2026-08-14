@@ -58,7 +58,7 @@ export async function createCustomer({
   if (findCustomerError) throw findCustomerError;
 
   if (existingCustomer) {
-    // 2. 이미 있는 고객이면, 이 회원과의 mapping 중복 체크
+    // *이미 있는 고객이면, 이 회원과의 mapping 중복 체크
     const { data: existingMapping, error: findMappingError } = await supabase
       .from("member_customer_mapping")
       .select("id")
@@ -72,7 +72,7 @@ export async function createCustomer({
       throw new Error("이미 존재하는 고객입니다.");
     }
 
-    // 3. 고객은 있지만 이 회원과의 매핑이 없는 경우 (-> mapping만 추가)
+    // *고객은 있지만 이 회원과의 매핑이 없는 경우 (-> mapping만 추가)
     const { error: insertMappingError } = await supabase
       .from("member_customer_mapping")
       .insert({ member_id: memberId, customer_id: existingCustomer.id });
@@ -82,9 +82,20 @@ export async function createCustomer({
     return existingCustomer.id;
   }
 
+  // 2. Supabase Auth 테이블에 새로운 고객 유저 추가
+  const { data: authResult, error: authError } =
+    await supabase.functions.invoke<{ userId: string }>(
+      "create-customer-auth",
+      { body: { email } },
+    );
+
+  if (authError) throw authError;
+
+  // 2. 고객 테이블에 새로운 고객 추가 (인증 계정이 만들어진 경우만 생성)
   const { data: newCustomer, error: insertCustomerError } = await supabase
     .from("customer")
     .insert({
+      id: authResult?.userId, // auth 계정과 동일한 id 사용
       name,
       email,
       birth_date: birthDate,
