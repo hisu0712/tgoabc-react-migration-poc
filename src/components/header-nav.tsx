@@ -4,11 +4,17 @@ import { useNavigate } from "react-router";
 
 interface HeaderProps {
   title: string;
-  rightSlot?: ReactNode;
   backTo?: string;
+  rightSlot?: ReactNode;
+  bottomSlot?: ReactNode;
 }
 
-export default function HeaderNav({ title, rightSlot, backTo }: HeaderProps) {
+export default function HeaderNav({
+  title,
+  backTo,
+  rightSlot,
+  bottomSlot,
+}: HeaderProps) {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -20,8 +26,8 @@ export default function HeaderNav({ title, rightSlot, backTo }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-10 mb-5">
-      <div className="bg-background relative h-17">
+    <header className="bg-background/50 sticky top-0 z-10 mb-5 backdrop-blur-md">
+      <div className="relative pt-8 pb-4">
         <button
           type="button"
           onClick={handleBack}
@@ -30,7 +36,7 @@ export default function HeaderNav({ title, rightSlot, backTo }: HeaderProps) {
           <ChevronLeft className="size-10" strokeWidth={1} />
         </button>
 
-        <h1 className="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center text-lg font-semibold">
+        <h1 className="text-center text-lg font-semibold">
           {title}
         </h1>
 
@@ -40,6 +46,8 @@ export default function HeaderNav({ title, rightSlot, backTo }: HeaderProps) {
           </div>
         )}
       </div>
+
+      {bottomSlot && <div className="pb-3">{bottomSlot}</div>}
     </header>
   );
 }

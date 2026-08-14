@@ -9,7 +9,12 @@ export const QUERY_KEYS = {
   },
   customer: {
     all: ["customer"],
-    list: ["customer", "list"],
+    memberList: (memberId: string, keyword?: string) => [
+      "customer",
+      "memberList",
+      memberId,
+      keyword,
+    ],
     byId: (customerId: string) => ["customer", customerId],
   },
 };

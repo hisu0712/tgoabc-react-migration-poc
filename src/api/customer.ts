@@ -136,3 +136,31 @@ export async function unlinkCustomer({
 
   if (error) throw error;
 }
+
+export async function fetchCustomersByMember({
+  from,
+  to,
+  memberId,
+  keyword,
+}: {
+  from: number;
+  to: number;
+  memberId: string;
+  keyword?: string;
+}) {
+  let query = supabase
+    .from("customer")
+    .select("*, member_customer_mapping!inner(member_id)")
+    .eq("member_customer_mapping.member_id", memberId);
+
+  if (keyword) {
+    // ilike는 PostgreSQL의 대소문자 구분 없는 부분 검색
+    // %는 앞뒤에 어떤 문자열이 와도 된다는 와일드카드
+    query = query.or(`name.ilike.%${keyword}%,email.ilike.%${keyword}%`);
+  }
+
+  const { data, error } = await query.range(from, to);
+
+  if (error) throw error;
+  return data;
+}

@@ -1,4 +1,8 @@
-import { CustomerListCard } from "@/components/card";
+import { CustomerListCard, LinkCard } from "@/components/card";
+import GlobalLoader from "@/components/global-loader";
+import HeaderNav from "@/components/header-nav";
+import { Input } from "@/components/ui/input";
+import { useInView } from "react-intersection-observer";
 import {
   Select,
   SelectContent,
@@ -6,29 +10,75 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Scissors } from "lucide-react";
+import useInfiniteCustomers from "@/hooks/queries/use-infinite-customers-data";
+import { useSession } from "@/store/session";
+import { Plus, Scissors, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router";
+import Loader from "@/components/loader";
 
 export default function CustomerListPage() {
-  const customers = [
-    {
-      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
-      name: "문현준",
-      phone: "0444",
-    },
-    {
-      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
-      name: "문현준",
-      phone: "0444",
-    },
-    {
-      id: "7bf457aa-41bd-4889-a029-d1e16738d377",
-      name: "문현준",
-      phone: "0444",
-    },
-  ];
+  const session = useSession();
+  const { ref, inView } = useInView();
+
+  const [keyword, setKeyword] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
+    useInfiniteCustomers({
+      memberId: session?.user.id,
+      keyword: searchKeyword,
+    });
+
+  useEffect(() => {
+    // 스크롤이 하단에 닿았을 때 다음페이지 호출
+    if (inView) fetchNextPage();
+  }, [inView]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchKeyword(keyword);
+    }, 300); // 0.3초마다 자동 검색
+
+    return () => clearTimeout(timer);
+  }, [keyword]);
+
+  if (error) return <Navigate to={"/"} />;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setSearchKeyword(keyword);
+  };
 
   return (
-    <div>
+    <div className="pb-30">
+      <HeaderNav
+        title="고객 목록"
+        bottomSlot={
+          <div className="relative">
+            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+            <form onSubmit={handleSubmit}>
+              <Input
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="이름 또는 이메일"
+                className="bg-card py-6 pl-9"
+              />
+            </form>
+          </div>
+        }
+      />
+
+      <LinkCard
+        to={"/customers/new"}
+        variant={"gradient"}
+        className="mb-4 flex items-center justify-between"
+      >
+        <span className="text-lg font-semibold">신규 고객 추가</span>
+        <Plus className="size-9" strokeWidth={1.3} />
+      </LinkCard>
+
       <div className="bg-muted-foreground/20 mb-7 h-[1px] w-full"></div>
 
       <div className="mb-3 flex items-center justify-between">
@@ -54,14 +104,22 @@ export default function CustomerListPage() {
       </div>
 
       <div className="flex flex-col gap-2">
-        {customers.map((customer) => (
-          <CustomerListCard
-            key={customer.id}
-            id={customer.id}
-            name={customer.name}
-            phone={customer.phone}
-          />
-        ))}
+        {isPending ? (
+          <Loader />
+        ) : (
+          data.pages.map((page) =>
+            page.map((customer) => (
+              <CustomerListCard
+                key={customer.id}
+                id={customer.id}
+                name={customer.name}
+                email={customer.email}
+              />
+            )),
+          )
+        )}
+        {isFetchingNextPage && <Loader />}
+        <div ref={ref}></div>
       </div>
     </div>
   );
