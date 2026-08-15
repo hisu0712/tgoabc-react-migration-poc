@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import HeaderNav from "@/components/header-nav";
 import { toast } from "sonner";
+import { Card } from "@/components/card";
 
 export default function ForgetIdPasswordPage() {
   const openAlertModal = useOpenAlertModal();
@@ -90,60 +91,62 @@ export default function ForgetIdPasswordPage() {
       <HeaderNav title="아이디 / 비밀번호 찾기" />
 
       <Tabs defaultValue="id" className="w-full">
-        <TabsList className="w-full">
+        <TabsList className="mb-2 w-full">
           <TabsTrigger value="id">아이디 찾기</TabsTrigger>
           <TabsTrigger value="password">비밀번호 찾기</TabsTrigger>
         </TabsList>
 
         <TabsContent value="id">
           <Form {...findIdForm}>
-            <form
-              id="find-id-form"
-              className="grid gap-2"
-              onSubmit={findIdForm.handleSubmit(onFindIdSubmit)}
-            >
-              <FormField
-                control={findIdForm.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>이름</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isFindIdPending}
-                        placeholder="이름 입력"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <Card className="mb-4">
+              <form
+                id="find-id-form"
+                className="grid gap-2"
+                onSubmit={findIdForm.handleSubmit(onFindIdSubmit)}
+              >
+                <FormField
+                  control={findIdForm.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>이름</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isFindIdPending}
+                          placeholder="이름 입력"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <FormField
-                control={findIdForm.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>휴대전화</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isFindIdPending}
-                        placeholder="휴대전화 번호를 -없이 입력해주세요"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
+                <FormField
+                  control={findIdForm.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>휴대전화</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isFindIdPending}
+                          placeholder="휴대전화 번호를 -없이 입력해주세요"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Card>
 
             <Button
               disabled={isFindIdPending}
               form="find-id-form"
               type="submit"
-              className="w-full"
+              className="w-full py-5"
             >
               아이디 찾기
             </Button>
@@ -152,34 +155,36 @@ export default function ForgetIdPasswordPage() {
 
         <TabsContent value="password">
           <Form {...findPasswordForm}>
-            <form
-              id="find-password-form"
-              onSubmit={findPasswordForm.handleSubmit(onFindPasswordSubmit)}
-            >
-              <FormField
-                control={findPasswordForm.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>이메일(아이디)</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isResetPasswordPending}
-                        placeholder="example@abc.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
+            <Card className="mb-4">
+              <form
+                id="find-password-form"
+                onSubmit={findPasswordForm.handleSubmit(onFindPasswordSubmit)}
+              >
+                <FormField
+                  control={findPasswordForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>이메일(아이디)</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={isResetPasswordPending}
+                          placeholder="example@abc.com"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Card>
 
             <Button
               disabled={isResetPasswordPending}
               form="find-password-form"
               type="submit"
-              className="w-full"
+              className="w-full py-5"
             >
               인증 메일 요청하기
             </Button>

@@ -41,16 +41,20 @@ export default function SignInPage() {
   };
 
   return (
-    <div>
+    <div className="flex flex-1 flex-col justify-between">
       <Tabs defaultValue="member" className="w-full">
-        <TabsList className="w-full">
+        <TabsList className="mb-2 w-full">
           <TabsTrigger value="member">매장</TabsTrigger>
           <TabsTrigger value="customer">고객</TabsTrigger>
         </TabsList>
 
         <TabsContent value="member" className="flex flex-col gap-2">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onMemberSubmit)}>
+            <form
+              id="member-sign-in-form"
+              className="flex flex-col gap-1"
+              onSubmit={form.handleSubmit(onMemberSubmit)}
+            >
               <FormField
                 control={form.control}
                 name="email"
@@ -85,28 +89,44 @@ export default function SignInPage() {
                   </FormItem>
                 )}
               />
-
-              <div className="flex justify-between">
-                <div>아이디 기억</div>
-                <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
-              </div>
-
-              <Button disabled={isSignInWithPasswordPending} type="submit">
-                로그인
-              </Button>
             </form>
+
+            <div className="text-muted-foreground mb-0.5 flex justify-between text-sm">
+              <div>아이디 기억</div>
+              <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
+            </div>
+
+            <Button
+              form="member-sign-in-form"
+              className="py-5"
+              disabled={isSignInWithPasswordPending}
+              type="submit"
+            >
+              로그인
+            </Button>
           </Form>
         </TabsContent>
 
         <TabsContent value="customer" className="flex flex-col gap-2">
-          <Input placeholder="이메일 입력" />
-          <Input placeholder="인증번호" />
+          <form id="customer-sign-in-form" className="mb-2">
+            <Input placeholder="이메일 입력" />
+            <Input placeholder="인증번호" />
+          </form>
+
+          <Button form="customer-sign-in-form" className="py-5" type="submit">
+            로그인
+          </Button>
         </TabsContent>
       </Tabs>
 
-      <div>
-        <p>회원이 아니신가요?</p>
-        <Link to={"/sign-up"}>회원가입 하기</Link>
+      <div className="mb-7">
+        <p className="text-muted-foreground mb-1 text-sm">회원이 아니신가요?</p>
+        <Button
+          asChild
+          className="bg-card text-primary w-full py-5 font-semibold"
+        >
+          <Link to={"/sign-up"}>회원가입 하기</Link>
+        </Button>
       </div>
     </div>
   );
