@@ -1,12 +1,12 @@
 import { useSession, useUserRoles } from "@/store/session";
 import { Navigate, Outlet } from "react-router";
 
-export default function MemberOnlyLayout() {
+export default function CustomerOnlyLayout() {
   const session = useSession();
   const roles = useUserRoles();
 
   if (!session) return <Navigate to={"/sign-in"} replace={true} />;
-  if (!roles.includes("member"))
+  if (!roles.includes("customer"))
     return <Navigate to={"/sign-in"} replace={true} />;
 
   return <Outlet />;

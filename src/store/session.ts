@@ -39,3 +39,8 @@ export const useSetSession = () => {
   const setSession = useSessionStore((store) => store.actions.setSession);
   return setSession;
 };
+
+export const useUserRoles = () => {
+  const session = useSessionStore((store) => store.session);
+  return (session?.user.app_metadata?.roles as string[] | undefined) ?? [];
+};

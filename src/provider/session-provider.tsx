@@ -8,9 +8,13 @@ export default function SessionProvider({ children }: { children: ReactNode }) {
   const isSessionLoaded = useIsSessionLoaded();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((_, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_, session) => {
       setSession(session);
     });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   if (!isSessionLoaded) return <GlobalLoader />;

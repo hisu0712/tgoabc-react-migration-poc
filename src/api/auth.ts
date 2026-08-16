@@ -113,3 +113,37 @@ export async function updatePassword(password: string) {
   if (error) throw error;
   return data;
 }
+
+export async function requestCustomerSignInWithOtp(email: string) {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: false }, // 이미 있는 고객에 한해서 로그인 가능
+  });
+
+  if (error) throw error;
+}
+
+export async function verifyCustomerSignInWithOtp({
+  email,
+  token, // 사용자가 메일함에서 받아서 입력한 6자리 코드
+}: {
+  email: string;
+  token: string;
+}) {
+  const { error: verifyError } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "email",
+  });
+
+  if (verifyError) throw verifyError;
+
+  const { error: signupError } = await supabase.functions.invoke(
+    "handle-role-signup",
+    { body: { entryPoint: "customer" } },
+  );
+
+  if (signupError) throw signupError;
+
+  await supabase.auth.refreshSession(); // app_metadata 세션 반영
+}

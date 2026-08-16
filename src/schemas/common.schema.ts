@@ -26,3 +26,8 @@ export const phoneField = z
   );
 
 export const shopNameField = z.string().trim().min(1, "매장명을 입력해주세요.");
+
+export const otpField = z
+  .string()
+  .trim()
+  .length(6, "인증번호 6자리를 입력해주세요.");

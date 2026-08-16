@@ -18,6 +18,7 @@ import ResetPasswordPage from "./pages/reset-password-page";
 import GlobalLayout from "./components/layout/global-layout";
 import GlobalLayoutWithBottomNav from "./components/layout/global-layout-with-bottom-nav";
 import PortalPage from "./pages/portal-page";
+import CustomerOnlyLayout from "./components/layout/customer-only-layout";
 
 export default function RootRoute() {
   return (
@@ -68,10 +69,12 @@ export default function RootRoute() {
         />
       </Route>
 
-      <Route element={<GlobalLayoutWithBottomNav />}>
-        <Route path="/portal" element={<PortalPage />} />
+      <Route element={<CustomerOnlyLayout />}>
+        <Route element={<GlobalLayoutWithBottomNav />}>
+          <Route path="/portal" element={<PortalPage />} />
+        </Route>
       </Route>
-      
+
       <Route path="*" element={<Navigate to={"/"} />} />
     </Routes>
   );
