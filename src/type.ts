@@ -7,6 +7,8 @@ export type MemberCustomerMappingEntity =
   Database["public"]["Tables"]["member_customer_mapping"]["Row"];
 export type Gender = Database["public"]["Enums"]["gender"];
 
+export type UserType = "member" | "customer";
+
 export type UseMutationCallback<TData = void> = {
   onSuccess?: (data?: TData) => void;
   onError?: (error: Error) => void;

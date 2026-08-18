@@ -1,12 +1,10 @@
-import { verifyCustomerSignInWithOtp } from "@/api/auth";
+import { completeMemberSignUp } from "@/api/auth";
 import type { UseMutationCallback } from "@/type";
 import { useMutation } from "@tanstack/react-query";
 
-export function useVerifyCustomerSignInWithOtp(
-  callbacks?: UseMutationCallback,
-) {
+export function useCompleteMemberSignUp(callbacks?: UseMutationCallback) {
   return useMutation({
-    mutationFn: verifyCustomerSignInWithOtp,
+    mutationFn: completeMemberSignUp,
     onSuccess: () => {
       if (callbacks?.onSuccess) callbacks.onSuccess();
     },

@@ -1,74 +1,13 @@
 import { supabase } from "@/lib/supabase";
 
 export async function signOut() {
-  const { error } = await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut(); // scope: "global"
 
   if (error) {
     await supabase.auth.signOut({
       scope: "local",
     });
   }
-}
-
-/*
-  -- 1. 함수: auth.users에 새 유저 생기면 member, shop 테이블에 같은 유저 추가
-  create or replace function public.handle_new_user()
-  returns trigger
-  language plpgsql
-  security definer set search_path = public
-  as $$
-  begin
-    if new.raw_user_meta_data->>'account_type' = 'customer' then -- 고객용 계정
-      return new; 
-    end if;
-
-    insert into public.member (id, email, name, phone)
-      values (
-        new.id,
-        new.email,
-        new.raw_user_meta_data->>'name',
-        new.raw_user_meta_data->>'phone'
-      );
-
-    insert into public.shop (member_id, name)
-      values (
-        new.id,
-        new.raw_user_meta_data->>'shopName'
-      );
-
-    return new;
-  end;
-  $$;
-
-  -- 2. 트리거: auth.users에 INSERT 발생 시 위 함수 실행
-  create trigger on_auth_user_created
-    after insert on auth.users
-    for each row execute procedure public.handle_new_user();
-*/
-export async function signUp({
-  name,
-  email,
-  password,
-  phone,
-  shopName,
-}: {
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  shopName: string;
-}) {
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    // member,shop 테이블에 트리거 함수 추가
-    options: {
-      data: { name, phone, shopName },
-    },
-  });
-
-  if (error) throw error;
-  return data;
 }
 
 export async function signInWithPassword({
@@ -114,22 +53,29 @@ export async function updatePassword(password: string) {
   return data;
 }
 
-export async function requestCustomerSignInWithOtp(email: string) {
+export async function signInWithOtp({
+  email,
+  shouldCreateUser,
+}: {
+  email: string;
+  shouldCreateUser: boolean;
+}) {
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: false }, // 이미 있는 고객에 한해서 로그인 가능
+    options: { shouldCreateUser }, // 회원: 유저 생성 가능, 고객: 이미 존재하는 고객 유저만 가능
   });
 
   if (error) throw error;
 }
 
-export async function verifyCustomerSignInWithOtp({
+export async function completeCustomerSignIn({
   email,
   token, // 사용자가 메일함에서 받아서 입력한 6자리 코드
 }: {
   email: string;
   token: string;
 }) {
+  // OTP 검증 + role 부여
   const { error: verifyError } = await supabase.auth.verifyOtp({
     email,
     token,
@@ -144,6 +90,52 @@ export async function verifyCustomerSignInWithOtp({
   );
 
   if (signupError) throw signupError;
+
+  await supabase.auth.refreshSession(); // app_metadata 세션 반영
+}
+
+export async function verifyOtp({
+  email,
+  token,
+}: {
+  email: string;
+  token: string;
+}) {
+  const { error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "email",
+  });
+
+  if (error) throw error;
+}
+
+export async function completeMemberSignUp({
+  name,
+  phone,
+  shopName,
+  password,
+}: {
+  name: string;
+  phone: string;
+  shopName: string;
+  password: string;
+}) {
+  // 비밀번호 설정 + role 부여
+  const { error: passwordError } = await supabase.auth.updateUser({
+    password,
+  });
+
+  if (passwordError) throw passwordError;
+
+  const { error: roleError } = await supabase.functions.invoke(
+    "handle-role-signup",
+    {
+      body: { entryPoint: "member", name, phone, shopName },
+    },
+  );
+
+  if (roleError) throw roleError;
 
   await supabase.auth.refreshSession(); // app_metadata 세션 반영
 }

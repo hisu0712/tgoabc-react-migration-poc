@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { useSignUp } from "@/hooks/mutations/auth/use-sign-up";
+import { useCompleteMemberSignUp } from "@/hooks/mutations/auth/use-complete-member-sign-up";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -16,9 +16,18 @@ import {
 } from "@/components/ui/form";
 import BottomButton from "@/components/bottom-button";
 import HeaderNav from "@/components/header-nav";
+import { useState } from "react";
+import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
+import { useVerifyOtp } from "@/hooks/mutations/auth/use-verify-otp";
+import { Button } from "@/components/ui/button";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
+
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isVerifyOtp, setIsVerifyOtp] = useState(false);
+
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -30,18 +39,70 @@ export default function SignUpPage() {
     },
   });
 
-  const { mutate: signUp, isPending: isSignUpPending } = useSignUp({
-    onSuccess: () => navigate("/sign-up/complete", { replace: true }),
+  const { mutate: signInWithOtp, isPending: isSignInWithOtpPending } =
+    useSignInWithOtp({
+      onSuccess: () => {
+        setIsOtpSent(true);
+        toast.success("인증번호를 발송했습니다.", { position: "top-center" });
+      },
+      onError: (error) => {
+        toast.error(generateErrorMessage(error), { position: "top-center" });
+      },
+    });
+
+  const { mutate: verifyOtp, isPending: isVerifyOtpPending } = useVerifyOtp({
+    onSuccess: () => {
+      setIsVerifyOtp(true);
+      toast.success("인증이 완료되었습니다.", { position: "top-center" });
+    },
     onError: (error) => {
-      const message = generateErrorMessage(error);
-      toast.error(message, {
-        position: "top-center",
-      });
+      toast.error(generateErrorMessage(error), { position: "top-center" });
     },
   });
 
+  const { mutate: completeMemberSignUp, isPending: isCompleteMemberSignUp } =
+    useCompleteMemberSignUp({
+      onSuccess: () => navigate("/sign-up/complete", { replace: true }),
+      onError: (error) => {
+        const message = generateErrorMessage(error);
+        toast.error(message, {
+          position: "top-center",
+        });
+      },
+    });
+
+  const onRequestOtp = async () => {
+    const isEmailVaild = await form.trigger("email");
+    if (!isEmailVaild) return;
+
+    signInWithOtp({
+      email: form.getValues("email"),
+      shouldCreateUser: true,
+    });
+  };
+
+  const onVerifyOtp = async () => {
+    const isEmailVaild = await form.trigger("email");
+    if (!isEmailVaild) return;
+
+    verifyOtp({
+      email: form.getValues("email"),
+      token: otp,
+    });
+  };
+
   const onSubmit = (values: SignUpFormValues) => {
-    signUp(values);
+    if (!isOtpSent || !isVerifyOtp) {
+      toast.error("이메일 인증을 완료해주세요.", { position: "top-center" });
+      return;
+    }
+
+    completeMemberSignUp({
+      name: values.name,
+      phone: values.phone,
+      shopName: values.shopName,
+      password: values.password,
+    });
   };
 
   return (
@@ -67,7 +128,7 @@ export default function SignUpPage() {
                 <FormLabel>이름</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isSignUpPending}
+                    disabled={isCompleteMemberSignUp}
                     placeholder="이름 입력"
                     {...field}
                   />
@@ -84,16 +145,59 @@ export default function SignUpPage() {
               <FormItem>
                 <FormLabel>이메일</FormLabel>
                 <FormControl>
-                  <Input
-                    disabled={isSignUpPending}
-                    placeholder="example@abc.com"
-                    {...field}
-                  />
+                  <div className="relative">
+                    <Input
+                      disabled={
+                        isVerifyOtp ||
+                        isSignInWithOtpPending ||
+                        isCompleteMemberSignUp
+                      }
+                      placeholder="example@abc.com"
+                      {...field}
+                    />
+                    <Button
+                      disabled={
+                        isSignInWithOtpPending || isCompleteMemberSignUp
+                      }
+                      type="button"
+                      variant={"link"}
+                      className="-transform-y-1/2 absolute top-0 right-0"
+                      onClick={onRequestOtp}
+                    >
+                      인증요청
+                    </Button>
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {isOtpSent && (
+            <FormItem>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    inputMode="numeric"
+                    maxLength={6}
+                    disabled={isVerifyOtpPending || isCompleteMemberSignUp}
+                    placeholder="인증번호 6자리 입력"
+                  />
+                  <Button
+                    disabled={isVerifyOtpPending || isCompleteMemberSignUp}
+                    type="button"
+                    variant={"link"}
+                    className="-transform-y-1/2 absolute top-0 right-0"
+                    onClick={onVerifyOtp}
+                  >
+                    확인
+                  </Button>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
 
           <FormField
             control={form.control}
@@ -103,7 +207,7 @@ export default function SignUpPage() {
                 <FormLabel>휴대전화</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isSignUpPending}
+                    disabled={isCompleteMemberSignUp}
                     placeholder="휴대전화 번호를 -없이 입력해주세요"
                     {...field}
                   />
@@ -122,7 +226,7 @@ export default function SignUpPage() {
                 <FormControl>
                   <Input
                     type="password"
-                    disabled={isSignUpPending}
+                    disabled={isCompleteMemberSignUp}
                     placeholder="비밀번호 입력"
                     {...field}
                   />
@@ -140,7 +244,7 @@ export default function SignUpPage() {
                 <FormLabel>매장명</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isSignUpPending}
+                    disabled={isCompleteMemberSignUp}
                     placeholder="매장명 입력"
                     {...field}
                   />
@@ -153,7 +257,7 @@ export default function SignUpPage() {
       </Form>
 
       <BottomButton
-        disabled={isSignUpPending}
+        disabled={isCompleteMemberSignUp}
         form="sign-up-form"
         type="submit"
       >

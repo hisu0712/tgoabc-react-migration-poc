@@ -60,7 +60,6 @@ export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 // customer-sign-in
 export const customerSignInSchema = z.object({
   email: emailField,
-  otp: otpField,
 });
 
 export type CustomerSignInFormValues = z.infer<typeof customerSignInSchema>;

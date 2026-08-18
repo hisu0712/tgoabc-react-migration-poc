@@ -40,7 +40,7 @@ export const useSetSession = () => {
   return setSession;
 };
 
-export const useUserRoles = () => {
+export const useSessionUserRoles = () => {
   const session = useSessionStore((store) => store.session);
   return (session?.user.app_metadata?.roles as string[] | undefined) ?? [];
 };

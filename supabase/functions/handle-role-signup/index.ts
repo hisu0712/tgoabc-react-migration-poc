@@ -1,6 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-type EntryPoint = "member" | "customer";
+type UserType = "member" | "customer";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
   }
 
   const { entryPoint, name, phone, shopName } = (await req.json()) as {
-    entryPoint: EntryPoint;
+    entryPoint: UserType;
     name?: string;
     phone?: string;
     shopName?: string;
@@ -67,9 +67,44 @@ Deno.serve(async (req) => {
     });
   }
 
-  const currentRoles: string[] = user.app_metadata?.roles ?? [];
+  // 2) customer만 customer 테이블에 해당 유저의 id가 있는지 확인 (회원O + 고객X 대응)
+  const supabaseAdmin = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
 
-  // 2) roles 중복 체크 (공통)
+  if (entryPoint === "customer") {
+    const { data: customer, error: customerError } = await supabaseAdmin
+      .from("customer")
+      .select("id")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if (customerError) {
+      console.error("customer 조회 실패:", customerError);
+      return new Response(
+        JSON.stringify({ error: "고객 정보 조회 중 오류가 발생했습니다." }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (!customer) {
+      return new Response(
+        JSON.stringify({ error: "고객으로 등록되어 있진 않습니다." }),
+        {
+          status: 409,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+  }
+
+  // 3) roles 중복 체크 (공통)
+
+  const currentRoles: string[] = user.app_metadata?.roles ?? [];
   if (currentRoles.includes(entryPoint)) {
     const label = entryPoint === "member" ? "회원" : "고객";
     return new Response(
@@ -81,12 +116,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  const supabaseAdmin = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
-
-  // 3) member만 member, shop upsert (충돌 시 최신 값으로 update, customer는 생략)
+  // 4) member만 member, shop upsert (충돌 시 최신 값으로 update, customer는 생략)
   if (entryPoint === "member") {
     const { error: memberError } = await supabaseAdmin
       .from("member")
@@ -125,7 +155,7 @@ Deno.serve(async (req) => {
     }
   }
 
-  // 4) appdata.roles 갱신 (공통)
+  // 5) appdata.roles 갱신 (공통)
   const newRoles = [...currentRoles, entryPoint];
 
   const { error: updateError } = await supabaseAdmin.auth.admin.updateUserById(
