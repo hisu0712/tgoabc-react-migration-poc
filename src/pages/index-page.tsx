@@ -55,7 +55,7 @@ export default function IndexPage() {
           <div className="text-muted-foreground flex items-end gap-1">
             <BarChart2 className="size-5" />
             <p className="text-md leading-none">
-              고객 {customerCount}명 · 분석수 128건
+              고객 {customerCount ?? 0}명 · 분석수 128건
             </p>
           </div>
         </div>

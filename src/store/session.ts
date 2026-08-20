@@ -1,3 +1,4 @@
+import type { UserType } from "@/type";
 import type { Session } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
@@ -42,5 +43,5 @@ export const useSetSession = () => {
 
 export const useSessionUserRoles = () => {
   const session = useSessionStore((store) => store.session);
-  return (session?.user.app_metadata?.roles as string[] | undefined) ?? [];
+  return (session?.user.app_metadata?.roles as UserType[] | undefined) ?? [];
 };

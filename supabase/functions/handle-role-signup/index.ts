@@ -103,8 +103,8 @@ Deno.serve(async (req) => {
   }
 
   // 3) roles 중복 체크 (공통)
-
   const currentRoles: string[] = user.app_metadata?.roles ?? [];
+  
   if (currentRoles.includes(entryPoint)) {
     const label = entryPoint === "member" ? "회원" : "고객";
     return new Response(

@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, replace, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function SignInPage() {
@@ -65,12 +65,7 @@ export default function SignInPage() {
         toast.success("인증번호를 발송했습니다.", { position: "top-center" });
       },
       onError: (error) => {
-        toast.error(
-          generateErrorMessage(error, {
-            otp_disabled: "고객으로 등록되어 있진 않습니다.",
-          }),
-          { position: "top-center" },
-        );
+        toast.error(generateErrorMessage(error), { position: "top-center" });
       },
     });
 
@@ -108,7 +103,7 @@ export default function SignInPage() {
   };
 
   const onCustomerSubmit = async (values: CustomerSignInFormValues) => {
-    if (!isOtpSent || !otp) {
+    if (!otp) {
       toast.error("이메일 인증을 완료해주세요.", { position: "top-center" });
       return;
     }
@@ -220,21 +215,22 @@ export default function SignInPage() {
                   </FormItem>
                 )}
               />
-              {isOtpSent && (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value)}
-                      inputMode="numeric"
-                      maxLength={6}
-                      disabled={isCompleteCustomerSignInPending}
-                      placeholder="인증번호 6자리 입력"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              {/* 임시 주석 */}
+              {/* {isOtpSent && ( */}
+              <FormItem>
+                <FormControl>
+                  <Input
+                    value={otp}
+                    onChange={(e) => setOtp(e.target.value)}
+                    inputMode="numeric"
+                    maxLength={6}
+                    disabled={isCompleteCustomerSignInPending}
+                    placeholder="인증번호 6자리 입력"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+              {/* )} */}
             </form>
 
             <Button

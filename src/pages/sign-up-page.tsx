@@ -92,7 +92,7 @@ export default function SignUpPage() {
   };
 
   const onSubmit = (values: SignUpFormValues) => {
-    if (!isOtpSent || !isVerifyOtp) {
+    if (!isVerifyOtp) {
       toast.error("이메일 인증을 완료해주세요.", { position: "top-center" });
       return;
     }

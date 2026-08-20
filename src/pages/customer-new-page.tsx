@@ -43,7 +43,7 @@ export default function CustomerNewPage() {
     useCreateCustomer({
       onSuccess: (createdCustomerId) => {
         toast.success("고객이 등록되었습니다.", { position: "top-center" });
-        navigate(`/customers/${createdCustomerId}`);
+        navigate(`/customers/${createdCustomerId}`, { replace: true });
       },
       onError: (error) => {
         toast.error(error.message || "고객 등록에 실패했습니다.", {
