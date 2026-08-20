@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import type { UserType } from "@/type";
 
 export async function signOut() {
   const { error } = await supabase.auth.signOut(); // scope: "global"
@@ -76,13 +77,20 @@ export async function completeCustomerSignIn({
   token: string;
 }) {
   // OTP 검증 + role 부여
-  const { error: verifyError } = await supabase.auth.verifyOtp({
-    email,
-    token,
-    type: "email",
-  });
+  const { data: verifyData, error: verifyError } =
+    await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: "email",
+    });
 
   if (verifyError) throw verifyError;
+
+  const roles =
+    (verifyData.session?.user.app_metadata.roles as UserType[] | undefined) ??
+    [];
+
+  if (roles.includes("customer")) return; // 이미 customer role이 등록된 고객은 edge function 생략
 
   const { error: signupError } = await supabase.functions.invoke(
     "handle-role-signup",

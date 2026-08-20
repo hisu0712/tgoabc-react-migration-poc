@@ -74,7 +74,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          customer_id?: string
+          customer_id: string
           id?: number
           member_id?: string
         }

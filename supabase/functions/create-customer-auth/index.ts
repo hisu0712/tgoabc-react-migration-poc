@@ -13,38 +13,135 @@ Deno.serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
-  const { email } = await req.json();
-
-  if (!email) {
-    return new Response(JSON.stringify({ error: "email이 필요합니다." }), {
-      status: 400,
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
-  const supabase = createClient(
+  const { email, name, birthDate, gender } = await req.json();
+
+  if (!email || !name || !birthDate || !gender) {
+    return new Response(
+      JSON.stringify({ error: "email, name, birthDate, gender가 필요합니다." }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  // 1) 호출자(회원) 검증
+  const supabaseUser = createClient(
     // Supabase 클라이언트를 서버 권한으로 생성하는 코드
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    { global: { headers: { Authorization: authHeader } } }, // 호출 시에 사용자의 토큰 심어줌
+  );
+
+  const {
+    data: { user },
+    error: userError,
+  } = await supabaseUser.auth.getUser(); // 이 클라이언트에 실려있는 토큰(=지금 요청을 보낸 사람의 access token)이 유효한지 확인하고, 유효하면 그 토큰 주인(유저 정보)을 돌려주는 함수
+
+  if (userError || !user) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const memberId = user.id;
+
+  // 2) member 테이블에서 이메일로 기존 유저 조회 (이미 회원인 사람인 경우)
+  const supabaseAdmin = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
-  const { data, error } = await supabase.auth.admin.createUser({
-    // Supabase Auth에 관리자 권한으로 사용자를 직접 생성
-    email,
-    email_confirm: false, // 이 이메일은 아직 인증된 것으로 처리하지 않겠다
-    user_metadata: { account_type: "customer" }, // auth.users의 raw_user_meta_data 컬럼에 저장됨
-  });
+  const { data: existingMember, error: memberError } = await supabaseAdmin // 여기서 조회하려는 이메일은 호출한 회원 본인의 이메일이 아니라 새로 등록하려는 고객의 이메일 (RLS 정책 우회)
+    .from("member")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
 
-  if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+  if (memberError) {
+    console.error("member 조회 실패:", memberError);
+    return new Response(
+      JSON.stringify({ error: "회원 정보 조회 중 오류가 발생했습니다." }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 
-  return new Response(JSON.stringify({ userId: data.user.id }), {
+  let customerId: string;
+  let isNewAuthUser = false;
+
+  if (existingMember) {
+    customerId = existingMember.id;
+  } else {
+    // 3) 관리자 권한으로 신규 Auth 고객 생성
+    const { data: newUser, error: createUserError } =
+      await supabaseAdmin.auth.admin.createUser({
+        email,
+        email_confirm: false, // 고객 이메일은 아직 인증된 것으로 처리X
+      });
+
+    if (createUserError) {
+      console.error("auth 유저 생성 실패:", createUserError);
+      return new Response(JSON.stringify({ error: createUserError.message }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    customerId = newUser.user.id;
+    isNewAuthUser = true;
+  }
+
+  // 4) customer 테이블 insert
+  const { error: insertCustomerError } = await supabaseAdmin
+    .from("customer")
+    .insert({ id: customerId, name, email, birth_date: birthDate, gender });
+
+  if (insertCustomerError) {
+    console.error("customer insert 실패:", insertCustomerError);
+
+    if (isNewAuthUser) {
+      await supabaseAdmin.auth.admin.deleteUser(customerId); // auth만 남고 customer가 없는 경우 방지
+    }
+
+    return new Response(
+      JSON.stringify({ error: "고객 정보 저장 중 오류가 발생했습니다." }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  // 5) member_customer_mapping insert
+  const { error: insertMappingError } = await supabaseAdmin
+    .from("member_customer_mapping")
+    .insert({ member_id: memberId, customer_id: customerId });
+
+  if (insertMappingError) {
+    console.error("mapping insert 실패:", insertMappingError);
+    return new Response(
+      JSON.stringify({ error: "고객 매핑 중 오류가 발생했습니다." }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  return new Response(JSON.stringify({ customerId }), {
     status: 200,
-    // 응답 본문이 JSON
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });
 });

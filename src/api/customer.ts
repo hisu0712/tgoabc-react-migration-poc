@@ -48,7 +48,7 @@ export async function createCustomer({
   birthDate: string;
   gender: Gender;
 }) {
-  // 1. email 중복 체크
+  // 1. 이미 존재하는 고객인지 확인 (email 중복 확인)
   const { data: existingCustomer, error: findCustomerError } = await supabase
     .from("customer")
     .select("id")
@@ -82,30 +82,14 @@ export async function createCustomer({
     return existingCustomer.id;
   }
 
-  // 2. Supabase Auth 테이블에 새로운 고객 유저 추가
-  const { data: authResult, error: authError } =
-    await supabase.functions.invoke<{ userId: string }>(
-      "create-customer-auth",
-      { body: { email } },
-    );
+  // 2. 신규 고객: auth 생성 + customer insert + mapping insert
+  const { data: result, error: createError } = await supabase.functions.invoke<{
+    customerId: string;
+  }>("create-customer-auth", { body: { email, name, birthDate, gender } });
 
-  if (authError) throw authError;
+  if (createError) throw createError;
 
-  // 2. 고객 테이블에 새로운 고객 추가 (인증 계정이 만들어진 경우만 생성)
-  const { data: newCustomer, error: insertCustomerError } = await supabase
-    .from("customer")
-    .insert({
-      id: authResult?.userId, // auth 계정과 동일한 id 사용
-      name,
-      email,
-      birth_date: birthDate,
-      gender,
-    })
-    .select("id")
-    .single();
-
-  if (insertCustomerError) throw insertCustomerError;
-  return newCustomer.id;
+  return result!.customerId;
 }
 
 export async function updateCustomer({
