@@ -24,6 +24,7 @@ export const customerSchema = z.object({
   gender: z.enum(["M", "F"], {
     error: "성별을 선택해주세요.",
   }),
+  designerId: z.string().optional(),
 });
 
 export type CustomerFormValues = z.infer<typeof customerSchema>;

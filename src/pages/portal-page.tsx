@@ -4,16 +4,36 @@ import { Link } from "react-router";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import HeaderHomeNav from "@/components/header-home-nav";
+import { useSession } from "@/store/session";
+import { useShopsData } from "@/hooks/queries/use-shops-data";
+import { Button } from "@/components/ui/button";
+import defaultShop from "@/assets/default-shop.png";
+import { useOpenAlertModal } from "@/store/alert";
+import type { ShopEntity } from "@/type";
 
 export default function PortalPage() {
+  const session = useSession();
+  const openAlertModal = useOpenAlertModal();
+
+  const { data: shops } = useShopsData(session!.user.id);
+
+  const handleButtonClick = (shop: ShopEntity) => {
+    openAlertModal({
+      title: shop.name,
+      description:
+        shop.phone ?? "등록된 전화번호가 없습니다. 해당 주소로 방문해주세요.",
+      // 여기에 shop.phone 있는 경우 복사, 전화걸기 버튼이 나와야함
+    });
+  };
+
   return (
-    <div>
+    <div className="pb-25">
       <HeaderHomeNav />
 
       <div className="mb-6 flex items-center justify-between">
         <div className="flex flex-col font-semibold">
           <Link
-            to={`/members/d/info`}
+            to={"/portal/info"}
             className="text-primary mb-1 flex items-center text-2xl"
           >
             홍길동
@@ -96,19 +116,29 @@ export default function PortalPage() {
         </Card>
       </div>
 
-      <div className="mb-3 flex items-center gap-2">
-        <div className="text-xl font-semibold">내 매장 예약하기</div>
-        <span className="text-muted-foreground text-sm">전화예약</span>
-      </div>
-      <div className="flex flex-col gap-2">
-        <Card>
-          <div>
-            <img src="" alt="" />
-            <span>헤이로 잠실롯데월드점</span>
+      {!!shops?.length && (
+        <>
+          <div className="mb-3 flex items-center gap-2">
+            <div className="text-xl font-semibold">내 매장 예약하기</div>
+            <span className="text-muted-foreground text-sm">전화예약</span>
           </div>
-        </Card>
-        <Card>티고ABC 헤어</Card>
-      </div>
+          <div className="flex flex-col gap-2">
+            {shops?.map((shop) => (
+              <Card key={shop.id} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <img
+                    className="size-10 rounded-full object-cover"
+                    src={shop.logo_url ?? defaultShop}
+                    alt=""
+                  />
+                  <span>{shop.name}</span>
+                </div>
+                <Button onClick={() => handleButtonClick(shop)}>예약</Button>
+              </Card>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

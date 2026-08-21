@@ -7,9 +7,28 @@ export async function fetchCustomer(customerId: string) {
     .select("*")
     .eq("id", customerId)
     .single();
+  if (error) throw error;
+
+  return data;
+}
+
+export async function fetchCustomerWithDesigner({
+  memberId,
+  customerId,
+}: {
+  memberId: string;
+  customerId: string;
+}) {
+  const { data, error } = await supabase
+    .from("customer")
+    .select("*, member_customer_mapping!inner(designer_id)")
+    .eq("id", customerId)
+    .eq("member_customer_mapping.member_id", memberId)
+    .single();
 
   if (error) throw error;
-  return data;
+
+  return { ...data, designer_id: data.member_customer_mapping[0].designer_id };
 }
 
 export async function createCustomer({
@@ -18,12 +37,14 @@ export async function createCustomer({
   email,
   birthDate,
   gender,
+  designerId,
 }: {
   memberId: string;
   name: string;
   email: string;
   birthDate: string;
   gender: Gender;
+  designerId: number | null;
 }) {
   // 1. 이미 존재하는 고객인지 확인 (email 중복 확인)
   const { data: existingCustomer, error: findCustomerError } = await supabase
@@ -52,7 +73,11 @@ export async function createCustomer({
     // *고객은 있지만 이 회원과의 매핑이 없는 경우 (-> mapping만 추가)
     const { error: insertMappingError } = await supabase
       .from("member_customer_mapping")
-      .insert({ member_id: memberId, customer_id: existingCustomer.id });
+      .insert({
+        member_id: memberId,
+        customer_id: existingCustomer.id,
+        designer_id: designerId,
+      });
 
     if (insertMappingError) throw insertMappingError;
 
@@ -62,7 +87,9 @@ export async function createCustomer({
   // 2. 신규 고객: auth 생성 + customer insert + mapping insert
   const { data: result, error: createError } = await supabase.functions.invoke<{
     customerId: string;
-  }>("create-customer-auth", { body: { email, name, birthDate, gender } });
+  }>("create-customer-auth", {
+    body: { email, name, birthDate, gender, designerId },
+  });
 
   if (createError) throw createError;
 
@@ -82,15 +109,70 @@ export async function updateCustomer({
   birthDate?: string;
   gender?: Gender;
 }) {
+  // 만약 업데이트하는 이메일이 중복이라면?
   const { data, error } = await supabase
     .from("customer")
-    .update({ name, email, birth_date: birthDate, gender })
+    .update({
+      name,
+      email,
+      birth_date: birthDate,
+      gender,
+    })
     .eq("id", customerId)
     .select()
     .single();
 
   if (error) throw error;
+
   return data;
+}
+
+export async function updateCustomerWithDesigner({
+  memberId,
+  customerId,
+  name,
+  email,
+  birthDate,
+  gender,
+  designerId,
+}: {
+  memberId: string;
+  customerId: string;
+  name?: string;
+  email?: string;
+  birthDate?: string;
+  gender?: Gender;
+  designerId: number | null;
+}) {
+  // 1) customer 테이블 - 고객 수정
+  const { data: customer, error: updateCustomerError } = await supabase
+    .from("customer")
+    .update({
+      name,
+      email,
+      birth_date: birthDate,
+      gender,
+    })
+    .eq("id", customerId)
+    .select()
+    .single();
+
+  if (updateCustomerError) throw updateCustomerError;
+
+  if (!designerId) return { ...customer, designer_id: null };
+
+  // 2) mapping 테이블 - 디자이너 수정
+  const { data: mapping, error: updateMappingError } = await supabase
+    .from("member_customer_mapping")
+    .update({ designer_id: designerId })
+    .eq("member_id", memberId)
+    .eq("customer_id", customerId)
+    .select("designer_id")
+    .single();
+
+  if (updateMappingError) throw updateMappingError;
+
+  return { ...customer, designer_id: mapping.designer_id };
 }
 
 export async function unlinkCustomer({
@@ -114,16 +196,22 @@ export async function fetchCustomersByMember({
   to,
   memberId,
   keyword,
+  designerId,
 }: {
   from: number;
   to: number;
   memberId: string;
   keyword?: string;
+  designerId?: number;
 }) {
   let query = supabase
     .from("customer")
     .select("*, member_customer_mapping!inner(member_id)")
     .eq("member_customer_mapping.member_id", memberId);
+
+  if (designerId) {
+    query = query.eq("member_customer_mapping.designer_id", designerId);
+  }
 
   if (keyword) {
     // ilike는 PostgreSQL의 대소문자 구분 없는 부분 검색
@@ -131,7 +219,9 @@ export async function fetchCustomersByMember({
     query = query.or(`name.ilike.%${keyword}%,email.ilike.%${keyword}%`);
   }
 
-  const { data, error } = await query.range(from, to);
+  const { data, error } = await query
+    .order("created_at", { ascending: false })
+    .range(from, to);
 
   if (error) throw error;
   return data;

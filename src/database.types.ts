@@ -18,7 +18,6 @@ export type Database = {
         Row: {
           birth_date: string
           created_at: string
-          designer_id: number | null
           email: string
           gender: Database["public"]["Enums"]["gender"]
           id: string
@@ -27,7 +26,6 @@ export type Database = {
         Insert: {
           birth_date: string
           created_at?: string
-          designer_id?: number | null
           email: string
           gender: Database["public"]["Enums"]["gender"]
           id?: string
@@ -36,21 +34,12 @@ export type Database = {
         Update: {
           birth_date?: string
           created_at?: string
-          designer_id?: number | null
           email?: string
           gender?: Database["public"]["Enums"]["gender"]
           id?: string
           name?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "customer_designer_id_fkey"
-            columns: ["designer_id"]
-            isOneToOne: false
-            referencedRelation: "designer"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       designer: {
         Row: {
@@ -112,18 +101,21 @@ export type Database = {
         Row: {
           created_at: string
           customer_id: string
+          designer_id: number | null
           id: number
           member_id: string
         }
         Insert: {
           created_at?: string
           customer_id: string
+          designer_id?: number | null
           id?: number
           member_id?: string
         }
         Update: {
           created_at?: string
           customer_id?: string
+          designer_id?: number | null
           id?: number
           member_id?: string
         }
@@ -133,6 +125,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customer"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "member_customer_mapping_designer_id_fkey"
+            columns: ["designer_id"]
+            isOneToOne: false
+            referencedRelation: "designer"
             referencedColumns: ["id"]
           },
           {

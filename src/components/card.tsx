@@ -59,7 +59,7 @@ function CustomerListCard({
         </div>
         <div className="flex gap-0.5 text-lg">
           <span>{name}</span>
-          <span>({email.split("@")[0]})</span>
+          <span>({email.split("@")[0].slice(0, 4)})</span>
         </div>
       </div>
       <ChevronRight className="size-8" strokeWidth={1.2} />

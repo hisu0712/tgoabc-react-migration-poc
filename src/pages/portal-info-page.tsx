@@ -7,22 +7,20 @@ import {
   customerSchema,
 } from "@/schemas/customer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Navigate, useNavigate, useParams } from "react-router";
+import useCustomerData from "@/hooks/queries/use-customer-data";
+import { Navigate, useNavigate } from "react-router";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { useOpenAlertModal } from "@/store/alert";
+import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";
 import { Trash2 } from "lucide-react";
-import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-customer";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
 import useDesignersData from "@/hooks/queries/use-designers-data";
 import Loader from "@/components/loader";
-import useCustomerWithDesignerData from "@/hooks/queries/use-customer-with-designer-data";
-import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-update-customer-with-designer";
 
-export default function CustomerInfoPage() {
+export function PortalInfoPage() {
   const session = useSession();
-  const { customerId } = useParams();
   const openAlertModal = useOpenAlertModal();
   const navigate = useNavigate();
 
@@ -33,10 +31,10 @@ export default function CustomerInfoPage() {
     data: customer,
     isLoading: isFetchCustomerLoading,
     error: isFetchCustomerError,
-  } = useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
+  } = useCustomerData(session!.user.id);
 
   const { mutate: updateCustomer, isPending: isUpdateCustomerPending } =
-    useUpdateCustomerWithDesigner({
+    useUpdateCustomer({
       onSuccess: () => {
         toast.success("정보가 수정되었습니다.", { position: "top-center" });
       },
@@ -45,15 +43,15 @@ export default function CustomerInfoPage() {
       },
     });
 
-  const { mutate: unlinkCustomer } = useUnlinkCustomer({
-    onSuccess: () => {
-      toast.success("고객이 삭제되었습니다.", { position: "top-center" });
-      navigate("/", { replace: true });
-    },
-    onError: () => {
-      toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
-    },
-  });
+  // const { mutate: unlinkCustomer } = useUnlinkCustomer({
+  //     onSuccess: () => {
+  //       toast.success("고객이 삭제되었습니다.", { position: "top-center" });
+  //       navigate("/", { replace: true });
+  //     },
+  //     onError: () => {
+  //       toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
+  //     },
+  //   });
 
   const customerFormValues = useMemo(
     () =>
@@ -63,8 +61,6 @@ export default function CustomerInfoPage() {
             email: customer.email,
             birthDate: customer.birth_date,
             gender: customer.gender,
-            designerId:
-              customer.designer_id !== null ? String(customer.designer_id) : "none",
           }
         : undefined,
     [customer],
@@ -78,8 +74,8 @@ export default function CustomerInfoPage() {
     formState: { isDirty },
   } = form;
 
-  if (!customerId) return <Navigate to={"/"} />;
-  if (isFetchCustomerError) return <Navigate to={"/"} />;
+  //   if (!session?.user.id) return <Navigate to={"/"} />;
+  //   if (isFetchCustomerError) return <Navigate to={"/"} />;
 
   const onSubmit = (values: CustomerFormValues) => {
     if (!isDirty) {
@@ -88,11 +84,8 @@ export default function CustomerInfoPage() {
     }
 
     updateCustomer({
-      memberId: session!.user.id,
-      customerId,
+      customerId: session!.user.id,
       ...values,
-      designerId:
-        values.designerId === "none" ? null : Number(values.designerId),
     });
   };
 
@@ -100,9 +93,7 @@ export default function CustomerInfoPage() {
     openAlertModal({
       title: "고객 삭제",
       description: "고객을 삭제하시겠습니까? *삭제 후 되돌릴 수 없습니다.",
-      onPositive: () => {
-        unlinkCustomer({ memberId: session!.user.id, customerId });
-      },
+      onPositive: () => {},
     });
   };
 
@@ -130,10 +121,7 @@ export default function CustomerInfoPage() {
           {isFetchCustomerLoading || isFetchDesignersLoading ? (
             <Loader />
           ) : (
-            <CustomerFormFields
-              disabled={isUpdateCustomerPending}
-              designers={designers}
-            />
+            <CustomerFormFields disabled={isUpdateCustomerPending} />
           )}
         </form>
       </Form>

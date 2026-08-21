@@ -1,22 +1,22 @@
 import { supabase } from "@/lib/supabase";
 
-export async function fetchDesigners(memberId: string) {
-  const { data, error } = await supabase
-    .from("designer")
-    .select("*")
-    .eq("member_id", memberId)
-    .order("created_at", { ascending: false });
-
-  if (error) throw error;
-  return data;
-}
-
 export async function fetchDesigner(id: number) {
   const { data, error } = await supabase
     .from("designer")
     .select("*")
     .eq("id", id)
     .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function fetchDesigners(memberId: string) {
+  const { data, error } = await supabase
+    .from("designer")
+    .select("*")
+    .eq("member_id", memberId)
+    .order("created_at", { ascending: false });
 
   if (error) throw error;
   return data;

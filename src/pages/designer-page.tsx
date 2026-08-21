@@ -7,8 +7,8 @@ import {
 } from "@/store/designer-editor-modal";
 import { useSession } from "@/store/session";
 import { Plus } from "lucide-react";
-import emptyContent from "@/assets/empty_content.png";
 import Loader from "@/components/loader";
+import EmptyContent from "@/components/emptyContent";
 
 export default function DesignerPage() {
   const session = useSession();
@@ -35,7 +35,7 @@ export default function DesignerPage() {
       <div className="flex flex-col gap-2">
         {isLoading ? (
           <Loader />
-        ) : data && data.length > 0 ? (
+        ) : data?.length ? (
           data.map((designer) => (
             <DesignerListCard
               key={designer.id}
@@ -51,7 +51,7 @@ export default function DesignerPage() {
             />
           ))
         ) : (
-          <img src={emptyContent} alt="디자이너 없음 안내 이미지" />
+          <EmptyContent content="아직 등록된 디자이너가 없습니다." />
         )}
       </div>
     </div>

@@ -115,14 +115,17 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col justify-between">
+    <div className="flex flex-1 flex-col">
       <Tabs defaultValue="member" className="w-full">
         <TabsList className="mb-2 w-full">
           <TabsTrigger value="member">매장</TabsTrigger>
           <TabsTrigger value="customer">고객</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="member" className="flex flex-col gap-2">
+        <TabsContent
+          value="member"
+          className="flex flex-col justify-between gap-2"
+        >
           <Form {...form}>
             <form
               id="member-sign-in-form"
@@ -179,6 +182,18 @@ export default function SignInPage() {
               로그인
             </Button>
           </Form>
+
+          <div className="mb-7">
+            <p className="text-muted-foreground mb-1 text-sm">
+              회원이 아니신가요?
+            </p>
+            <Button
+              asChild
+              className="bg-card text-primary hover:bg-muted w-full py-5 font-semibold"
+            >
+              <Link to={"/sign-up"}>회원가입 하기</Link>
+            </Button>
+          </div>
         </TabsContent>
 
         <TabsContent value="customer" className="flex flex-col gap-2">
@@ -244,16 +259,6 @@ export default function SignInPage() {
           </Form>
         </TabsContent>
       </Tabs>
-
-      <div className="mb-7">
-        <p className="text-muted-foreground mb-1 text-sm">회원이 아니신가요?</p>
-        <Button
-          asChild
-          className="bg-card text-primary hover:bg-muted w-full py-5 font-semibold"
-        >
-          <Link to={"/sign-up"}>회원가입 하기</Link>
-        </Button>
-      </div>
     </div>
   );
 }

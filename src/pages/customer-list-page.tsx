@@ -16,6 +16,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/use-customer-count-data";
+import useDesignersData from "@/hooks/queries/use-designers-data";
 
 export default function CustomerListPage() {
   const session = useSession();
@@ -23,13 +24,16 @@ export default function CustomerListPage() {
 
   const [keyword, setKeyword] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [designerId, setDesignerId] = useState("all");
 
   const { data: customerCount } = useCustomerCount(session!.user.id);
+  const { data: designers } = useDesignersData(session!.user.id);
 
   const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
     useInfiniteCustomers({
       memberId: session?.user.id,
       keyword: searchKeyword,
+      designerId: designerId === "all" ? undefined : Number(designerId),
     });
 
   useEffect(() => {
@@ -89,21 +93,18 @@ export default function CustomerListPage() {
           고객 {customerCount ?? 0}명
         </div>
 
-        <Select value="all">
-          {/* const { mutate: updateDesigner } = useUpdateCustomerDesigner();
-추후 변경 예정
- <Select
-   value={customer?.designerId ?? "none"}
-   onValueChange={(value) => updateDesigner({ customerId, designerId: value })}
- ></Select> */}
+        <Select value={designerId} onValueChange={setDesignerId}>
           <SelectTrigger>
             <Scissors className="size-4" strokeWidth={1.5} />
             <SelectValue />
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectItem value="all">전체</SelectItem>
-            <SelectItem value="tigo">김티고 디자이너</SelectItem>
-            <SelectItem value="tigen">김티젠 디자이너</SelectItem>
+            {designers?.map((designer) => (
+              <SelectItem key={designer.id} value={String(designer.id)}>
+                {designer.name} 디자이너
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

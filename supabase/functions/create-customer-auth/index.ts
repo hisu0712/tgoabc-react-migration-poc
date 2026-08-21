@@ -21,7 +21,7 @@ Deno.serve(async (req) => {
     });
   }
 
-  const { email, name, birthDate, gender } = await req.json();
+  const { email, name, birthDate, gender, designerId } = await req.json();
 
   if (!email || !name || !birthDate || !gender) {
     return new Response(
@@ -109,7 +109,13 @@ Deno.serve(async (req) => {
   // 4) customer 테이블 insert
   const { error: insertCustomerError } = await supabaseAdmin
     .from("customer")
-    .insert({ id: customerId, name, email, birth_date: birthDate, gender });
+    .insert({
+      id: customerId,
+      name,
+      email,
+      birth_date: birthDate,
+      gender,
+    });
 
   if (insertCustomerError) {
     console.error("customer insert 실패:", insertCustomerError);
@@ -130,7 +136,11 @@ Deno.serve(async (req) => {
   // 5) member_customer_mapping insert
   const { error: insertMappingError } = await supabaseAdmin
     .from("member_customer_mapping")
-    .insert({ member_id: memberId, customer_id: customerId });
+    .insert({
+      member_id: memberId,
+      customer_id: customerId,
+      designer_id: designerId ?? null,
+    });
 
   if (insertMappingError) {
     console.error("mapping insert 실패:", insertMappingError);

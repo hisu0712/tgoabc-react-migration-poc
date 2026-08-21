@@ -6,6 +6,10 @@ export type CustomerEntity = Database["public"]["Tables"]["customer"]["Row"];
 export type MemberCustomerMappingEntity =
   Database["public"]["Tables"]["member_customer_mapping"]["Row"];
 export type DesignerEntity = Database["public"]["Tables"]["designer"]["Row"];
+export type CustomerWithDesigner = CustomerEntity & {
+  // 디자이너 다 가지고 올지 id만 가져올지
+  designer_id: number | null;
+};
 export type Gender = Database["public"]["Enums"]["gender"];
 
 export type UserType = "member" | "customer";

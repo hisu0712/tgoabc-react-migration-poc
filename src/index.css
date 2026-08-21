@@ -124,7 +124,6 @@
   body {
     @apply bg-background text-foreground;
     font-family: "Pretendard", sans-serif;
-    font-weight: 500;
     line-height: 1.3;
   }
 }

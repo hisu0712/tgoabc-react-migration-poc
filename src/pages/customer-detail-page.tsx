@@ -2,29 +2,23 @@ import { Card } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import { Link, Navigate, useParams } from "react-router";
-import useCustomerData from "@/hooks/queries/use-customer-data";
-import GlobalLoader from "@/components/global-loader";
 import { ChevronRight, FileText, Scissors, SquarePen } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import HeaderHomeNav from "@/components/header-home-nav";
+import { useSession } from "@/store/session";
+import useCustomerWithDesignerData from "@/hooks/queries/use-customer-with-designer-data";
+import useDesignersData from "@/hooks/queries/use-designers-data";
 
 export default function CustomerDetailPage() {
+  const session = useSession();
   const { customerId } = useParams();
 
-  const {
-    data: customer,
-    isLoading: isFetchCustomerLoading,
-    error: isFetchCustomerError,
-  } = useCustomerData(customerId);
+  const { data: customer, error: isFetchCustomerError } =
+    useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
+
+  const { data: designers } = useDesignersData(session!.user.id);
+  const designer = designers?.find((d) => d.id === customer?.designer_id);
 
   if (!customerId) return <Navigate to={"/"} />;
-  if (isFetchCustomerLoading) return <GlobalLoader />;
   if (isFetchCustomerError) return <Navigate to={"/"} />;
 
   return (
@@ -34,7 +28,7 @@ export default function CustomerDetailPage() {
       <div className="mb-5 flex items-end justify-between">
         <div className="text-2xl font-semibold">
           <Link
-            to={`/customers/${customerId}/edit`}
+            to={`/customers/${customerId}/info`}
             className="text-primary flex items-center"
           >
             {customer?.name}
@@ -43,23 +37,14 @@ export default function CustomerDetailPage() {
           <span>고객님, 환영합니다!</span>
         </div>
 
-        <Select value="none">
-          {/* const { mutate: updateDesigner } = useUpdateCustomerDesigner();
-추후 변경 예정
- <Select
-   value={customer?.designerId ?? "none"}
-   onValueChange={(value) => updateDesigner({ customerId, designerId: value })}
- ></Select> */}
-          <SelectTrigger>
-            <Scissors className="size-4" strokeWidth={1.5} />
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent position="popper">
-            <SelectItem value="none">디자이너 없음</SelectItem>
-            <SelectItem value="tigo">김티고 디자이너</SelectItem>
-            <SelectItem value="tigen">김티젠 디자이너</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-1">
+          <Scissors className="size-4" />
+          <span>
+            {customer?.designer_id
+              ? `${designer?.name} 디자이너`
+              : "디자이너 없음"}
+          </span>
+        </div>
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
@@ -119,36 +104,20 @@ export default function CustomerDetailPage() {
         </Card>
         <Card className="flex flex-col justify-between gap-9">
           <div className="flex items-center gap-1.5">
-            <FileText
+            <SquarePen
               className="text-feature-2 fill-feature-2/10 size-6"
               strokeWidth={1.3}
             />
             <span className="text-feature-2 text-lg font-semibold">
-              퍼스널 컬러 기록
+              시술 노트
             </span>
           </div>
-          <div className="text-muted-foreground flex items-center">
-            <span className="text-sm font-normal">나의 기록 모아보기</span>
-            <ChevronRight className="size-5" strokeWidth={1} />
-          </div>
-        </Card>
-      </div>
-
-      <div className="bg-muted-foreground/20 mb-5 h-[1px] w-full"></div>
-
-      <Card className="flex items-center gap-4">
-        <SquarePen
-          className="fill-primary/10 text-primary size-7"
-          strokeWidth={1.3}
-        />
-        <div>
-          <span className="text-lg leading-tight font-semibold">시술 노트</span>
           <div className="text-muted-foreground flex items-center">
             <span className="text-sm font-normal">상담 및 시술 메모</span>
             <ChevronRight className="size-5" strokeWidth={1} />
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </main>
   );
 }

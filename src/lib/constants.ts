@@ -2,6 +2,7 @@ export const QUERY_KEYS = {
   shop: {
     all: ["shop"],
     byId: (memberId: string) => ["shop", memberId],
+    customerList: (customerId: string) => ["shop", customerId],
   },
   member: {
     all: ["member"],
@@ -9,11 +10,12 @@ export const QUERY_KEYS = {
   },
   customer: {
     all: ["customer"],
-    memberList: (memberId: string, keyword?: string) => [
+    memberList: (memberId: string, keyword?: string, designerId?: number) => [
       "customer",
       "memberList",
       memberId,
       keyword,
+      designerId,
     ],
     memberCount: (memberId: string) => ["customer", "count", memberId],
     byId: (customerId: string) => ["customer", customerId],

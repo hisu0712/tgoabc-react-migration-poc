@@ -20,6 +20,8 @@ import GlobalLayoutWithBottomNav from "./components/layout/global-layout-with-bo
 import PortalPage from "./pages/portal-page";
 import CustomerOnlyLayout from "./components/layout/customer-only-layout";
 import DesignerPage from "./pages/designer-page";
+import UserOnlyLayout from "./components/layout/user-only-layout";
+import { PortalInfoPage } from "./pages/portal-info-page";
 
 export default function RootRoute() {
   return (
@@ -45,7 +47,7 @@ export default function RootRoute() {
 
           <Route path="/customers/new" element={<CustomerNewPage />} />
           <Route
-            path="/customers/:customerId/edit"
+            path="/customers/:customerId/info"
             element={<CustomerInfoPage />}
           />
         </Route>
@@ -75,7 +77,12 @@ export default function RootRoute() {
         <Route element={<GlobalLayoutWithBottomNav />}>
           <Route path="/portal" element={<PortalPage />} />
         </Route>
+        <Route element={<GlobalLayout />}>
+          <Route path="/portal/info" element={<PortalInfoPage />} />
+        </Route>
       </Route>
+
+      <Route element={<UserOnlyLayout />}></Route>
 
       <Route path="*" element={<Navigate to={"/"} />} />
     </Routes>
