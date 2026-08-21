@@ -18,6 +18,7 @@ export type Database = {
         Row: {
           birth_date: string
           created_at: string
+          designer_id: number | null
           email: string
           gender: Database["public"]["Enums"]["gender"]
           id: string
@@ -26,6 +27,7 @@ export type Database = {
         Insert: {
           birth_date: string
           created_at?: string
+          designer_id?: number | null
           email: string
           gender: Database["public"]["Enums"]["gender"]
           id?: string
@@ -34,12 +36,53 @@ export type Database = {
         Update: {
           birth_date?: string
           created_at?: string
+          designer_id?: number | null
           email?: string
           gender?: Database["public"]["Enums"]["gender"]
           id?: string
           name?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "customer_designer_id_fkey"
+            columns: ["designer_id"]
+            isOneToOne: false
+            referencedRelation: "designer"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      designer: {
+        Row: {
+          created_at: string
+          id: number
+          member_id: string
+          name: string
+          phone: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          member_id: string
+          name: string
+          phone: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          member_id?: string
+          name?: string
+          phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "designer_member_id_fkey"
+            columns: ["member_id"]
+            isOneToOne: false
+            referencedRelation: "member"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       member: {
         Row: {

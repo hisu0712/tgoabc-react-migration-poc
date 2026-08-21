@@ -19,6 +19,7 @@ import GlobalLayout from "./components/layout/global-layout";
 import GlobalLayoutWithBottomNav from "./components/layout/global-layout-with-bottom-nav";
 import PortalPage from "./pages/portal-page";
 import CustomerOnlyLayout from "./components/layout/customer-only-layout";
+import DesignerPage from "./pages/designer-page";
 
 export default function RootRoute() {
   return (
@@ -56,6 +57,7 @@ export default function RootRoute() {
             path="/customers/:customerId"
             element={<CustomerDetailPage />}
           />
+          <Route path="/designers" element={<DesignerPage />} />
         </Route>
 
         {/* /personal-analysis/photo?customerId=123 쿼리스트링 사용 예정 */}

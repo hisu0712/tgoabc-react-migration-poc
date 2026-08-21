@@ -153,7 +153,7 @@ export default function IndexPage() {
           </div>
           <span className="text-sm">메시지</span>
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <Link to={"/designers"} className="flex flex-col items-center gap-1">
           <div className="bg-muted rounded-3xl p-1">
             <img
               className="size-13"
@@ -162,7 +162,7 @@ export default function IndexPage() {
             />
           </div>
           <span className="text-sm">디자이너</span>
-        </div>
+        </Link>
         <div className="flex flex-col items-center gap-1">
           <div className="bg-muted rounded-3xl p-1">
             <img
