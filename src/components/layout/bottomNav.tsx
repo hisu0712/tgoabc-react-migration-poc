@@ -21,7 +21,7 @@ export default function BottomNav() {
   };
 
   return (
-    <footer className="fixed inset-x-0 bottom-0 z-[101] w-full">
+    <footer className="fixed inset-x-0 bottom-0 z-10 w-full">
       <nav className="bg-card rounded-t-[21px] shadow-[0px_0px_10px_rgba(0,0,0,0.15)]">
         <ul className="flex">
           {NAV_ITEMS.map(({ to, label, icon: Icon }) => (

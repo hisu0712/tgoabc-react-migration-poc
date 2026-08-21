@@ -1,5 +1,4 @@
 import { CustomerListCard, LinkCard } from "@/components/card";
-import GlobalLoader from "@/components/global-loader";
 import HeaderNav from "@/components/header-nav";
 import { Input } from "@/components/ui/input";
 import { useInView } from "react-intersection-observer";
@@ -16,6 +15,7 @@ import { Plus, Scissors, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router";
 import Loader from "@/components/loader";
+import useCustomerCount from "@/hooks/queries/use-customer-count-data";
 
 export default function CustomerListPage() {
   const session = useSession();
@@ -23,6 +23,8 @@ export default function CustomerListPage() {
 
   const [keyword, setKeyword] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
+
+  const { data: customerCount } = useCustomerCount(session!.user.id);
 
   const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
     useInfiniteCustomers({
@@ -32,6 +34,7 @@ export default function CustomerListPage() {
 
   useEffect(() => {
     // 스크롤이 하단에 닿았을 때 다음페이지 호출
+    console.log(inView);
     if (inView) fetchNextPage();
   }, [inView]);
 
@@ -52,7 +55,7 @@ export default function CustomerListPage() {
   };
 
   return (
-    <div className="pb-30">
+    <div>
       <HeaderNav
         title="고객 목록"
         bottomSlot={
@@ -82,7 +85,9 @@ export default function CustomerListPage() {
       <div className="bg-muted-foreground/20 mb-7 h-[1px] w-full"></div>
 
       <div className="mb-3 flex items-center justify-between">
-        <div className="text-muted-foreground text-sm">고객 0명</div>
+        <div className="text-muted-foreground text-sm">
+          고객 {customerCount ?? 0}명
+        </div>
 
         <Select value="all">
           {/* const { mutate: updateDesigner } = useUpdateCustomerDesigner();
@@ -119,7 +124,7 @@ export default function CustomerListPage() {
           )
         )}
         {isFetchingNextPage && <Loader />}
-        <div ref={ref}></div>
+        <div className="mt-30" ref={ref}></div>
       </div>
     </div>
   );

@@ -12,29 +12,6 @@ export async function fetchCustomer(customerId: string) {
   return data;
 }
 
-/*
-  -- 1. 함수: customer에 새 row 생기면 mapping 테이블에 (member_id, customer_id) 추가
-  create or replace function public.handle_new_customer()
-  returns trigger
-  language plpgsql
-  security definer set search_path = public
-  as $$
-  begin
-    insert into public.member_customer_mapping (member_id, customer_id)
-      values (
-        auth.uid(),
-        new.id
-      );
-
-      return new;
-  end;
-  $$;
-
-  -- 2. 트리거: customer에 INSERT 발생 시 위 함수 실행
-  create trigger on_customer_created
-    after insert on public.customer
-    for each row execute procedure public.handle_new_customer();
-*/
 export async function createCustomer({
   memberId,
   name,

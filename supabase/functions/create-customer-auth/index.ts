@@ -93,10 +93,13 @@ Deno.serve(async (req) => {
 
     if (createUserError) {
       console.error("auth 유저 생성 실패:", createUserError);
-      return new Response(JSON.stringify({ error: createUserError.message }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "고객 계정 생성 중 오류가 발생했습니다." }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     customerId = newUser.user.id;
