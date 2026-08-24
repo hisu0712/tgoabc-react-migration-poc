@@ -36,9 +36,7 @@ export default function HeaderNav({
           <ChevronLeft className="size-10" strokeWidth={1} />
         </button>
 
-        <h1 className="text-center text-lg font-semibold">
-          {title}
-        </h1>
+        <h1 className="text-center text-lg font-semibold">{title}</h1>
 
         {rightSlot && (
           <div className="absolute top-1/2 right-0 z-10 flex -translate-y-1/2">
@@ -47,7 +45,7 @@ export default function HeaderNav({
         )}
       </div>
 
-      {bottomSlot && <div className="pb-3">{bottomSlot}</div>}
+      {bottomSlot && <>{bottomSlot}</>}
     </header>
   );
 }

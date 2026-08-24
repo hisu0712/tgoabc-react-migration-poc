@@ -48,7 +48,8 @@ export default function CustomerNewPage() {
     createCustomer({
       memberId: session!.user.id,
       ...values,
-      designerId: values.designerId === "none" ? null : Number(values.designerId),
+      designerId:
+        values.designerId === "none" ? null : Number(values.designerId),
     });
   };
 
@@ -56,7 +57,7 @@ export default function CustomerNewPage() {
     <div>
       <HeaderNav title="신규 고객 추가" />
 
-      <div className="mb-5 font-semibold">
+      <div className="mb-5 text-lg font-semibold">
         <p>고객님의</p>
         <p>필수 정보를 입력해 주세요</p>
       </div>

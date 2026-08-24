@@ -109,7 +109,7 @@ export default function SignUpPage() {
     <div>
       <HeaderNav title="회원가입" />
 
-      <div className="mb-5 font-semibold">
+      <div className="mb-5 text-lg font-semibold">
         <p>회원님의</p>
         <p>필수 정보를 입력해 주세요</p>
       </div>
@@ -235,6 +235,7 @@ export default function SignUpPage() {
               </FormItem>
             )}
           />
+          {/* 비밀번호 재입력 input 추가 */}
 
           <FormField
             control={form.control}

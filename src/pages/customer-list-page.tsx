@@ -70,7 +70,7 @@ export default function CustomerListPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="이름 또는 이메일"
-                className="bg-card py-6 pl-9"
+                className="h-12 bg-card pl-9"
               />
             </form>
           </div>

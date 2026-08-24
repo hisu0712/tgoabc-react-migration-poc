@@ -105,7 +105,7 @@ export default function SignInCustomerForm() {
                 <FormControl>
                   <div className="relative">
                     <Input
-                      className="h-auto py-2 pr-5"
+                      className="pr-5"
                       placeholder="이메일 입력"
                       {...field}
                     />
@@ -113,7 +113,7 @@ export default function SignInCustomerForm() {
                       disabled={isSignInWithOtpPending}
                       type="button"
                       variant={"link"}
-                      className="h-full -transform-y-1/2 absolute top-0 right-0"
+                      className="-transform-y-1/2 absolute top-0 right-0 h-full"
                       onClick={onSignInWithOtp}
                     >
                       인증요청
@@ -133,7 +133,6 @@ export default function SignInCustomerForm() {
                 onChange={(e) => setOtp(e.target.value)}
                 inputMode="numeric"
                 maxLength={6}
-                className="h-auto py-2"
                 disabled={isCompleteCustomerSignInPending}
                 placeholder="인증번호 6자리 입력"
               />
