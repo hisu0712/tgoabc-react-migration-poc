@@ -7,8 +7,8 @@
 #   export SUPABASE_SERVICE_ROLE_KEY="여기에_붙여넣기"
 #
 # 사용법:
-#   ./scripts/get-otp.sh <이메일>
-#   ./scripts/get-otp.sh vbnm0712@naver.com
+#   bash scripts/get-otp.sh <이메일>
+#   bash scripts/get-otp.sh vbnm0712@naver.com
 
 set -euo pipefail
 

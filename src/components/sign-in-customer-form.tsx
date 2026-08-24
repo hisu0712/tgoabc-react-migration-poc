@@ -1,0 +1,157 @@
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { TabsContent } from "./ui/tabs";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
+import {
+  type CustomerSignInFormValues,
+  customerSignInSchema,
+} from "@/schemas/auth.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FunctionsHttpError } from "@supabase/supabase-js";
+import { useCompleteCustomerSignIn } from "@/hooks/mutations/auth/use-complete-customer-sign-in";
+import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
+import { generateErrorMessage } from "@/lib/error";
+import { useState } from "react";
+
+export default function SignInCustomerForm() {
+  const navigate = useNavigate();
+
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+
+  const customerForm = useForm<CustomerSignInFormValues>({
+    resolver: zodResolver(customerSignInSchema),
+    defaultValues: { email: "" },
+  });
+
+  const { mutate: signInWithOtp, isPending: isSignInWithOtpPending } =
+    useSignInWithOtp({
+      onSuccess: () => {
+        setIsOtpSent(true);
+        toast.success("인증번호를 발송했습니다.", { position: "top-center" });
+      },
+      onError: (error) => {
+        toast.error(generateErrorMessage(error), { position: "top-center" });
+      },
+    });
+
+  const {
+    mutate: completeCustomerSignIn,
+    isPending: isCompleteCustomerSignInPending,
+  } = useCompleteCustomerSignIn({
+    onSuccess: () => navigate("/portal", { replace: true }),
+    onError: async (error) => {
+      if (error instanceof FunctionsHttpError) {
+        const body = await error.context.json().catch(() => null);
+        toast.error(
+          body?.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+          {
+            position: "top-center",
+          },
+        );
+        return;
+      }
+      toast.error(generateErrorMessage(error), {
+        position: "top-center",
+      });
+    },
+  });
+
+  const onSignInWithOtp = async () => {
+    // email 필드에 걸려있는 유효성 검사 규칙을 수동으로 실행 (Promise<boolean>을 반환함)
+    const isEmailValid = await customerForm.trigger("email");
+    if (!isEmailValid) return;
+
+    signInWithOtp({
+      email: customerForm.getValues("email"),
+      shouldCreateUser: false,
+    });
+  };
+
+  const onCustomerSubmit = async (values: CustomerSignInFormValues) => {
+    if (!otp) {
+      toast.error("이메일 인증을 완료해주세요.", { position: "top-center" });
+      return;
+    }
+
+    completeCustomerSignIn({
+      email: values.email,
+      token: otp,
+    });
+  };
+
+  return (
+    <TabsContent value="customer" className="flex flex-col gap-2">
+      <Form {...customerForm}>
+        <form
+          id="customer-sign-in-form"
+          className="mb-2 flex flex-col gap-1"
+          onSubmit={customerForm.handleSubmit(onCustomerSubmit)}
+        >
+          <FormField
+            control={customerForm.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      className="h-auto py-2 pr-5"
+                      placeholder="이메일 입력"
+                      {...field}
+                    />
+                    <Button
+                      disabled={isSignInWithOtpPending}
+                      type="button"
+                      variant={"link"}
+                      className="h-full -transform-y-1/2 absolute top-0 right-0"
+                      onClick={onSignInWithOtp}
+                    >
+                      인증요청
+                    </Button>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* 임시 주석 */}
+          {/* {isOtpSent && ( */}
+          <FormItem>
+            <FormControl>
+              <Input
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                inputMode="numeric"
+                maxLength={6}
+                className="h-auto py-2"
+                disabled={isCompleteCustomerSignInPending}
+                placeholder="인증번호 6자리 입력"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+          {/* )} */}
+        </form>
+
+        <Button
+          disabled={isCompleteCustomerSignInPending}
+          form="customer-sign-in-form"
+          className="h-auto py-2.5 text-base"
+          type="submit"
+        >
+          로그인
+        </Button>
+      </Form>
+    </TabsContent>
+  );
+}
