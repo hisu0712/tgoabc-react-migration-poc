@@ -19,13 +19,26 @@ import {
 } from "@/components/ui/form";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import { Checkbox } from "./ui/checkbox";
+
+const REMEMBERED_ID_KEY = "rememberedId";
 
 export default function SignInMemberForm() {
   const navigate = useNavigate();
+  const [rememberId, setRememberId] = useState(false);
 
   const { mutate: signInWithPassword, isPending: isSignInWithPasswordPending } =
     useSignInWithPassword({
-      onSuccess: () => navigate("/", { replace: true }),
+      onSuccess: () => {
+        console.log("onSuccess 호추됨")
+        if (rememberId) {
+          localStorage.setItem(REMEMBERED_ID_KEY, form.getValues("email"));
+        } else {
+          localStorage.removeItem(REMEMBERED_ID_KEY);
+        }
+        navigate("/", { replace: true });
+      },
       onError: (error) => {
         const message = generateErrorMessage(error);
         toast.error(message, {
@@ -38,6 +51,14 @@ export default function SignInMemberForm() {
     resolver: zodResolver(signInWithPasswordSchema),
     defaultValues: { email: "", password: "" },
   });
+
+  useEffect(() => {
+    const saved = localStorage.getItem(REMEMBERED_ID_KEY);
+    if (saved) {
+      form.setValue("email", saved);
+      setRememberId(true);
+    }
+  }, [form]);
 
   const onMemberSubmit = (values: SignInWithPasswordFormValues) => {
     signInWithPassword(values);
@@ -94,10 +115,13 @@ export default function SignInMemberForm() {
           </form>
 
           <div className="text-muted-foreground mb-0.5 flex justify-between text-sm">
-            <div className="flex items-center gap-1">
-              <CheckCircle2 className="fill-primary size-5" strokeWidth={1.3} />
+            <label className="flex cursor-pointer items-center gap-1">
+              <Checkbox
+                checked={rememberId}
+                onCheckedChange={(checked) => setRememberId(!!checked)}
+              />
               <span>아이디 기억</span>
-            </div>
+            </label>
             <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
           </div>
 
