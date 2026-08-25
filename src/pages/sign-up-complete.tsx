@@ -20,8 +20,8 @@ export default function SignUpCompletePage() {
 
   return (
     <>
-      <div className="flex flex-1 flex-col">
-        <div className="pt-[10vh]">
+      <div className="flex flex-1 flex-col gap-[5vh] pt-[10vh]">
+        <div>
           <div className="mb-1 text-2xl font-bold" data-username="티고뷰티샵">
             회원가입 완료!
             <br />
@@ -31,6 +31,7 @@ export default function SignUpCompletePage() {
             티고ABC의 소중한 회원이 되어주셔서 감사합니다
           </div>
         </div>
+        
         <div className="flex items-center justify-center">
           <img
             className="w-full md:w-[70%]"

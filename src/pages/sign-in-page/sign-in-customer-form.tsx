@@ -7,7 +7,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { TabsContent } from "./ui/tabs";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -21,6 +20,7 @@ import { useCompleteCustomerSignIn } from "@/hooks/mutations/auth/use-complete-c
 import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { generateErrorMessage } from "@/lib/error";
 import { useState } from "react";
+import { TabsContent } from "@/components/ui/tabs";
 
 export default function SignInCustomerForm() {
   const navigate = useNavigate();
@@ -102,24 +102,24 @@ export default function SignInCustomerForm() {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <div className="relative">
+                <div className="relative">
+                  <FormControl>
                     <Input
                       className="pr-5"
                       placeholder="이메일 입력"
                       {...field}
                     />
-                    <Button
-                      disabled={isSignInWithOtpPending}
-                      type="button"
-                      variant={"link"}
-                      className="-transform-y-1/2 absolute top-0 right-0 h-full"
-                      onClick={onSignInWithOtp}
-                    >
-                      인증요청
-                    </Button>
-                  </div>
-                </FormControl>
+                  </FormControl>
+                  <Button
+                    disabled={isSignInWithOtpPending}
+                    type="button"
+                    variant={"link"}
+                    className="-transform-y-1/2 absolute top-0 right-0 h-full"
+                    onClick={onSignInWithOtp}
+                  >
+                    인증요청
+                  </Button>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

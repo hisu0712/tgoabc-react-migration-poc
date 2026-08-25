@@ -3,13 +3,11 @@ import {
   type SignInWithPasswordFormValues,
 } from "@/schemas/auth.schema";
 import { useSignInWithPassword } from "@/hooks/mutations/auth/use-sign-in-with-password";
-import { CheckCircle2 } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateErrorMessage } from "@/lib/error";
 import { toast } from "sonner";
-import { TabsContent } from "./ui/tabs";
 import {
   Form,
   FormControl,
@@ -17,10 +15,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import { Checkbox } from "./ui/checkbox";
+import { TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/password-input";
 
 const REMEMBERED_ID_KEY = "rememberedId";
 
@@ -31,7 +31,6 @@ export default function SignInMemberForm() {
   const { mutate: signInWithPassword, isPending: isSignInWithPasswordPending } =
     useSignInWithPassword({
       onSuccess: () => {
-        console.log("onSuccess 호추됨")
         if (rememberId) {
           localStorage.setItem(REMEMBERED_ID_KEY, form.getValues("email"));
         } else {
@@ -100,10 +99,9 @@ export default function SignInMemberForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
+                    <PasswordInput
                       disabled={isSignInWithPasswordPending}
                       className="h-auto py-2"
-                      type="password"
                       placeholder="비밀번호 입력"
                       {...field}
                     />
