@@ -1,5 +1,5 @@
 import { Card } from "@/components/card";
-import { ChevronRight, MessageCircle, Store } from "lucide-react";
+import { ChevronRight, FileText, MessageCircle, Store } from "lucide-react";
 import { Link } from "react-router";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
@@ -8,13 +8,16 @@ import { useSession } from "@/store/session";
 import { useShopsData } from "@/hooks/queries/use-shops-data";
 import { Button } from "@/components/ui/button";
 import defaultShop from "@/assets/default-shop.png";
+import defaultUser from "@/assets/customer_profile__joa.png";
 import { useOpenAlertModal } from "@/store/alert";
 import type { ShopEntity } from "@/type";
+import useCustomerData from "@/hooks/queries/use-customer-data";
 
 export default function PortalPage() {
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
 
+  const { data: customer } = useCustomerData(session?.user.id);
   const { data: shops } = useShopsData(session!.user.id);
 
   const handleButtonClick = (shop: ShopEntity) => {
@@ -30,45 +33,33 @@ export default function PortalPage() {
     <div className="pb-25">
       <HeaderHomeNav />
 
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex flex-col font-semibold">
+      <div className="mb-4 flex items-center justify-between">
+        <div className="flex flex-col">
+          <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
           <Link
-            to={"/portal/info"}
-            className="text-primary mb-1 flex items-center text-2xl"
+            to={"/portal-info"}
+            className="text-primary flex items-center text-2xl font-bold"
           >
-            홍길동
+            {customer?.name} 님
             <ChevronRight className="size-7" strokeWidth={1.5} />
           </Link>
-          <p className="text-2xl leading-tight">고객님, 환영합니다!</p>
+        </div>
+        <div className="relative size-20">
+          <img
+            className="h-full w-full overflow-hidden rounded-full object-cover"
+            src={defaultUser}
+            alt="티고캐릭터 이미지"
+          />
         </div>
       </div>
 
-      <div className="mb-7 grid grid-cols-2 gap-3">
-        <Card variant={"feature1"} className="pr-0 pb-0">
-          <div>
-            <div className="mb-2 text-xl font-semibold tracking-tight">
-              두피 분석
-            </div>
-            <div className="text-sm font-normal">
-              AI를 활용한
-              <br />
-              두피 상태 정밀 분석
-            </div>
-          </div>
-          <div className="">
-            <img
-              className="ml-auto h-33"
-              src={memuScalp}
-              alt="두피 분석 이미지"
-            />
-          </div>
-        </Card>
+      <div className="mb-7 grid grid-cols-2 gap-2">
         <Card variant={"feature2"} className="pr-0 pb-0">
           <div>
             <div className="mb-2 text-xl font-semibold tracking-tight">
               퍼스널컬러 분석
             </div>
-            <div className="text-sm font-normal">
+            <div className="text-sm font-light opacity-80">
               나에게 어울리는 컬러를
               <br />
               한눈에 확인
@@ -83,43 +74,32 @@ export default function PortalPage() {
           </div>
         </Card>
 
-        <Card className="flex flex-col justify-between gap-7">
-          <div className="flex items-center gap-1.5">
-            <MessageCircle
-              className="text-feature-1 fill-feature-1 size-6"
-              strokeWidth={1.3}
-            />
-            <span className="text-feature-1 text-lg font-semibold">메시지</span>
-          </div>
-          <div className="text-muted-foreground flex items-center">
-            <span className="text-sm font-normal">메시지 확인하기</span>
-            <ChevronRight className="size-5" strokeWidth={1} />
-          </div>
-        </Card>
-        <Card className="flex flex-col justify-between gap-7">
-          <div className="flex items-center gap-1.5">
-            <Store
-              className="text-feature-2 fill-feature-2/10 size-6"
+        <div className="grid grid-rows-2 gap-2">
+          <Card className="bg-feature-2/10 flex flex-col items-center justify-center gap-2 shadow-none">
+            <FileText
+              className="text-feature-1 fill-feature-1/10 size-6"
               strokeWidth={1.3}
             />
             <span className="text-feature-2 text-lg font-semibold">
-              주변 매장 찾기
+              퍼스널컬러 기록
             </span>
-          </div>
-          <div className="text-muted-foreground items-center font-normal not-first-of-type:text-sm">
-            <span>티고ABC</span>
-            <span className="flex items-center">
-              제휴매장 찾기
-              <ChevronRight className="size-5" strokeWidth={1} />
+          </Card>
+          <Card className="bg-feature-1/10 flex flex-col items-center justify-center gap-2 shadow-none">
+            <FileText
+              className="text-feature-1 fill-feature-1/10 size-6"
+              strokeWidth={1.3}
+            />
+            <span className="text-feature-1 text-lg font-semibold">
+              두피 분석 기록
             </span>
-          </div>
-        </Card>
+          </Card>
+        </div>
       </div>
 
       {!!shops?.length && (
-        <>
-          <div className="mb-3 flex items-center gap-2">
-            <div className="text-xl font-semibold">내 매장 예약하기</div>
+        <div className="mb-6">
+          <div className="mb-2 flex items-center gap-2">
+            <div className="text-lg font-semibold">내 매장 예약하기</div>
             <span className="text-muted-foreground text-sm">전화예약</span>
           </div>
           <div className="flex flex-col gap-2">
@@ -137,8 +117,42 @@ export default function PortalPage() {
               </Card>
             ))}
           </div>
-        </>
+        </div>
       )}
+
+      <div className="mb-2 text-lg font-semibold">서비스 바로가기</div>
+      <div className="grid grid-cols-2 gap-2">
+        <Card className="flex flex-col justify-between gap-5">
+          <div className="flex items-center gap-1.5">
+            <MessageCircle
+              className="text-feature-1 fill-feature-1 size-6"
+              strokeWidth={1.3}
+            />
+            <span className="text-feature-1 font-semibold">메시지</span>
+          </div>
+          <div className="text-muted-foreground flex items-center">
+            <span className="text-sm font-normal">메시지 확인하기</span>
+            <ChevronRight className="size-5" strokeWidth={1} />
+          </div>
+        </Card>
+
+        <Card className="flex flex-col justify-between gap-5">
+          <div className="flex items-center gap-1.5">
+            <Store
+              className="text-feature-2 fill-feature-2/8 size-6"
+              strokeWidth={1.3}
+            />
+            <span className="text-feature-2 font-semibold">주변 매장 찾기</span>
+          </div>
+          <div className="text-muted-foreground items-center font-normal not-first-of-type:text-sm">
+            <span>티고ABC</span>
+            <span className="flex items-center">
+              제휴매장 찾기
+              <ChevronRight className="size-5" strokeWidth={1} />
+            </span>
+          </div>
+        </Card>
+      </div>
     </div>
   );
 }

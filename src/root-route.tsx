@@ -20,8 +20,10 @@ import GlobalLayoutWithBottomNav from "./components/layout/global-layout-with-bo
 import PortalPage from "./pages/portal-page";
 import CustomerOnlyLayout from "./components/layout/customer-only-layout";
 import DesignerPage from "./pages/designer-page";
-import UserOnlyLayout from "./components/layout/user-only-layout";
 import { PortalInfoPage } from "./pages/portal-info-page";
+import SettingsPage from "./pages/settings-page";
+import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./lib/constants";
+import PortalSettingsPage from "./pages/portal-settings-page";
 
 export default function RootRoute() {
   return (
@@ -52,7 +54,9 @@ export default function RootRoute() {
           />
         </Route>
 
-        <Route element={<GlobalLayoutWithBottomNav />}>
+        <Route
+          element={<GlobalLayoutWithBottomNav navItems={MEMBER_NAV_ITEMS} />}
+        >
           <Route path="/" element={<IndexPage />} />
           <Route path="/customers" element={<CustomerListPage />} />
           <Route
@@ -60,6 +64,7 @@ export default function RootRoute() {
             element={<CustomerDetailPage />}
           />
           <Route path="/designers" element={<DesignerPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
         {/* /personal-analysis/photo?customerId=123 쿼리스트링 사용 예정 */}
@@ -74,15 +79,16 @@ export default function RootRoute() {
       </Route>
 
       <Route element={<CustomerOnlyLayout />}>
-        <Route element={<GlobalLayoutWithBottomNav />}>
+        <Route
+          element={<GlobalLayoutWithBottomNav navItems={CUSTOMER_NAV_ITEMS} />}
+        >
           <Route path="/portal" element={<PortalPage />} />
+          <Route path="/portal-settings" element={<PortalSettingsPage />} />
         </Route>
         <Route element={<GlobalLayout />}>
-          <Route path="/portal/info" element={<PortalInfoPage />} />
+          <Route path="/portal-info" element={<PortalInfoPage />} />
         </Route>
       </Route>
-
-      <Route element={<UserOnlyLayout />}></Route>
 
       <Route path="*" element={<Navigate to={"/"} />} />
     </Routes>

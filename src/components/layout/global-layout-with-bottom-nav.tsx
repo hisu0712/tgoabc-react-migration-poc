@@ -1,11 +1,15 @@
 import { Outlet } from "react-router";
-import BottomNav from "./bottomNav";
+import BottomNav, { type NavItem } from "./bottomNav";
 
-export default function GlobalLayoutWithBottomNav() {
+export default function GlobalLayoutWithBottomNav({
+  navItems,
+}: {
+  navItems: NavItem[];
+}) {
   return (
     <div className="min-h-[100vh] pr-7 pl-7">
       <Outlet />
-      <BottomNav />
+      <BottomNav navItems={navItems} />
     </div>
   );
 }

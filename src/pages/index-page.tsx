@@ -1,7 +1,7 @@
 import { useShopData } from "@/hooks/queries/use-shop-data";
 import { useOpenAlertModal } from "@/store/alert";
 import { useSession } from "@/store/session";
-import { BarChart2, ChevronRight, Plus, Zap } from "lucide-react";
+import { BarChart2, ChevronRight, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import defaultShop from "@/assets/customer_profile__joa.png";
 import icoAddCustomer from "@/assets/ico_addCustomer.svg";
@@ -44,7 +44,7 @@ export default function IndexPage() {
 
       <div className="mb-5 flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="mb-0.5 text-lg">오늘의 분석을 시작해보세요</p>
+          <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
           <Link
             to={`/members/${session?.user.id}/info`}
             className="text-primary mb-1 flex items-center text-2xl font-bold"
@@ -53,8 +53,8 @@ export default function IndexPage() {
             <ChevronRight className="size-7" strokeWidth={1.5} />
           </Link>
           <div className="text-muted-foreground flex items-end gap-1">
-            <BarChart2 className="size-5" />
-            <p className="text-md leading-none">
+            <BarChart2 className="size-4" />
+            <p className="text-sm leading-none">
               고객 {customerCount ?? 0}명 · 분석수 128건
             </p>
           </div>
@@ -77,14 +77,12 @@ export default function IndexPage() {
       <LinkCard
         to={"/customers/new"}
         variant={"gradient"}
-        className="mb-3 flex items-center gap-4"
+        className="mb-3 flex items-center gap-3"
       >
-        <img src={icoAddCustomer} className="size-10" />
+        <img src={icoAddCustomer} className="size-9" />
         <div>
-          <div className="text-lg leading-tight font-semibold">
-            고객 추가하기
-          </div>
-          <div className="opacity-80">빠른 고객 정보 입력 후 등록!</div>
+          <div className="leading-tight font-medium">고객 추가하기</div>
+          <div className="text-sm opacity-80">빠른 고객 정보 입력 후 등록!</div>
         </div>
       </LinkCard>
 

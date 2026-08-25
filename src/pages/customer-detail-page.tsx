@@ -53,7 +53,7 @@ export default function CustomerDetailPage() {
             <div className="mb-2 text-xl font-semibold tracking-tight">
               <div>두피 분석</div>
             </div>
-            <div className="text-sm font-normal">
+            <div className="text-sm font-light opacity-80">
               AI를 활용한
               <br />
               두피 상태 정밀 분석
@@ -72,7 +72,7 @@ export default function CustomerDetailPage() {
             <div className="mb-2 text-xl font-semibold tracking-tight">
               <div>퍼스널 컬러 분석</div>
             </div>
-            <div className="text-sm font-normal">
+            <div className="text-sm font-light opacity-80">
               나에게 어울리는 컬러를
               <br />
               한눈에 확인

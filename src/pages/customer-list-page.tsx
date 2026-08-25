@@ -17,6 +17,7 @@ import { Navigate } from "react-router";
 import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/use-customer-count-data";
 import useDesignersData from "@/hooks/queries/use-designers-data";
+import EmptyContent from "@/components/emptyContent";
 
 export default function CustomerListPage() {
   const session = useSession();
@@ -70,7 +71,7 @@ export default function CustomerListPage() {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="이름 또는 이메일"
-                className="h-12 bg-card pl-9"
+                className="bg-card h-12 pl-9"
               />
             </form>
           </div>
@@ -112,7 +113,7 @@ export default function CustomerListPage() {
       <div className="flex flex-col gap-2">
         {isPending ? (
           <Loader />
-        ) : (
+        ) : data?.pages[0]?.length ? (
           data.pages.map((page) =>
             page.map((customer) => (
               <CustomerListCard
@@ -123,6 +124,8 @@ export default function CustomerListPage() {
               />
             )),
           )
+        ) : (
+          <EmptyContent content="아직 등록된 고객이 없습니다." />
         )}
         {isFetchingNextPage && <Loader />}
         <div className="mt-30" ref={ref}></div>

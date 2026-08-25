@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronRight } from "lucide-react";
 import { Link } from "react-router";
 
-const cardVariants = cva("rounded-xl p-5 shadow-[0_0_10px_rgba(0,0,0,0.1)]", {
+const cardVariants = cva("rounded-xl p-4 shadow-[0_0_10px_rgba(0,0,0,0.1)]", {
   variants: {
     variant: {
       default: "bg-card",
