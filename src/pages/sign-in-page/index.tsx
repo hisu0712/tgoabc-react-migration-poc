@@ -6,8 +6,8 @@ import loginMemberImage from "@/assets/login_member.svg";
 import loginCustomerImage from "@/assets/login_customer.svg";
 import logoBlue from "@/assets/logo_blue.png";
 import logoWhite from "@/assets/logo_white.png";
-import SignInMemberForm from "@/components/sign-in-member-form";
-import SignInCustomerForm from "@/components/sign-in-customer-form";
+import SignInMemberForm from "./sign-in-member-form";
+import SignInCustomerForm from "./sign-in-customer-form";
 
 export default function SignInPage() {
   const [authType, setAuthType] = useState<"member" | "customer">("member");
