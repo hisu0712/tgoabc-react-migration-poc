@@ -20,6 +20,7 @@ import { useState } from "react";
 import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { useVerifyOtp } from "@/hooks/mutations/auth/use-verify-otp";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/password-input";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -138,44 +139,46 @@ export default function SignUpPage() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>이메일</FormLabel>
-                <FormControl>
+          <div className="flex flex-col gap-1">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>이메일</FormLabel>
                   <div className="relative">
-                    <Input
-                      disabled={
-                        isVerifyOtp ||
-                        isSignInWithOtpPending ||
-                        isCompleteMemberSignUp
-                      }
-                      placeholder="example@abc.com"
-                      {...field}
-                    />
+                    <FormControl>
+                      <Input
+                        disabled={
+                          isVerifyOtp ||
+                          isSignInWithOtpPending ||
+                          isCompleteMemberSignUp
+                        }
+                        placeholder="example@abc.com"
+                        {...field}
+                      />
+                    </FormControl>
                     <Button
                       disabled={
                         isSignInWithOtpPending || isCompleteMemberSignUp
                       }
                       type="button"
                       variant={"link"}
-                      className="-transform-y-1/2 absolute top-0 right-0"
+                      className="-transform-y-1/2 absolute top-0 right-0 h-full"
                       onClick={onRequestOtp}
                     >
                       인증요청
                     </Button>
                   </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {isOtpSent && (
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* 임시 주석 */}
+            {/* {isOtpSent && ( */}
             <FormItem>
-              <FormControl>
-                <div className="relative">
+              <div className="relative">
+                <FormControl>
                   <Input
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
@@ -184,20 +187,21 @@ export default function SignUpPage() {
                     disabled={isVerifyOtpPending || isCompleteMemberSignUp}
                     placeholder="인증번호 6자리 입력"
                   />
-                  <Button
-                    disabled={isVerifyOtpPending || isCompleteMemberSignUp}
-                    type="button"
-                    variant={"link"}
-                    className="-transform-y-1/2 absolute top-0 right-0"
-                    onClick={onVerifyOtp}
-                  >
-                    확인
-                  </Button>
-                </div>
-              </FormControl>
+                </FormControl>
+                <Button
+                  disabled={isVerifyOtpPending || isCompleteMemberSignUp}
+                  type="button"
+                  variant={"link"}
+                  className="-transform-y-1/2 absolute top-0 right-0"
+                  onClick={onVerifyOtp}
+                >
+                  확인
+                </Button>
+              </div>
               <FormMessage />
             </FormItem>
-          )}
+            {/* )} */}
+          </div>
 
           <FormField
             control={form.control}
@@ -217,25 +221,41 @@ export default function SignUpPage() {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>비밀번호</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    disabled={isCompleteMemberSignUp}
-                    placeholder="비밀번호 입력"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* 비밀번호 재입력 input 추가 */}
+          <div className="flex flex-col gap-1">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>비밀번호</FormLabel>
+                  <FormControl>
+                    <PasswordInput
+                      disabled={isCompleteMemberSignUp}
+                      placeholder="비밀번호 입력"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="repassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <PasswordInput
+                      disabled={isCompleteMemberSignUp}
+                      placeholder="비밀번호 재입력"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <FormField
             control={form.control}

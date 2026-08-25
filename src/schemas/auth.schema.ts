@@ -9,13 +9,19 @@ import {
 } from "./common.schema";
 
 // sign-up
-export const signUpSchema = z.object({
-  name: nameField,
-  email: emailField,
-  password: passwordField,
-  phone: phoneField,
-  shopName: shopNameField,
-});
+export const signUpSchema = z
+  .object({
+    name: nameField,
+    email: emailField,
+    password: passwordField,
+    repassword: passwordField,
+    phone: phoneField,
+    shopName: shopNameField,
+  })
+  .refine((data) => data.password === data.repassword, {
+    message: "비밀번호와 일치하지 않습니다.",
+    path: ["repassword"],
+  });
 
 export type SignUpFormValues = z.infer<typeof signUpSchema>;
 
@@ -51,7 +57,7 @@ export const resetPasswordSchema = z
     repassword: passwordField,
   })
   .refine((data) => data.password === data.repassword, {
-    message: "비밀번호가 일치하지 않습니다.",
+    message: "신규 비밀번호와 일치하지 않습니다.",
     path: ["repassword"],
   });
 
