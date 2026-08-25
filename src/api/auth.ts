@@ -11,6 +11,12 @@ export async function signOut() {
   }
 }
 
+export async function deleteUser() {
+  const { error } = await supabase.functions.invoke("delete-user");
+
+  if (error) throw error;
+}
+
 export async function signInWithPassword({
   email,
   password,

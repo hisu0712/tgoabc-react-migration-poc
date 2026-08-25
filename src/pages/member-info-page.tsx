@@ -1,6 +1,8 @@
 import BottomButton from "@/components/bottom-button";
+import DeleteUserButton from "@/components/delete-user-button";
 import GlobalLoader from "@/components/global-loader";
 import HeaderNav from "@/components/header-nav";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,17 +16,17 @@ import { Label } from "@/components/ui/label";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
 import { useMemberData } from "@/hooks/queries/use-member-data";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
-import { useOpenAlertModal } from "@/store/alert";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 
+const MASKED_PASSWORD = "••••••••";
+
 export default function MemberInfoPage() {
   const { memberId } = useParams();
   const navigate = useNavigate();
-  const openAlertModal = useOpenAlertModal();
 
   const {
     data: member,
@@ -73,16 +75,6 @@ export default function MemberInfoPage() {
     updateMember({ memberId, ...values });
   };
 
-  const handleDeleteMember = () => {
-    // 근데 여기서 user 을 삭제 해야함 그래야 member, shop 같이 삭제됨
-    openAlertModal({
-      title: "회원 탈퇴",
-      description:
-        "앱에 저장된 모든 데이터가 영구적으로 삭제됩니다. 계정을 정말 삭제하시겠어요?",
-      // onPositive: () => {}
-    });
-  };
-
   return (
     <div>
       <HeaderNav title="계정 정보" />
@@ -100,14 +92,18 @@ export default function MemberInfoPage() {
               <FormItem>
                 <FormLabel>이름</FormLabel>
                 <FormControl>
-                  <Input placeholder="이름 입력" {...field} />
+                  <Input
+                    disabled={isUpdateMemberPending}
+                    placeholder="이름 입력"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div className="grid gap-2">
+          <div className="grid gap-1">
             <Label>이메일</Label>
             <Input readOnly value={member?.email} />
           </div>
@@ -120,6 +116,7 @@ export default function MemberInfoPage() {
                 <FormLabel>휴대전화</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isUpdateMemberPending}
                     placeholder="휴대전화 번호를 -없이 입력해주세요"
                     {...field}
                   />
@@ -129,15 +126,25 @@ export default function MemberInfoPage() {
             )}
           />
 
-          <div className="grid gap-2">
+          <div className="grid gap-1">
             <Label>비밀번호</Label>
-            <div onClick={() => navigate("/reset-password")}>변경하기</div>
-            <Input readOnly type="password" value="111111" />
+            <div className="relative">
+              <Input readOnly type="password" value={MASKED_PASSWORD} />
+              <Button
+                disabled={isUpdateMemberPending}
+                type="button"
+                variant={"link"}
+                className="-transform-y-1/2 absolute top-0 right-0 h-full cursor-pointer"
+                onClick={() => navigate("/reset-password")}
+              >
+                변경하기
+              </Button>
+            </div>
           </div>
-
-          <div onClick={handleDeleteMember}>회원 탈퇴</div>
         </form>
       </Form>
+
+      <DeleteUserButton />
 
       <BottomButton
         disabled={isUpdateMemberPending}

@@ -8,20 +8,18 @@ import {
 } from "@/schemas/customer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomerData from "@/hooks/queries/use-customer-data";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { useOpenAlertModal } from "@/store/alert";
 import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";
-import { Trash2 } from "lucide-react";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
 import useDesignersData from "@/hooks/queries/use-designers-data";
 import Loader from "@/components/loader";
+import DeleteUserButton from "@/components/delete-user-button";
 
 export function PortalInfoPage() {
   const session = useSession();
-  const openAlertModal = useOpenAlertModal();
   const navigate = useNavigate();
 
   const { data: designers, isLoading: isFetchDesignersLoading } =
@@ -42,16 +40,6 @@ export function PortalInfoPage() {
         toast.error("정보 수정에 실패했습니다.", { position: "top-center" });
       },
     });
-
-  // const { mutate: unlinkCustomer } = useUnlinkCustomer({
-  //     onSuccess: () => {
-  //       toast.success("고객이 삭제되었습니다.", { position: "top-center" });
-  //       navigate("/", { replace: true });
-  //     },
-  //     onError: () => {
-  //       toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
-  //     },
-  //   });
 
   const customerFormValues = useMemo(
     () =>
@@ -89,28 +77,9 @@ export function PortalInfoPage() {
     });
   };
 
-  const handleDeleteCustomer = () => {
-    openAlertModal({
-      title: "고객 삭제",
-      description: "고객을 삭제하시겠습니까? *삭제 후 되돌릴 수 없습니다.",
-      onPositive: () => {},
-    });
-  };
-
   return (
     <div>
-      <HeaderNav
-        title="고객 정보"
-        rightSlot={
-          <div
-            onClick={handleDeleteCustomer}
-            className="text-destructive flex flex-col items-center"
-          >
-            <Trash2 className="size-6" strokeWidth={1.5} />
-            <span className="text-sm">삭제</span>
-          </div>
-        }
-      />
+      <HeaderNav title="계정 정보" />
 
       <Form {...form}>
         <form
@@ -125,6 +94,8 @@ export function PortalInfoPage() {
           )}
         </form>
       </Form>
+
+      <DeleteUserButton />
 
       <BottomButton
         disabled={isUpdateCustomerPending}
