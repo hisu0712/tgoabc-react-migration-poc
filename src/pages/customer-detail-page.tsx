@@ -37,7 +37,7 @@ export default function CustomerDetailPage() {
           <span>고객님, 환영합니다!</span>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 bg-muted p-2 rounded-md font-medium">
           <Scissors className="size-4" />
           <span>
             {customer?.designer_id

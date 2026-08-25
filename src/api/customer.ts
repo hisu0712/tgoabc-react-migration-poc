@@ -159,8 +159,6 @@ export async function updateCustomerWithDesigner({
 
   if (updateCustomerError) throw updateCustomerError;
 
-  if (!designerId) return { ...customer, designer_id: null };
-
   // 2) mapping 테이블 - 디자이너 수정
   const { data: mapping, error: updateMappingError } = await supabase
     .from("member_customer_mapping")
