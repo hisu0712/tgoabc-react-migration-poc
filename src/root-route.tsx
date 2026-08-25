@@ -44,8 +44,8 @@ export default function RootRoute() {
           <Route path="/sign-up/complete" element={<SignUpCompletePage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-          <Route path="/members/:memberId/info" element={<MemberInfoPage />} />
-          <Route path="/members/:memberId/shop" element={<MemberShopPage />} />
+          <Route path="/members/info" element={<MemberInfoPage />} />
+          <Route path="/members/shop" element={<MemberShopPage />} />
 
           <Route path="/customers/new" element={<CustomerNewPage />} />
           <Route

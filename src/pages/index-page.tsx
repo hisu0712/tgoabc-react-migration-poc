@@ -34,7 +34,7 @@ export default function IndexPage() {
     openAlertModal({
       title: "내 매장 등록",
       description: "매장 정보를 입력해 주세요 고객 안내와 홍보에 활용돼요",
-      onPositive: () => navigate(`/members/${session?.user.id}/shop`),
+      onPositive: () => navigate("/members/shop"),
     });
   };
 
@@ -46,7 +46,7 @@ export default function IndexPage() {
         <div className="flex flex-col">
           <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
           <Link
-            to={`/members/${session?.user.id}/info`}
+            to={"/members/info"}
             className="text-primary mb-1 flex items-center text-2xl font-bold"
           >
             {shop?.name} 님
@@ -103,7 +103,7 @@ export default function IndexPage() {
             />
           </div>
         </Card>
-        <Card className="pr-0 pb-0">
+        <LinkCard to={"/analysis/photo"} className="pr-0 pb-0">
           <div>
             <div className="text-feature-2 mb-1 text-xl leading-tight font-semibold tracking-tight">
               <div>퍼스널 컬러</div>
@@ -118,7 +118,7 @@ export default function IndexPage() {
               alt="퍼스널컬러 분석 이미지"
             />
           </div>
-        </Card>
+        </LinkCard>
       </div>
 
       <div className="mb-5 grid grid-cols-4 justify-between md:grid-cols-5">

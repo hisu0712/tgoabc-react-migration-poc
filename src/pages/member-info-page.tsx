@@ -16,6 +16,7 @@ import { Label } from "@/components/ui/label";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
 import { useMemberData } from "@/hooks/queries/use-member-data";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
+import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -25,14 +26,14 @@ import { toast } from "sonner";
 const MASKED_PASSWORD = "••••••••";
 
 export default function MemberInfoPage() {
-  const { memberId } = useParams();
+  const session = useSession();
   const navigate = useNavigate();
 
   const {
     data: member,
     isLoading: isFetchMemberLoading,
     isError: isFetchMemberError,
-  } = useMemberData(memberId);
+  } = useMemberData(session?.user.id);
 
   const { mutate: updateMember, isPending: isUpdateMemberPending } =
     useUpdateMember({
@@ -63,7 +64,6 @@ export default function MemberInfoPage() {
     formState: { isDirty },
   } = form; // formState은 구독 안 된 속성은 아예 내부적으로 값 추적/계산 자체를 스킵
 
-  if (!memberId) return <Navigate to={"/"} />;
   if (isFetchMemberLoading) return <GlobalLoader />;
   if (isFetchMemberError) return <Navigate to={"/"} />;
 
@@ -72,7 +72,7 @@ export default function MemberInfoPage() {
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
       return;
     }
-    updateMember({ memberId, ...values });
+    updateMember({ memberId: session!.user.id, ...values });
   };
 
   return (

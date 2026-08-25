@@ -17,7 +17,6 @@ import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
-import { Navigate, useParams } from "react-router";
 import { toast } from "sonner";
 import defaultShop from "@/assets/default-shop.png";
 import { Label } from "@/components/ui/label";
@@ -28,7 +27,6 @@ import FormHint from "@/components/form-hint";
 type Image = { file: File; previewUrl: string };
 
 export default function MemberShopPage() {
-  const { memberId } = useParams();
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
 
@@ -71,7 +69,6 @@ export default function MemberShopPage() {
   } = form;
 
   if (isFetchShopLoading) return <GlobalLoader />;
-  if (!memberId) return <Navigate to={"/"} />;
 
   const onSubmit = (values: ShopFormValues) => {
     if (!isDirty && !shopImage) {
@@ -79,7 +76,11 @@ export default function MemberShopPage() {
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
       return;
     }
-    updateShop({ memberId, shopImageFile: shopImage?.file, ...values });
+    updateShop({
+      memberId: session!.user.id,
+      shopImageFile: shopImage?.file,
+      ...values,
+    });
   };
 
   const handleSelectImage = (e: ChangeEvent<HTMLInputElement>) => {
