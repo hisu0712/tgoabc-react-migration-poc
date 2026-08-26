@@ -1,5 +1,4 @@
 import GlobalLoader from "@/components/global-loader";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useUpdateShop } from "@/hooks/mutations/shop/use-update-shop";
 import { useShopData } from "@/hooks/queries/use-shop-data";
