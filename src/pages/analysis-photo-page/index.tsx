@@ -1,0 +1,143 @@
+import { useEffect, useRef, useState } from "react";
+import AnalysisPhotoIntro from "./analysis-photo-intro";
+import HeaderNav from "@/components/header-nav";
+import defaultImage from "/face.png";
+import { Button } from "@/components/ui/button";
+import type { Image } from "@/type";
+import { toast } from "sonner";
+import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
+import { useSession } from "@/store/session";
+import { Navigate, useNavigate, useSearchParams } from "react-router";
+
+export default function AnalysisPhotoPage() {
+  const session = useSession();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const customerId = searchParams.get("customerId");
+
+  const [showIntro, setShowIntro] = useState(true);
+  const [count, setCount] = useState(3);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [faceImage, setFaceImage] = useState<Image | null>(null);
+
+  const { mutate: uploadImage, isPending: isUploadImagePending } =
+    useUploadImage({
+      onError: () => {
+        toast.error("이미지 업로드에 실패했습니다.", {
+          position: "top-center",
+        });
+      },
+    });
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowIntro(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (showIntro || count <= 0) return;
+    const timer = setTimeout(() => setCount((prev) => prev - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [showIntro, count]);
+
+  // 추후 customerId가 없는 간편분석 구현 시에 변경 예정
+  if (!customerId) return <Navigate to="/" />;
+  if (showIntro) return <AnalysisPhotoIntro />;
+
+  const handleSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+
+    if (faceImage) {
+      URL.revokeObjectURL(faceImage.previewUrl);
+    }
+
+    setFaceImage({
+      file,
+      previewUrl: URL.createObjectURL(file),
+    });
+  };
+
+  const handleSubmit = () => {
+    if (!faceImage) {
+      toast.info("업로드된 이미지가 없습니다. 이미지를 업로드해 주세요.", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const analysisId = crypto.randomUUID();
+    const fileExtension = faceImage.file.name.split(".").pop() || "webp";
+
+    uploadImage(
+      {
+        file: faceImage.file,
+        filePath: `${session!.user.id}/analysis/${analysisId}/original.${fileExtension}`,
+      },
+      {
+        onSuccess: (imageUrl) => {
+          navigate(
+            `/analysis/${analysisId}?${new URLSearchParams({ customerId, imageUrl }).toString()}`,
+            { replace: true },
+          );
+        },
+      },
+    );
+  };
+
+  return (
+    <div className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] px-7">
+      <HeaderNav className="mb-0!" />
+
+      <div className="flex flex-1 flex-col items-center">
+        <div className="mb-4 h-7 text-xl font-semibold">
+          {count > 0 && <span>3초 뒤 촬영이 시작돼요</span>}
+          {/* <span>가이드 영역에 얼굴을 맞춰주세요</span> */}
+          {/* <span>더 가까이 촬영해 주세요</span> */}
+        </div>
+
+        <div
+          className="relative mb-10 aspect-[1/1.15] h-[55vh] max-h-[70vh] max-w-[90vw]"
+          onClick={() => count === 0 && fileInputRef.current?.click()}
+        >
+          <div className="flex h-full w-full justify-center">
+            <img
+              src={faceImage?.previewUrl || defaultImage}
+              alt="촬영된 얼굴 이미지"
+              className="rounded-[50%] object-cover"
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleSelectImage}
+              className="hidden"
+            />
+          </div>
+
+          {count > 0 && (
+            <span className="absolute top-1/2 left-1/2 -translate-1/2">
+              <span className="text-[13vh] font-semibold text-white">
+                {count}
+              </span>
+            </span>
+          )}
+        </div>
+        <div className="text-lg font-medium">
+          얼굴의 방향이 <span className="text-destructive">정면</span>을 향하게
+          찍어주세요
+        </div>
+
+        {/* 프로젝트 예외: 실제 앱에서는 가이드에 맞는 사진을 촬영했을 때 자동으로 결과 페이지로 이동함 */}
+        <Button
+          disabled={isUploadImagePending}
+          onClick={handleSubmit}
+          variant={"ghost"}
+          className="absolute bottom-5 left-1/2 -translate-x-1/2 cursor-pointer"
+        >
+          분석 시작
+        </Button>
+      </div>
+    </div>
+  );
+}

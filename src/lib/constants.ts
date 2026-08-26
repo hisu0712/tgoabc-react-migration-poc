@@ -34,6 +34,15 @@ export const QUERY_KEYS = {
     memberList: (memberId: string) => ["designer", memberId],
     byId: (id: number) => ["designer", id],
   },
+  analysis: {
+    all: ["analysis"],
+    byId: (analysisId: string) => ["analysis", analysisId],
+    customerList: (customerId: string) => [
+      "analysis",
+      "customerList",
+      customerId,
+    ],
+  },
 };
 
 export const BUCKET_NAME = "uploads";

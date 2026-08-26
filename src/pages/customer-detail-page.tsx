@@ -1,4 +1,4 @@
-import { Card } from "@/components/card";
+import { Card, LinkCard } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import { Link, Navigate, useParams } from "react-router";
@@ -37,7 +37,7 @@ export default function CustomerDetailPage() {
           <span>고객님, 환영합니다!</span>
         </div>
 
-        <div className="flex items-center gap-1 bg-muted p-2 rounded-md font-medium">
+        <div className="bg-muted flex items-center gap-1 rounded-md p-2 font-medium">
           <Scissors className="size-4" />
           <span>
             {customer?.designer_id
@@ -67,7 +67,11 @@ export default function CustomerDetailPage() {
             />
           </div>
         </Card>
-        <Card variant={"feature2"} className="pr-0 pb-0">
+        <LinkCard
+          to={`/analysis/photo?customerId=${customerId}`}
+          variant={"feature2"}
+          className="pr-0 pb-0"
+        >
           <div>
             <div className="mb-2 text-xl font-semibold tracking-tight">
               <div>퍼스널 컬러 분석</div>
@@ -85,7 +89,7 @@ export default function CustomerDetailPage() {
               alt="퍼스널컬러 분석 이미지"
             />
           </div>
-        </Card>
+        </LinkCard>
 
         <Card className="flex flex-col justify-between gap-9">
           <div className="flex items-center gap-1.5">

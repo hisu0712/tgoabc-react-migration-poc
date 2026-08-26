@@ -23,3 +23,17 @@ export type UseMutationCallback<TData = void> = {
 
 export type Theme = "system" | "dark" | "light";
 
+export type AnalysisResult = {
+  personalType: string;
+  axis: {
+    chroma: { value: number; min: number; max: number };
+    hue: { value: number; min: number; max: number };
+    lightness: { value: number; min: number; max: number };
+  };
+  cheek: { avgRgb: string };
+  hair: { avgRgb: string };
+  pupil: { avgRgb: string };
+  skin: { skinCode: string[]; skinTone: "cool" | "warm" | "neutral" };
+};
+
+export type Image = { file: File; previewUrl: string };

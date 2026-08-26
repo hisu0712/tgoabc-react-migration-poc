@@ -11,8 +11,8 @@ import CustomerNewPage from "./pages/customer-new-page";
 import CustomerInfoPage from "./pages/customer-info-page";
 import CustomerListPage from "./pages/customer-list-page";
 import MemberInfoPage from "./pages/member-info-page";
-import PersonalAnalysisResultPage from "./pages/personal-analysis-result-page";
-import PersonalAnalysisPhotoPage from "./pages/personal-analysis-photo-page";
+import AnalysisResultPage from "./pages/analysis-result-page";
+import AnalysisPhotoPage from "./pages/analysis-photo-page";
 import MemberShopPage from "./pages/member-shop-page";
 import ResetPasswordPage from "./pages/reset-password-page";
 import GlobalLayout from "./components/layout/global-layout";
@@ -67,15 +67,10 @@ export default function RootRoute() {
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
-        {/* /personal-analysis/photo?customerId=123 쿼리스트링 사용 예정 */}
-        <Route
-          path="/personal-analysis/photo"
-          element={<PersonalAnalysisPhotoPage />}
-        />
-        <Route
-          path="/personal-analysis/:resultId"
-          element={<PersonalAnalysisResultPage />}
-        />
+        {/* /analysis/photo?customerId=123 */}
+        <Route path="/analysis/photo" element={<AnalysisPhotoPage />} />
+        {/* /analysis/:analysisId?customerId=123&imageUrl=123 */}
+        <Route path="/analysis/:analysisId" element={<AnalysisResultPage />} />
       </Route>
 
       <Route element={<CustomerOnlyLayout />}>
@@ -90,7 +85,8 @@ export default function RootRoute() {
         </Route>
       </Route>
 
-      <Route path="*" element={<Navigate to={"/"} />} />
+      {/* 임시 주석 */}
+      {/* <Route path="*" element={<Navigate to={"/"} />} /> */}
     </Routes>
   );
 }
