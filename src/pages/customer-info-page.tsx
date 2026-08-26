@@ -64,7 +64,9 @@ export default function CustomerInfoPage() {
             birthDate: customer.birth_date,
             gender: customer.gender,
             designerId:
-              customer.designer_id !== null ? String(customer.designer_id) : "none",
+              customer.designer_id !== null
+                ? String(customer.designer_id)
+                : "none",
           }
         : undefined,
     [customer],
@@ -139,7 +141,8 @@ export default function CustomerInfoPage() {
       </Form>
 
       <BottomButton
-        disabled={isUpdateCustomerPending}
+        loading={isUpdateCustomerPending}
+        loadingText="저장 중..."
         form="update-customer-form"
       >
         저장
