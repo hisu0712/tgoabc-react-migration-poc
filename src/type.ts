@@ -20,3 +20,6 @@ export type UseMutationCallback<TData = void> = {
   onMutate?: () => void;
   onSettled?: () => void;
 };
+
+export type Theme = "system" | "dark" | "light";
+

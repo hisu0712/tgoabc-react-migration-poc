@@ -1,11 +1,7 @@
-import { Globe, Sun } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoBlue from "@/assets/logo_blue.png";
+import ThemeButton from "./theme-button";
 
 export default function HeaderHomeNav({
   className,
@@ -24,12 +20,7 @@ export default function HeaderHomeNav({
       <div className="flex h-17 items-center justify-between">
         <img className="w-37" src={logoSrc} alt="티고ABC 로고" />
         <div className="flex items-center gap-2.5">
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Sun className="size-7" strokeWidth={1.5} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent></DropdownMenuContent>
-          </DropdownMenu>
+          <ThemeButton />
           <Globe className="size-6.5" strokeWidth={1.5} />
         </div>
       </div>
