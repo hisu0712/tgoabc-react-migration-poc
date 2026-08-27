@@ -18,7 +18,7 @@ export function AxisBar({
   background: string;
 }) {
   return (
-    <div className="bl_skinAxis" data-point-pos data-avg-pos="20">
+    <div>
       <div className="relative mb-2 h-4.5 rounded-2xl" style={{ background }}>
         <div
           style={{
@@ -34,7 +34,7 @@ export function AxisBar({
           style={{
             left: `clamp(3%, ${Math.round(((value - min) / (max - min)) * 100)}%, 97%)`,
           }}
-          className={`absolute top-1/2 size-3 aspect-square -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#DC8E5E] bg-white`}
+          className={`absolute top-1/2 aspect-square size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#DC8E5E] bg-white`}
         ></span>
       </div>
 

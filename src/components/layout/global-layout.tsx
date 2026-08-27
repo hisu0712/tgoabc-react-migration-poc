@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Outlet } from "react-router";
 
 export default function GlobalLayout() {
@@ -9,5 +10,5 @@ export default function GlobalLayout() {
 }
 
 export function Layout({ className, children }: React.ComponentProps<"div">) {
-  return <div className={`px-6 ${className ?? ""}`}>{children}</div>;
+  return <div className={cn("px-6", className)}>{children}</div>;
 }

@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import BottomNav, { type NavItem } from "./bottomNav";
+import BottomNav, { type NavItem } from "./bottom-nav";
 
 export default function GlobalLayoutWithBottomNav({
   navItems,

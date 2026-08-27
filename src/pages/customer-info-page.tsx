@@ -11,7 +11,6 @@ import { Navigate, useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { useOpenAlertModal } from "@/store/alert";
-import { Trash2 } from "lucide-react";
 import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-customer";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";

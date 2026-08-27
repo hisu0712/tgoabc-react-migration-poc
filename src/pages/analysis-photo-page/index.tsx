@@ -9,6 +9,7 @@ import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
+import { cn } from "@/lib/utils";
 
 export default function AnalysisPhotoPage() {
   const session = useSession();
@@ -106,7 +107,10 @@ export default function AnalysisPhotoPage() {
             <img
               src={faceImage?.previewUrl || defaultImage}
               alt="촬영된 얼굴 이미지"
-              className={`rounded-[50%] object-cover ${faceImage && "outline-primary outline-4"}`}
+              className={cn(
+                "rounded-[50%] object-cover",
+                faceImage && "outline-primary outline-4",
+              )}
             />
             <input
               ref={fileInputRef}

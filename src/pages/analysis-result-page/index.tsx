@@ -13,12 +13,16 @@ import {
   WavesIcon,
 } from "lucide-react";
 import typeImage_SummerLight from "@/assets/personal-summerLight.png";
-import BottomNav from "@/components/layout/bottomNav";
+import BottomNav from "@/components/layout/bottom-nav";
 import { MEMBER_NAV_ITEMS } from "@/lib/constants";
 import { AxisBar, GuideLabel } from "./components";
 import { UNDERTONE } from "./constants";
 import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
+import personalAnalysisScriptUrl from "./personal-analysis.iife.js?url";
+import { useState } from "react";
+
+const PERSONAL_ANALYSIS_ELEMENT_NAME = "skin-analysis";
 
 export default function AnalysisResultPage() {
   const { ref, inView } = useInView({
@@ -26,6 +30,10 @@ export default function AnalysisResultPage() {
     rootMargin: "-100px 0px 0px 0px",
   });
   // if (true) return <AnalysisResultLoading />;
+
+  const [isModuleLoaded, setIsModuleLoaded] = useState(
+    !!customElements.get(PERSONAL_ANALYSIS_ELEMENT_NAME),
+  );
 
   const { analysisId } = useParams();
   const [searchParams] = useSearchParams();
@@ -79,8 +87,6 @@ export default function AnalysisResultPage() {
     { code: "22", color: "b77957", label: "차분하게" },
   ];
 
-  console.log(inView);
-
   return (
     <div className="bg-amber-500">
       <HeaderNav
@@ -96,7 +102,7 @@ export default function AnalysisResultPage() {
       <Layout className="relative pb-8 md:px-10">
         <div className="relative flex flex-col gap-1 pt-5 pb-17 text-white">
           <img
-            className="absolute -right-1 bottom-0 h-[calc(100%+20px)]"
+            className="md: absolute -right-1 bottom-0 block h-[calc(100%+20px)] md:hidden"
             src={typeImage_SummerLight}
             alt="여름 라이트 타입 이미지"
           />
@@ -110,6 +116,12 @@ export default function AnalysisResultPage() {
             <ArrowRightIcon className="size-4" strokeWidth={1.6} />
           </button>
         </div>
+
+        <img
+          className="md: absolute -right-1 bottom-0 hidden h-full md:block"
+          src={typeImage_SummerLight}
+          alt="여름 라이트 타입 이미지"
+        />
 
         <Card className="relative z-[2] bg-white/20 p-5 md:w-max">
           <ul className="mb-2 flex gap-2">
