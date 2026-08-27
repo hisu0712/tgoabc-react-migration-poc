@@ -41,7 +41,6 @@ function Button({
   size,
   asChild = false,
   loading = false,
-  loadingText,
   disabled,
   children,
   ...props
@@ -49,7 +48,6 @@ function Button({
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     loading?: boolean;
-    loadingText?: string;
   }) {
   const Comp = asChild ? Slot : "button";
   const [showLoading, setShowLoading] = React.useState(false);
@@ -71,10 +69,7 @@ function Button({
       {...props}
     >
       {!asChild && showLoading ? (
-        <>
-          <LoaderCircleIcon className="animate-spin" />
-          {loadingText ?? children}
-        </>
+        <LoaderCircleIcon className="animate-spin" />
       ) : (
         children
       )}

@@ -1,8 +1,9 @@
 import loadingImage from "@/assets/loading_ippu.gif";
+import { Layout } from "@/components/layout/global-layout";
 
 export default function AnalysisPhotoIntro() {
   return (
-    <div className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] px-7">
+    <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9]">
       <div className="flex flex-1 flex-col gap-[10vh] pt-[10vh]">
         <div className="text-center">
           <div className="mb-3 text-2xl font-bold" data-username="티고뷰티샵">
@@ -18,7 +19,7 @@ export default function AnalysisPhotoIntro() {
           <img
             className="h-[35vh]"
             src={loadingImage}
-            alt="촬영하는 이뿌 캐릭터 이미지"
+            alt="촬영하는 캐릭터 이미지"
           />
         </div>
 
@@ -27,6 +28,6 @@ export default function AnalysisPhotoIntro() {
           <span>촬영 사진은 매장에 저장되지 않아요</span>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }

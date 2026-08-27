@@ -39,7 +39,6 @@ export default function CustomerListPage() {
 
   useEffect(() => {
     // 스크롤이 하단에 닿았을 때 다음페이지 호출
-    console.log(inView);
     if (inView) fetchNextPage();
   }, [inView]);
 
@@ -87,7 +86,7 @@ export default function CustomerListPage() {
         <Plus className="size-9" strokeWidth={1.3} />
       </LinkCard>
 
-      <div className="bg-muted-foreground/20 mb-7 h-[1px] w-full"></div>
+      <div className="bg-muted-foreground/20 mb-7 h-px w-full"></div>
 
       <div className="mb-3 flex items-center justify-between">
         <div className="text-muted-foreground text-sm">

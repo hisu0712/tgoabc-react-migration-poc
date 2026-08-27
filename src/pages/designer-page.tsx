@@ -30,7 +30,7 @@ export default function DesignerPage() {
         <Plus className="size-9" strokeWidth={1.3} />
       </Card>
 
-      <div className="bg-muted-foreground/20 mb-6 h-[1px] w-full"></div>
+      <div className="bg-muted-foreground/20 mb-6 h-px w-full"></div>
 
       <div className="flex flex-col gap-2">
         {isLoading ? (

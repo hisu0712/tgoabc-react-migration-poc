@@ -29,7 +29,7 @@ export default function HeaderNav({
 
   return (
     <header
-      className={`bg-background/50 sticky top-0 z-10 mb-5 pt-8 backdrop-blur-md ${className}`}
+      className={`bg-background/50 sticky top-0 z-10 mb-5 pt-8 backdrop-blur-md ${className ?? ""}`}
     >
       <div className="relative flex h-17 items-center justify-center">
         <button

@@ -19,6 +19,7 @@ import useDesignersData from "@/hooks/queries/use-designers-data";
 import Loader from "@/components/loader";
 import useCustomerWithDesignerData from "@/hooks/queries/use-customer-with-designer-data";
 import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-update-customer-with-designer";
+import { Button } from "@/components/ui/button";
 
 export default function CustomerInfoPage() {
   const session = useSession();
@@ -45,15 +46,16 @@ export default function CustomerInfoPage() {
       },
     });
 
-  const { mutate: unlinkCustomer } = useUnlinkCustomer({
-    onSuccess: () => {
-      toast.success("고객이 삭제되었습니다.", { position: "top-center" });
-      navigate("/", { replace: true });
-    },
-    onError: () => {
-      toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
-    },
-  });
+  const { mutate: unlinkCustomer, isPending: isUnlinkCustomerPending } =
+    useUnlinkCustomer({
+      onSuccess: () => {
+        toast.success("고객이 삭제되었습니다.", { position: "top-center" });
+        navigate("/", { replace: true });
+      },
+      onError: () => {
+        toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
+      },
+    });
 
   const customerFormValues = useMemo(
     () =>
@@ -110,18 +112,7 @@ export default function CustomerInfoPage() {
 
   return (
     <div>
-      <HeaderNav
-        title="고객 정보"
-        rightSlot={
-          <div
-            onClick={handleDeleteCustomer}
-            className="text-destructive flex flex-col items-center"
-          >
-            <Trash2 className="size-6" strokeWidth={1.5} />
-            <span className="text-sm">삭제</span>
-          </div>
-        }
-      />
+      <HeaderNav title="고객 정보" />
 
       <Form {...form}>
         <form
@@ -140,9 +131,20 @@ export default function CustomerInfoPage() {
         </form>
       </Form>
 
+      <div className="mt-5 flex items-center justify-center">
+        <Button
+          disabled={isUnlinkCustomerPending}
+          type="button"
+          onClick={handleDeleteCustomer}
+          variant={"link"}
+          className="text-muted-foreground cursor-pointer"
+        >
+          고객 삭제
+        </Button>
+      </div>
+
       <BottomButton
         loading={isUpdateCustomerPending}
-        loadingText="저장 중..."
         form="update-customer-form"
       >
         저장

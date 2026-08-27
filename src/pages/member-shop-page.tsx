@@ -22,8 +22,7 @@ import { Label } from "@/components/ui/label";
 import BottomButton from "@/components/bottom-button";
 import HeaderNav from "@/components/header-nav";
 import FormHint from "@/components/form-hint";
-
-type Image = { file: File; previewUrl: string };
+import type { Image } from "@/type";
 
 export default function MemberShopPage() {
   const session = useSession();

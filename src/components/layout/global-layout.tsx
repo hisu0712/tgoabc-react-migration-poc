@@ -2,8 +2,12 @@ import { Outlet } from "react-router";
 
 export default function GlobalLayout() {
   return (
-    <div className="min-h-[100vh] pr-7 pl-7">
+    <div className="min-h-[100vh] px-6">
       <Outlet />
     </div>
   );
+}
+
+export function Layout({ className, children }: React.ComponentProps<"div">) {
+  return <div className={`px-6 ${className ?? ""}`}>{children}</div>;
 }

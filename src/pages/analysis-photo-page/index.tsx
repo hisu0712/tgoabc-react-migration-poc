@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";
 import { Navigate, useNavigate, useSearchParams } from "react-router";
+import { Layout } from "@/components/layout/global-layout";
 
 export default function AnalysisPhotoPage() {
   const session = useSession();
@@ -76,6 +77,7 @@ export default function AnalysisPhotoPage() {
       },
       {
         onSuccess: (imageUrl) => {
+          URL.revokeObjectURL(faceImage.previewUrl);
           navigate(
             `/analysis/${analysisId}?${new URLSearchParams({ customerId, imageUrl }).toString()}`,
             { replace: true },
@@ -86,7 +88,7 @@ export default function AnalysisPhotoPage() {
   };
 
   return (
-    <div className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] px-7">
+    <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9]">
       <HeaderNav className="mb-0!" />
 
       <div className="flex flex-1 flex-col items-center">
@@ -104,7 +106,7 @@ export default function AnalysisPhotoPage() {
             <img
               src={faceImage?.previewUrl || defaultImage}
               alt="촬영된 얼굴 이미지"
-              className="rounded-[50%] object-cover"
+              className={`rounded-[50%] object-cover ${faceImage && "outline-primary outline-4"}`}
             />
             <input
               ref={fileInputRef}
@@ -138,6 +140,6 @@ export default function AnalysisPhotoPage() {
           분석 시작
         </Button>
       </div>
-    </div>
+    </Layout>
   );
 }
