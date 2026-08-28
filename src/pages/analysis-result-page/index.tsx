@@ -161,7 +161,11 @@ export default function AnalysisResultPage() {
   const tone = UNDERTONE[result?.skin.skinTone ?? "neutral"];
 
   return (
-    <div>
+    <div
+      style={{
+        background: `linear-gradient(to bottom, ${typeInfo.palette.bc1}, ${typeInfo.palette.bc2})`,
+      }}
+    >
       {!isAnalysisComplete && (
         <div className="fixed inset-0 z-50">
           <AnalysisResultLoading />

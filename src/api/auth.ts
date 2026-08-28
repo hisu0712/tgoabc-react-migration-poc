@@ -2,11 +2,11 @@ import { supabase } from "@/lib/supabase";
 import type { UserType } from "@/type";
 
 export async function signOut() {
-  const { error } = await supabase.auth.signOut(); // scope: "global"
+  const { error } = await supabase.auth.signOut(); // scope: "global"(해당 사용자의 모든 세션을 종료)
 
   if (error) {
     await supabase.auth.signOut({
-      scope: "local",
+      scope: "local", // 해당 세션만 종료
     });
   }
 }
