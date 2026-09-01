@@ -11,6 +11,8 @@ import AnalysisLoading from "./analysis-loading";
 import analysisScriptUrl from "./personal-analysis.iife.js?url"; // module
 import analysisStyleUrl from "./personal-analysis.css?url"; // module
 import type { Analysis } from "../analysis-result-page/constants";
+import useCreateAnalysis from "@/hooks/mutations/analysis/use-create-analysis";
+import { toast } from "sonner";
 
 const ANALYSIS_ELEMENT_NAME = "skin-analysis";
 const ANALYSIS_EVENT = "personal-analysis-complete";
@@ -56,7 +58,16 @@ export default function AnalysisProcessPage() {
 
   const { mutate: uploadResultImage } = useUploadImage({
     onError: () => {
-      console.error("결과 이미지 업로드에 실패했습니다.");
+      toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
+        position: "top-center",
+      });
+      navigate("/", { replace: true });
+    },
+  });
+
+  const { mutate: createAnalysis } = useCreateAnalysis({
+    onError: () => {
+      console.error("분석 결과 저장에 실패했습니다.");
     },
   });
 
@@ -102,6 +113,15 @@ export default function AnalysisProcessPage() {
           },
           {
             onSuccess: (resultImageUrl) => {
+              createAnalysis({
+                id: analysisId!,
+                customerId,
+                memberId: session!.user.id,
+                originalImageUrl: imageUrl!,
+                resultImageUrl,
+                result: analysis,
+              });
+
               navigate(`/analysis/${analysisId}`, {
                 state: { analysis, resultImageUrl },
                 replace: true,
