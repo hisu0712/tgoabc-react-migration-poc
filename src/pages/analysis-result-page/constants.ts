@@ -31,7 +31,7 @@ export const UNDERTONE = {
   },
 } as const;
 
-type PersonalTypeInfo = {
+export type AnalysisPreset = {
   title: string;
   engTitle: string;
   tags: string[];
@@ -43,7 +43,20 @@ type PersonalTypeInfo = {
   descriptionClassName?: string;
 };
 
-export const PERSONAL_TYPE_INFO: Record<string, PersonalTypeInfo> = {
+export type Analysis = {
+  personalType: string;
+  axis: {
+    chroma: { value: number; min: number; max: number };
+    hue: { value: number; min: number; max: number };
+    lightness: { value: number; min: number; max: number };
+  };
+  cheek: { avgRgb: string };
+  hair: { avgRgb: string };
+  pupil: { avgRgb: string };
+  skin: { skinCode: string[]; skinTone: "cool" | "warm" | "neutral" };
+};
+
+export const ANALYSIS_PRESET: Record<string, AnalysisPreset> = {
   springBright: {
     title: "봄 브라이트",
     engTitle: "SPRING BRIGHT",
