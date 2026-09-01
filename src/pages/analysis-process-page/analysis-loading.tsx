@@ -1,7 +1,7 @@
 import loadingImage from "@/assets/loading_jaemi.gif";
 import { Layout } from "@/components/layout/global-layout";
 
-export default function AnalysisResultLoading() {
+export default function AnalysisLoading() {
   return (
     <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] px-7">
       <div className="flex flex-1 flex-col gap-[10vh] pt-[10vh]">

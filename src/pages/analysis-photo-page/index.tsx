@@ -7,7 +7,7 @@ import type { Image } from "@/type";
 import { toast } from "sonner";
 import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";
-import { Navigate, useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 
@@ -42,8 +42,6 @@ export default function AnalysisPhotoPage() {
     return () => clearTimeout(timer);
   }, [showIntro, count]);
 
-  // 추후 customerId가 없는 간편분석 구현 시에 변경 예정
-  if (!customerId) return <Navigate to="/" />;
   if (showIntro) return <AnalysisPhotoIntro />;
 
   const handleSelectImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,19 +68,23 @@ export default function AnalysisPhotoPage() {
 
     const analysisId = crypto.randomUUID();
     const fileExtension = faceImage.file.name.split(".").pop() || "webp";
+    const ownerId = customerId ?? session!.user.id; // customerId가 없으면 userId로 fallback
 
     uploadImage(
       {
         file: faceImage.file,
-        filePath: `${session!.user.id}/analysis/${analysisId}/original.${fileExtension}`,
+        filePath: `${ownerId}/analysis/${analysisId}/original.${fileExtension}`,
       },
       {
         onSuccess: (imageUrl) => {
           URL.revokeObjectURL(faceImage.previewUrl);
-          navigate(
-            `/analysis/${analysisId}?${new URLSearchParams({ customerId, imageUrl }).toString()}`,
-            { replace: true },
-          );
+
+          const params = new URLSearchParams({ imageUrl });
+          if (customerId) params.set("customerId", customerId);
+
+          navigate(`/analysis/${analysisId}/process?${params.toString()}`, {
+            replace: true,
+          });
         },
       },
     );

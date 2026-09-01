@@ -24,6 +24,7 @@ import { PortalInfoPage } from "./pages/portal-info-page";
 import SettingsPage from "./pages/settings-page";
 import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./lib/constants";
 import PortalSettingsPage from "./pages/portal-settings-page";
+import AnalysisProcessPage from "./pages/analysis-process-page";
 
 export default function RootRoute() {
   return (
@@ -69,7 +70,11 @@ export default function RootRoute() {
 
         {/* /analysis/photo?customerId=123 */}
         <Route path="/analysis/photo" element={<AnalysisPhotoPage />} />
-        {/* /analysis/:analysisId?customerId=123&imageUrl=123 */}
+        {/* /analysis/:analysisId/prcess?customerId=123&imageUrl=123 */}
+        <Route
+          path="/analysis/:analysisId/process"
+          element={<AnalysisProcessPage />}
+        />
         <Route path="/analysis/:analysisId" element={<AnalysisResultPage />} />
       </Route>
 

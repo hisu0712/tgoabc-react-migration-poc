@@ -1,6 +1,5 @@
 import HeaderNav from "@/components/header-nav";
-import AnalysisResultLoading from "./analysis-result-loading";
-import { Navigate, useParams, useSearchParams } from "react-router";
+import { Navigate, useLocation, useParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
 import { DropletIcon, EyeIcon, Share2Icon, WavesIcon } from "lucide-react";
 import BottomNav from "@/components/layout/bottom-nav";
@@ -8,90 +7,35 @@ import { MEMBER_NAV_ITEMS } from "@/lib/constants";
 import { ANALYSIS_PRESET, type Analysis } from "./constants";
 import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
-import analysisScriptUrl from "./personal-analysis.iife.js?url";
-import analysisStyleUrl from "./personal-analysis.css?url";
-import { useEffect, useRef, useState } from "react";
 import { GuideLabel } from "./components/guide-label";
 import TypeIntroSection from "./components/type-intro-section";
 import SkinToneSection from "./components/skin-tone-section";
 import FoundationSection from "./components/foundation-section";
 
-const ANALYSIS_ELEMENT_NAME = "skin-analysis";
-const ANALYSIS_EVENT = "personal-analysis-complete";
+type LocationState = {
+  analysis: Analysis;
+  resultImageUrl: string;
+};
 
 export default function AnalysisResultPage() {
   const { analysisId } = useParams();
-  const [searchParams] = useSearchParams();
-  const customerId = searchParams.get("customerId");
-  const imageUrl = searchParams.get("imageUrl");
+  const location = useLocation();
+  // {이쪽에 분석 기록 페이지에서 접근시 처리}
+  const { analysis, resultImageUrl } = (location.state ??
+    {}) as Partial<LocationState>;
 
-  const [isModuleLoaded, setIsModuleLoaded] = useState(
-    !!customElements.get(ANALYSIS_ELEMENT_NAME),
-  );
-  const [isAnalysisComplete, setIsAnalysisComplete] = useState(false);
-  const [analysis, setAnalysis] = useState<Analysis | null>(null);
-  const analysisRef = useRef<HTMLElement>(null);
   const { ref, inView } = useInView({
     initialInView: true,
     rootMargin: "-100px 0px 0px 0px",
   });
 
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = analysisStyleUrl;
-    document.head.appendChild(link);
-
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (customElements.get(ANALYSIS_ELEMENT_NAME)) return; // 이전에 이 페이지 왔다 가서 이미 등록된 경우 → 스크립트 새로 안 만들고 끝
-
-    const script = document.createElement("script");
-    script.src = analysisScriptUrl;
-    script.onload = () => setIsModuleLoaded(true);
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
-  useEffect(() => {
-    const el = analysisRef.current;
-    if (!el) return;
-
-    const handleComplete = (event: Event) => {
-      const detail = (event as CustomEvent<Analysis>).detail;
-      setAnalysis(detail);
-      setIsAnalysisComplete(true);
-    };
-
-    el.addEventListener(ANALYSIS_EVENT, handleComplete);
-    return () => {
-      el.removeEventListener(ANALYSIS_EVENT, handleComplete);
-    };
-  }, [isModuleLoaded]);
-
-  if (!analysisId || !customerId || !imageUrl) return <Navigate to={"/"} />;
-  if (!analysis)
-    return (
-      <div className="fixed inset-0 z-50">
-        <AnalysisResultLoading />
-        <skin-analysis
-          aria-hidden
-          ref={analysisRef}
-          image-src={imageUrl}
-        ></skin-analysis>
-      </div>
-    );
+  if (!analysisId || !analysis || !resultImageUrl) return <Navigate to={"/"} />;
 
   // 퍼스널컬러 타입에 맞는 결과 가져오기
   const analysisPreset =
     ANALYSIS_PRESET[analysis.personalType as keyof typeof ANALYSIS_PRESET];
+
+  if (!analysisPreset) return <Navigate to={"/"} />;
 
   // 결과: 신체색
   const bodyColors = [
@@ -137,12 +81,11 @@ export default function AnalysisResultPage() {
         <div className="mb-4 flex flex-col gap-4 md:flex-row">
           <div className="relative w-full overflow-hidden rounded-xl outline-3 outline-white">
             <div className="aspect-[5/6] w-full">
-              {isModuleLoaded && (
-                <skin-analysis
-                  ref={analysisRef}
-                  image-src={imageUrl}
-                ></skin-analysis>
-              )}
+              <img
+                src={resultImageUrl}
+                alt="분석 결과 이미지"
+                className="h-full w-full object-cover"
+              ></img>
             </div>
 
             <div className="absolute right-0 bottom-0 left-0 flex justify-between bg-white/80 px-4 py-3">
