@@ -74,7 +74,7 @@ export default function AnalysisPhotoPage() {
     let ownerId: string;
 
     if (activeRole === "member") {
-      ownerId = customerId;
+      ownerId = customerId ?? session!.user.id;
     } else if (activeRole === "customer") {
       ownerId = session!.user.id;
     } else {
