@@ -1,4 +1,4 @@
-import { Card, DesignerListCard } from "@/components/card";
+import { Card, DesignerCard } from "@/components/card";
 import HeaderNav from "@/components/header-nav";
 import useDesignersData from "@/hooks/queries/use-designers-data";
 import {
@@ -37,7 +37,7 @@ export default function DesignerPage() {
           <Loader />
         ) : data?.length ? (
           data.map((designer) => (
-            <DesignerListCard
+            <DesignerCard
               key={designer.id}
               name={designer.name}
               phone={designer.phone}

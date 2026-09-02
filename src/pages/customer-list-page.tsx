@@ -1,4 +1,4 @@
-import { CustomerListCard, LinkCard } from "@/components/card";
+import { CustomerCard, LinkCard } from "@/components/card";
 import HeaderNav from "@/components/header-nav";
 import { Input } from "@/components/ui/input";
 import { useInView } from "react-intersection-observer";
@@ -115,7 +115,7 @@ export default function CustomerListPage() {
         ) : data?.pages[0]?.length ? (
           data.pages.map((page) =>
             page.map((customer) => (
-              <CustomerListCard
+              <CustomerCard
                 key={customer.id}
                 id={customer.id}
                 name={customer.name}

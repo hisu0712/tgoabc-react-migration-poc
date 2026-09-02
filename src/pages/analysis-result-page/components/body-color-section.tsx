@@ -34,7 +34,7 @@ export default function BodyColorSection({
             src={resultImageUrl}
             alt="분석 결과 이미지"
             className="h-full w-full object-cover"
-          ></img>
+          />
         </div>
 
         <div className="absolute right-0 bottom-0 left-0 flex justify-between bg-white/80 px-4 py-3">

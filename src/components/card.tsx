@@ -39,7 +39,7 @@ function LinkCard({
   );
 }
 
-function CustomerListCard({
+function CustomerCard({
   id,
   name,
   email,
@@ -67,7 +67,7 @@ function CustomerListCard({
   );
 }
 
-function DesignerListCard({
+function DesignerCard({
   name,
   phone,
   ...props
@@ -91,4 +91,4 @@ function DesignerListCard({
   );
 }
 
-export { Card, LinkCard, CustomerListCard, DesignerListCard };
+export { Card, LinkCard, CustomerCard, DesignerCard };

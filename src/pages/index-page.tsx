@@ -10,7 +10,7 @@ import icoHomeMsg from "@/assets/memberhome_msg.png";
 import icoHomeScanner from "@/assets/memberhome_scanner.png";
 import icoHomeUse from "@/assets/memberhome_use.png";
 import icoThunder from "@/assets/thunder.png";
-import { Card, CustomerListCard, LinkCard } from "@/components/card";
+import { Card, CustomerCard, LinkCard } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import {
@@ -178,7 +178,7 @@ export default function IndexPage() {
         <CarouselContent>
           {/* {recentCustomers.map((customer) => (
             <CarouselItem key={customer.id} className="basis-auto pl-2">
-              <CustomerListCard
+              <CustomerCard
                 id={customer.id}
                 name={customer.name}
                 email={customer.phone}
