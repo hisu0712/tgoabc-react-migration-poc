@@ -21,9 +21,11 @@ import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { useVerifyOtp } from "@/hooks/mutations/auth/use-verify-otp";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/password-input";
+import { useSetActiveRole } from "@/store/active-role";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
+  const setActiveRole = useSetActiveRole();
 
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -63,7 +65,10 @@ export default function SignUpPage() {
 
   const { mutate: completeMemberSignUp, isPending: isCompleteMemberSignUp } =
     useCompleteMemberSignUp({
-      onSuccess: () => navigate("/sign-up/complete", { replace: true }),
+      onSuccess: () => {
+        setActiveRole("member");
+        navigate("/sign-up/complete", { replace: true });
+      },
       onError: (error) => {
         const message = generateErrorMessage(error);
         toast.error(message, {

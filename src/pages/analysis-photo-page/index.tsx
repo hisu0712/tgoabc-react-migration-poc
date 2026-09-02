@@ -10,9 +10,11 @@ import { useSession } from "@/store/session";
 import { useNavigate, useSearchParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
+import { useActiveRole } from "@/store/active-role";
 
 export default function AnalysisPhotoPage() {
   const session = useSession();
+  const activeRole = useActiveRole();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get("customerId");
@@ -68,7 +70,20 @@ export default function AnalysisPhotoPage() {
 
     const analysisId = crypto.randomUUID();
     const fileExtension = faceImage.file.name.split(".").pop() || "webp";
-    const ownerId = customerId ?? session!.user.id; // customerId가 없으면 userId로 fallback
+
+    let ownerId: string;
+
+    if (activeRole === "member") {
+      ownerId = customerId;
+    } else if (activeRole === "customer") {
+      ownerId = session!.user.id;
+    } else {
+      toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
+        position: "top-center",
+      });
+      navigate("/", { replace: true });
+      return;
+    }
 
     uploadImage(
       {

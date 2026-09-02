@@ -25,10 +25,13 @@ import SettingsPage from "./pages/settings-page";
 import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./lib/constants";
 import PortalSettingsPage from "./pages/portal-settings-page";
 import AnalysisProcessPage from "./pages/analysis-process-page";
+import AnalysisListPage from "./pages/analysis-list-page";
+import UserOnlyLayout from "./components/layout/user-only-layout";
 
 export default function RootRoute() {
   return (
     <Routes>
+      {/* GuestOnlyLayout */}
       <Route element={<GuestOnlyLayout />}>
         <Route path="/sign-in" element={<SignInPage />} />
         <Route element={<GlobalLayout />}>
@@ -40,6 +43,7 @@ export default function RootRoute() {
         </Route>
       </Route>
 
+      {/* MemberOnlyLayout */}
       <Route element={<MemberOnlyLayout />}>
         <Route element={<GlobalLayout />}>
           <Route path="/sign-up/complete" element={<SignUpCompletePage />} />
@@ -67,27 +71,32 @@ export default function RootRoute() {
           <Route path="/designers" element={<DesignerPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
-
-        {/* /analysis/photo?customerId=123 */}
-        <Route path="/analysis/photo" element={<AnalysisPhotoPage />} />
-        {/* /analysis/:analysisId/prcess?customerId=123&imageUrl=123 */}
-        <Route
-          path="/analysis/:analysisId/process"
-          element={<AnalysisProcessPage />}
-        />
-        <Route path="/analysis/:analysisId" element={<AnalysisResultPage />} />
       </Route>
 
+      {/* CustomerOnlyLayout */}
       <Route element={<CustomerOnlyLayout />}>
         <Route
           element={<GlobalLayoutWithBottomNav navItems={CUSTOMER_NAV_ITEMS} />}
         >
           <Route path="/portal" element={<PortalPage />} />
           <Route path="/portal-settings" element={<PortalSettingsPage />} />
+          <Route path="/portal-analysis/list" element={<AnalysisListPage />} />
         </Route>
         <Route element={<GlobalLayout />}>
           <Route path="/portal-info" element={<PortalInfoPage />} />
         </Route>
+      </Route>
+
+      {/* UserOnlyLayout */}
+      <Route element={<UserOnlyLayout />}>
+        {/* /analysis/photo?customerId=123 */}
+        <Route path="/analysis/photo" element={<AnalysisPhotoPage />} />{" "}
+        {/* /analysis/:analysisId/prcess?customerId=123&imageUrl=123 */}
+        <Route
+          path="/analysis/:analysisId/process"
+          element={<AnalysisProcessPage />}
+        />
+        <Route path="/analysis/:analysisId" element={<AnalysisResultPage />} />
       </Route>
 
       {/* 임시 주석 */}

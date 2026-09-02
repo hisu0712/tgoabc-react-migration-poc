@@ -1,3 +1,4 @@
+import type { PersonalType, PersonalTypeLabel } from "@/analysis-type";
 import typeImageSpringBright from "@/assets/personal-springBright.png";
 import typeImageSpringLight from "@/assets/personal-springLight.png";
 import typeImageSummerLight from "@/assets/personal-summerLight.png";
@@ -6,6 +7,8 @@ import typeImageAutumnMute from "@/assets/personal-autumnMute.png";
 import typeImageAutumnDark from "@/assets/personal-autumnDark.png";
 import typeImageWinterBright from "@/assets/personal-winterBright.png";
 import typeImageWinterDark from "@/assets/personal-winterDark.png";
+
+export type Undertone = "cool" | "warm" | "neutral";
 
 export const UNDERTONE = {
   neutral: {
@@ -29,22 +32,10 @@ export const UNDERTONE = {
     desc: "따뜻하게",
     hex: "#FFEDB1",
   },
-} as const;
-
-export type AnalysisPreset = {
-  title: string;
-  engTitle: string;
-  tags: string[];
-  desc: string;
-  image: string;
-  axisAvg: { hue: number; lightness: number; chroma: number };
-  palette: { bc1: string; bc2: string; tag: string };
-  cardClassName?: string;
-  descriptionClassName?: string;
-};
+} as const satisfies Record<Undertone, Record<string, string>>;
 
 export type Analysis = {
-  personalType: string;
+  personalType: PersonalType;
   axis: {
     chroma: { value: number; min: number; max: number };
     hue: { value: number; min: number; max: number };
@@ -53,10 +44,22 @@ export type Analysis = {
   cheek: { avgRgb: string };
   hair: { avgRgb: string };
   pupil: { avgRgb: string };
-  skin: { skinCode: string[]; skinTone: "cool" | "warm" | "neutral" };
+  skin: { skinCode: string[]; skinTone: Undertone };
 };
 
-export const ANALYSIS_PRESET: Record<string, AnalysisPreset> = {
+export type AnalysisPreset = {
+  title: PersonalTypeLabel;
+  engTitle: string;
+  tags: readonly string[];
+  desc: string;
+  image: string;
+  axisAvg: { hue: number; lightness: number; chroma: number };
+  palette: { bc1: string; bc2: string; tag: string };
+  cardClassName?: string;
+  descriptionClassName?: string;
+};
+
+export const ANALYSIS_PRESET = {
   springBright: {
     title: "봄 브라이트",
     engTitle: "SPRING BRIGHT",
@@ -135,7 +138,7 @@ export const ANALYSIS_PRESET: Record<string, AnalysisPreset> = {
     palette: { bc1: "#3F3A56", bc2: "#705774", tag: "#615770" },
     descriptionClassName: "text-white",
   },
-};
+} as const satisfies Record<PersonalType, AnalysisPreset>;
 
 export const SKIN_CODE_MAP: Record<
   string,

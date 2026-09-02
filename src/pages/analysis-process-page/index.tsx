@@ -13,6 +13,7 @@ import analysisStyleUrl from "./personal-analysis.css?url"; // module
 import type { Analysis } from "../analysis-result-page/constants";
 import useCreateAnalysis from "@/hooks/mutations/analysis/use-create-analysis";
 import { toast } from "sonner";
+import { useActiveRole } from "@/store/active-role";
 
 const ANALYSIS_ELEMENT_NAME = "skin-analysis";
 const ANALYSIS_EVENT = "personal-analysis-complete";
@@ -46,6 +47,7 @@ function captureResultImage(el: HTMLElement): Promise<File> {
 export default function AnalysisProcessPage() {
   const navigate = useNavigate();
   const session = useSession();
+  const activeRole = useActiveRole();
   const { analysisId } = useParams();
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get("customerId");
@@ -67,7 +69,7 @@ export default function AnalysisProcessPage() {
 
   const { mutate: createAnalysis } = useCreateAnalysis({
     onError: () => {
-      console.error("분석 결과 저장에 실패했습니다.");
+      toast.error("분석 결과 저장에 실패했습니다.", { position: "top-center" });
     },
   });
 
@@ -88,6 +90,12 @@ export default function AnalysisProcessPage() {
     const script = document.createElement("script");
     script.src = analysisScriptUrl;
     script.onload = () => setIsModuleLoaded(true);
+    script.onerror = () => {
+      toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
+        position: "top-center",
+      });
+      navigate("/", { replace: true });
+    };
     document.body.appendChild(script);
 
     return () => {
@@ -102,9 +110,28 @@ export default function AnalysisProcessPage() {
     const handleComplete = async (event: Event) => {
       const analysis = (event as CustomEvent<Analysis>).detail;
 
+      let ownerId: string;
+      let payloadCustomerId: string | null;
+      let payloadMemberId: string | null;
+
+      if (activeRole === "member") {
+        ownerId = customerId ?? session!.user.id;
+        payloadCustomerId = customerId;
+        payloadMemberId = session!.user.id;
+      } else if (activeRole === "customer") {
+        ownerId = session!.user.id;
+        payloadCustomerId = session!.user.id;
+        payloadMemberId = null;
+      } else {
+        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
+        navigate("/", { replace: true });
+        return;
+      }
+
       try {
         const resultImageFile = await captureResultImage(el);
-        const ownerId = customerId ?? session!.user.id; // customerId가 없으면 userId로 fallback
 
         uploadResultImage(
           {
@@ -115,8 +142,8 @@ export default function AnalysisProcessPage() {
             onSuccess: (resultImageUrl) => {
               createAnalysis({
                 id: analysisId!,
-                customerId,
-                memberId: session!.user.id,
+                customerId: payloadCustomerId,
+                memberId: payloadMemberId,
                 originalImageUrl: imageUrl!,
                 resultImageUrl,
                 result: analysis,
@@ -131,6 +158,10 @@ export default function AnalysisProcessPage() {
         );
       } catch (error) {
         console.error("결과 이미지 캡처 실패", error);
+        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
+        navigate("/", { replace: true });
       }
     };
 

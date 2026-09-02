@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import {
   type CustomerSignInFormValues,
@@ -21,9 +20,10 @@ import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { generateErrorMessage } from "@/lib/error";
 import { useState } from "react";
 import { TabsContent } from "@/components/ui/tabs";
+import { useSetActiveRole } from "@/store/active-role";
 
 export default function SignInCustomerForm() {
-  const navigate = useNavigate();
+  const setActiveRole = useSetActiveRole();
 
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -48,7 +48,7 @@ export default function SignInCustomerForm() {
     mutate: completeCustomerSignIn,
     isPending: isCompleteCustomerSignInPending,
   } = useCompleteCustomerSignIn({
-    onSuccess: () => navigate("/portal", { replace: true }),
+    onSuccess: () => setActiveRole("customer"),
     onError: async (error) => {
       if (error instanceof FunctionsHttpError) {
         const body = await error.context.json().catch(() => null);

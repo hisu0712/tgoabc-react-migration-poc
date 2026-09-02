@@ -1,7 +1,6 @@
-import { Card } from "@/components/card";
+import { Card, LinkCard } from "@/components/card";
 import { ChevronRight, FileText, MessageCircle, Store } from "lucide-react";
 import { Link } from "react-router";
-import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import HeaderHomeNav from "@/components/header-home-nav";
 import { useSession } from "@/store/session";
@@ -54,7 +53,11 @@ export default function PortalPage() {
       </div>
 
       <div className="mb-7 grid grid-cols-2 gap-2">
-        <Card variant={"feature2"} className="pr-0 pb-0">
+        <LinkCard
+          to={"/portal-analysis/photo"}
+          variant={"feature2"}
+          className="pr-0 pb-0"
+        >
           <div>
             <div className="mb-2 text-xl font-semibold tracking-tight">
               퍼스널컬러 분석
@@ -72,10 +75,13 @@ export default function PortalPage() {
               alt="퍼스널컬러 분석 이미지"
             />
           </div>
-        </Card>
+        </LinkCard>
 
         <div className="grid grid-rows-2 gap-2">
-          <Card className="bg-feature-2/10 flex flex-col items-center justify-center gap-2 shadow-none">
+          <LinkCard
+            to={"/portal-analysis/list"}
+            className="bg-feature-2/10 flex flex-col items-center justify-center gap-2 shadow-none"
+          >
             <FileText
               className="text-feature-1 fill-feature-1/10 size-6"
               strokeWidth={1.3}
@@ -83,7 +89,7 @@ export default function PortalPage() {
             <span className="text-feature-2 text-lg font-semibold">
               퍼스널컬러 기록
             </span>
-          </Card>
+          </LinkCard>
           <Card className="bg-feature-1/10 flex flex-col items-center justify-center gap-2 shadow-none">
             <FileText
               className="text-feature-1 fill-feature-1/10 size-6"

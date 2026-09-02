@@ -3,7 +3,7 @@ import {
   type SignInWithPasswordFormValues,
 } from "@/schemas/auth.schema";
 import { useSignInWithPassword } from "@/hooks/mutations/auth/use-sign-in-with-password";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateErrorMessage } from "@/lib/error";
@@ -21,11 +21,12 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/password-input";
+import { useSetActiveRole } from "@/store/active-role";
 
 const REMEMBERED_ID_KEY = "rememberedId";
 
 export default function SignInMemberForm() {
-  const navigate = useNavigate();
+  const setActiveRole = useSetActiveRole();
   const [rememberId, setRememberId] = useState(false);
 
   const { mutate: signInWithPassword, isPending: isSignInWithPasswordPending } =
@@ -36,7 +37,7 @@ export default function SignInMemberForm() {
         } else {
           localStorage.removeItem(REMEMBERED_ID_KEY);
         }
-        navigate("/", { replace: true });
+        setActiveRole("member");
       },
       onError: (error) => {
         const message = generateErrorMessage(error);

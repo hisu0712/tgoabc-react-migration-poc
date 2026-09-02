@@ -12,6 +12,9 @@ import TypeIntroSection from "./components/type-intro-section";
 import SkinToneSection from "./components/skin-tone-section";
 import FoundationSection from "./components/foundation-section";
 import BodyColorSection from "./components/body-color-section";
+import useAnalysisData from "@/hooks/queries/use-analysis-data";
+import GlobalLoader from "@/components/global-loader";
+import { toast } from "sonner";
 
 type LocationState = {
   analysis: Analysis;
@@ -21,22 +24,39 @@ type LocationState = {
 export default function AnalysisResultPage() {
   const { analysisId } = useParams();
   const location = useLocation();
-  // {이쪽에 분석 기록 페이지에서 접근시 처리}
-  const { analysis, resultImageUrl } = (location.state ??
-    {}) as Partial<LocationState>;
-
   const { ref, inView } = useInView({
     initialInView: true,
     rootMargin: "-100px 0px 0px 0px",
   });
 
-  if (!analysisId || !analysis || !resultImageUrl) return <Navigate to={"/"} />;
+  const { analysis: stateAnalysis, resultImageUrl: stateResultImageUrl } =
+    (location.state ?? {}) as Partial<LocationState>;
+
+  // location.state가 없을 때만 DB 조회 (기록 페이지 등에서 진입한 경우)
+  const shouldFetch = !stateAnalysis;
+  const { data, isLoading, isError } = useAnalysisData(
+    shouldFetch ? analysisId : undefined,
+  );
+
+  const analysis = stateAnalysis ?? (data?.result as Analysis | undefined);
+  const resultImageUrl = stateResultImageUrl ?? data?.result_image_url;
+
+  if (!analysisId) return <Navigate to={"/"} />;
+  if (shouldFetch && isLoading) return <GlobalLoader />;
+  if (!analysis || !resultImageUrl || isError) {
+    toast.error("분석 결과를 불러오지 못했습니다.", { position: "top-center" });
+    return <Navigate to={"/"} />;
+  }
 
   // 퍼스널컬러 타입에 맞는 결과 가져오기
-  const analysisPreset =
-    ANALYSIS_PRESET[analysis.personalType as keyof typeof ANALYSIS_PRESET];
+  const analysisPreset = ANALYSIS_PRESET[analysis.personalType];
 
-  if (!analysisPreset) return <Navigate to={"/"} />;
+  if (!analysisPreset) {
+    toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
+      position: "top-center",
+    });
+    return <Navigate to={"/"} />;
+  }
 
   return (
     <div
@@ -58,7 +78,7 @@ export default function AnalysisResultPage() {
 
       <div ref={ref} aria-hidden className="h-px"></div>
 
-      <Layout className="bg-[#FFFAF6] pt-12 pb-30 -mt-0.5">
+      <Layout className="-mt-0.5 bg-[#FFFAF6] pt-12 pb-30">
         <p className="mb-4 text-xl font-bold">나의 신체색 분석 결과</p>
 
         <BodyColorSection analysis={analysis} resultImageUrl={resultImageUrl} />
