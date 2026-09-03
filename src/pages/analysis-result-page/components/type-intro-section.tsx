@@ -3,17 +3,19 @@ import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
 import type { AnalysisPreset } from "../constants";
+import { PERSONAL_TYPE_LABEL, type PersonalType } from "@/lib/analysis";
 
 export default function TypeIntroSection({
+  personalType,
   analysisPreset,
 }: {
+  personalType: PersonalType;
   analysisPreset: AnalysisPreset;
 }) {
   const {
     palette,
     image,
     tags,
-    title,
     engTitle,
     cardClassName,
     desc,
@@ -31,10 +33,12 @@ export default function TypeIntroSection({
           <img
             className="md: absolute -right-1 bottom-0 block h-[calc(100%+20px)] md:hidden"
             src={image}
-            alt={`${title} 타입 이미지`}
+            alt={`${PERSONAL_TYPE_LABEL[personalType]} 타입 이미지`}
           />
           <span className="font-medium">{engTitle}</span>
-          <h2 className="text-3xl font-bold">{title}</h2>
+          <h2 className="text-3xl font-bold">
+            {PERSONAL_TYPE_LABEL[personalType]}
+          </h2>
           <button
             type="button"
             className="flex w-max items-center gap-0.5 text-sm opacity-70"
@@ -47,7 +51,7 @@ export default function TypeIntroSection({
         <img
           className="absolute -right-1 bottom-0 hidden h-full md:block"
           src={image}
-          alt={`${title} 타입 이미지`}
+          alt={`${PERSONAL_TYPE_LABEL[personalType]} 타입 이미지`}
         />
 
         <Card

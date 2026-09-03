@@ -1,4 +1,4 @@
-import type { PersonalType, PersonalTypeLabel } from "@/analysis-type";
+import type { PersonalType, PersonalTypeLabel } from "@/lib/analysis";
 import typeImageSpringBright from "@/assets/personal-springBright.png";
 import typeImageSpringLight from "@/assets/personal-springLight.png";
 import typeImageSummerLight from "@/assets/personal-summerLight.png";
@@ -48,7 +48,6 @@ export type Analysis = {
 };
 
 export type AnalysisPreset = {
-  title: PersonalTypeLabel;
   engTitle: string;
   tags: readonly string[];
   desc: string;
@@ -61,7 +60,6 @@ export type AnalysisPreset = {
 
 export const ANALYSIS_PRESET = {
   springBright: {
-    title: "봄 브라이트",
     engTitle: "SPRING BRIGHT",
     tags: ["생기넘치는", "발랄한", "선명한"],
     desc: "밝고 생기 넘치는 인상이 선명하게 느껴지며,\n화사하고 발랄한 분위기가 돋보이는 타입이에요.",
@@ -71,7 +69,6 @@ export const ANALYSIS_PRESET = {
     cardClassName: "bg-white/40",
   },
   springLight: {
-    title: "봄 라이트",
     engTitle: "SPRING LIGHT",
     tags: ["여리여리한", "부드러운", "따뜻한"],
     desc: "순하고 여리여리한 인상이 부드럽게 느껴지며,\n단아하고 청순한 분위기가 돋보이는 타입이에요.",
@@ -81,7 +78,6 @@ export const ANALYSIS_PRESET = {
     cardClassName: "bg-white/40",
   },
   summerLight: {
-    title: "여름 라이트",
     engTitle: "SUMMER LIGHT",
     tags: ["시원한", "깨끗한", "은은한"],
     desc: "맑고 깨끗한 인상이 은은하게 느껴지며,\n시원하고 청량한 분위기가 돋보이는 타입이에요.",
@@ -90,7 +86,6 @@ export const ANALYSIS_PRESET = {
     palette: { bc1: "#9CCBC1", bc2: "#C8C5F2", tag: "#AFBFE3" },
   },
   summerMute: {
-    title: "여름 뮤트",
     engTitle: "SUMMER MUTE",
     tags: ["단아한", "지적인", "우아한"],
     desc: "차분하고 단아한 인상이 부드럽게 느껴지며,\n우아하고 세련된 분위기가 돋보이는 타입이에요.",
@@ -99,7 +94,6 @@ export const ANALYSIS_PRESET = {
     palette: { bc1: "#B9ACCA", bc2: "#E3C3DC", tag: "#B9ACCA" },
   },
   autumnMute: {
-    title: "가을 뮤트",
     engTitle: "AUTUMN MUTE",
     tags: ["차분한", "편안한", "분위기 있는"],
     desc: "따뜻하고 부드러운 인상이 편안하게 느껴지며,\n그윽하고 차분한 분위기가 돋보이는 타입이에요.",
@@ -109,7 +103,6 @@ export const ANALYSIS_PRESET = {
     descriptionClassName: "text-white",
   },
   autumnDark: {
-    title: "가을 다크",
     engTitle: "AUTUMN DARK",
     tags: ["클래식", "성숙한", "그윽한"],
     desc: "깊고 그윽한 인상이 무게감 있게 느껴지며,\n클래식하고 고급스러운 분위기가 돋보이는 타입이에요.",
@@ -119,7 +112,6 @@ export const ANALYSIS_PRESET = {
     descriptionClassName: "text-white",
   },
   winterBright: {
-    title: "겨울 브라이트",
     engTitle: "WINTER BRIGHT",
     tags: ["도도한", "시크한", "화려한"],
     desc: "선명하고 맑은 인상이 또렷하게 느껴지며,\n화려하고 드라마틱한 분위기가 돋보이는 타입이에요.",
@@ -129,7 +121,6 @@ export const ANALYSIS_PRESET = {
     descriptionClassName: "text-white",
   },
   winterDark: {
-    title: "겨울 다크",
     engTitle: "WINTER DARK",
     tags: ["도시적인", "세련된", "과감한"],
     desc: "깊고 강렬한 인상이 차갑게 느껴지며,\n시크하고 카리스마 있는 분위기가 돋보이는 타입이에요.",

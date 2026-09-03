@@ -7,6 +7,7 @@ import {
   type Analysis,
   type AnalysisPreset,
 } from "../constants";
+import { PERSONAL_TYPE_LABEL } from "@/lib/analysis";
 
 export default function SkinToneSection({
   analysis,
@@ -18,7 +19,7 @@ export default function SkinToneSection({
   const axisBars = [
     {
       name: "hue",
-      typeTitle: analysisPreset.title,
+      typeTitle: PERSONAL_TYPE_LABEL[analysis.personalType],
       startLabel: "웜",
       endLabel: "쿨",
       value: analysis.axis.hue.value,
@@ -29,7 +30,7 @@ export default function SkinToneSection({
     },
     {
       name: "lightness",
-      typeTitle: analysisPreset.title,
+      typeTitle: PERSONAL_TYPE_LABEL[analysis.personalType],
       startLabel: "다크",
       endLabel: "라이트",
       value: analysis.axis.lightness.value,
@@ -40,7 +41,7 @@ export default function SkinToneSection({
     },
     {
       name: "chroma",
-      typeTitle: analysisPreset.title,
+      typeTitle: PERSONAL_TYPE_LABEL[analysis.personalType],
       startLabel: "탁함",
       endLabel: "맑음",
       value: analysis.axis.chroma.value,
@@ -58,7 +59,7 @@ export default function SkinToneSection({
         스킨톤 상세
       </GuideLabel>
       <p className="mb-11 leading-snug font-medium break-keep text-[#565656]">
-        {analysisPreset.title}에서 나타나는{" "}
+        {PERSONAL_TYPE_LABEL[analysis.personalType]}에서 나타나는{" "}
         {getHueAdjective(analysis.axis.hue.value)} 기운이 느껴지며,{" "}
         {getLightnessAdjective(analysis.axis.lightness.value)} 밝기와{" "}
         {getChromaAdjective(analysis.axis.chroma.value)} 색감이 확인돼요.

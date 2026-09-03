@@ -1,16 +1,28 @@
 import type { Database } from "./database.types";
+import type { Analysis } from "./pages/analysis-result-page/constants";
 
+// Database (Tables)
 export type MemberEntity = Database["public"]["Tables"]["member"]["Row"];
 export type ShopEntity = Database["public"]["Tables"]["shop"]["Row"];
 export type CustomerEntity = Database["public"]["Tables"]["customer"]["Row"];
 export type MemberCustomerMappingEntity =
   Database["public"]["Tables"]["member_customer_mapping"]["Row"];
 export type DesignerEntity = Database["public"]["Tables"]["designer"]["Row"];
+export type AnalysisEntity = Omit<
+  Database["public"]["Tables"]["analysis"]["Row"],
+  "result"
+> & {
+  result: Analysis;
+};
+
+// Database (enums)
+export type Gender = Database["public"]["Enums"]["gender"];
+
+// CustomerEntity
 export type CustomerWithDesigner = CustomerEntity & {
   // 디자이너 다 가지고 올지 id만 가져올지
   designer_id: number | null;
 };
-export type Gender = Database["public"]["Enums"]["gender"];
 
 export type UserType = "member" | "customer";
 

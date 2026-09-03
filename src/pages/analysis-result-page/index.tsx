@@ -74,7 +74,10 @@ export default function AnalysisResultPage() {
         rightSlot={<Share2Icon className="size-6" strokeWidth={1.8} />}
       />
 
-      <TypeIntroSection analysisPreset={analysisPreset} />
+      <TypeIntroSection
+        personalType={analysis.personalType}
+        analysisPreset={analysisPreset}
+      />
 
       <div ref={ref} aria-hidden className="h-px"></div>
 
