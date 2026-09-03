@@ -1,6 +1,7 @@
 import type { UserType } from "@/type";
 import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
+import { useSessionUserRoles } from "./session";
 
 const ACTIVE_ROLE_STORAGE_KEY = "activeRole";
 
@@ -37,7 +38,11 @@ const useActiveRoleStore = create(
 );
 
 export const useActiveRole = () => {
-  return useActiveRoleStore((store) => store.activeRole);
+  // localStorage raw 저장값이 아닌 roles로 검증된 값 반환
+  const activeRole = useActiveRoleStore((store) => store.activeRole);
+  const roles = useSessionUserRoles();
+
+  return activeRole && roles.includes(activeRole) ? activeRole : null;
 };
 
 export const useSetActiveRole = () => {

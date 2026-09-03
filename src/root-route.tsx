@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router";
+import { Route, Routes } from "react-router";
 import IndexPage from "./pages/index-page";
 import SignInPage from "./pages/sign-in-page";
 import SignUpPage from "./pages/sign-up-page";
@@ -27,6 +27,7 @@ import PortalSettingsPage from "./pages/portal-settings-page";
 import AnalysisProcessPage from "./pages/analysis-process-page";
 import AnalysisListPage from "./pages/analysis-list-page";
 import UserOnlyLayout from "./components/layout/user-only-layout";
+import FallbackRedirect from "./components/fallback-redirect";
 
 export default function RootRoute() {
   return (
@@ -99,8 +100,7 @@ export default function RootRoute() {
         <Route path="/analysis/:analysisId" element={<AnalysisResultPage />} />
       </Route>
 
-      {/* 임시 주석 */}
-      {/* <Route path="*" element={<Navigate to={"/"} />} /> */}
+      <Route path="*" element={<FallbackRedirect />} />
     </Routes>
   );
 }
