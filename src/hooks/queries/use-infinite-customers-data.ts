@@ -1,8 +1,8 @@
 import { fetchCustomersByMember } from "@/api/customer";
 import { QUERY_KEYS } from "@/lib/constants";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
-const PAGE_SIZE = 7;
+const PAGE_SIZE = 10;
 
 export default function useInfiniteCustomers({
   memberId,
@@ -41,7 +41,7 @@ export default function useInfiniteCustomers({
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage.length < PAGE_SIZE) return undefined; // 마지막 페이지 도달
+      if (lastPage.length < PAGE_SIZE) return undefined; // 마지막 페이지 도달 (undefined 반환하면 fetchNextPage 등 막힘)
       return allPages.length;
     },
     staleTime: Infinity, // 가져온 데이터를 React Query가 자동으로 stale 상태로 만들지X

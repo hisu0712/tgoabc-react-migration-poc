@@ -230,7 +230,7 @@ export async function fetchCustomerCountByMember(memberId: string) {
     .from("customer")
     .select("*, member_customer_mapping!inner(member_id)", {
       count: "exact", // PostgREST가 "총 몇 건 매치되는지"를 어떤 방식으로 셀지 정하는 옵션
-      head: true,
+      head: true, // HEAD 요청이라 행이 0개 반환되고, 개수는 응답 Content-Range 헤더에서만 옴 (body에 행X)
     })
     .eq("member_customer_mapping.member_id", memberId);
 

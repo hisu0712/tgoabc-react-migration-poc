@@ -37,10 +37,17 @@ export const QUERY_KEYS = {
   analysis: {
     all: ["analysis"],
     byId: (analysisId: string) => ["analysis", analysisId],
-    customerList: (customerId: string) => [
+    customerList: (customerId: string, personalType?: string) => [
       "analysis",
       "customerList",
       customerId,
+      personalType,
+    ],
+    customerCount: (customerId: string, personalType?: string) => [
+      "analysis",
+      "count",
+      customerId,
+      personalType,
     ],
   },
 };

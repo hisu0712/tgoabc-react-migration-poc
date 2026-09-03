@@ -30,12 +30,17 @@ export default function CustomerListPage() {
   const { data: customerCount } = useCustomerCount(session!.user.id);
   const { data: designers } = useDesignersData(session!.user.id);
 
-  const { data, error, isPending, fetchNextPage, isFetchingNextPage } =
-    useInfiniteCustomers({
-      memberId: session?.user.id,
-      keyword: searchKeyword,
-      designerId: designerId === "all" ? undefined : Number(designerId),
-    });
+  const {
+    data: customers,
+    isError,
+    isPending,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useInfiniteCustomers({
+    memberId: session?.user.id,
+    keyword: searchKeyword,
+    designerId: designerId === "all" ? undefined : Number(designerId),
+  });
 
   useEffect(() => {
     // 스크롤이 하단에 닿았을 때 다음페이지 호출
@@ -50,7 +55,7 @@ export default function CustomerListPage() {
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  if (error) return <Navigate to={"/"} />;
+  if (isError) return <Navigate to={"/"} />;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,20 +117,21 @@ export default function CustomerListPage() {
       <div className="flex flex-col gap-2">
         {isPending ? (
           <Loader />
-        ) : data?.pages[0]?.length ? (
-          data.pages.map((page) =>
-            page.map((customer) => (
+        ) : customers?.pages[0].length ? (
+          customers.pages.map((page) =>
+            page.map((c) => (
               <CustomerCard
-                key={customer.id}
-                id={customer.id}
-                name={customer.name}
-                email={customer.email}
+                key={c.id}
+                id={c.id}
+                name={c.name}
+                email={c.email}
               />
             )),
           )
         ) : (
           <EmptyContent content="아직 등록된 고객이 없습니다." />
         )}
+
         {isFetchingNextPage && <Loader />}
         <div className="mt-30" ref={ref}></div>
       </div>
