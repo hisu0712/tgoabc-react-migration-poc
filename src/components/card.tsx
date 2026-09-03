@@ -53,7 +53,7 @@ function CustomerCard({
 }: {
   id: string;
   name: string;
-  email: string;
+  email?: string;
 }) {
   return (
     <LinkCard
@@ -66,7 +66,7 @@ function CustomerCard({
         </div>
         <div className="flex gap-0.5 text-lg">
           <span>{name}</span>
-          <span>({email.split("@")[0].slice(0, 4)})</span>
+          {email && <span>({email.split("@")[0].slice(0, 4)})</span>}
         </div>
       </div>
       <ChevronRight className="size-8" strokeWidth={1.2} />

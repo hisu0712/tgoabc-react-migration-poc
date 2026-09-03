@@ -20,15 +20,26 @@ import {
 } from "@/components/ui/carousel";
 import HeaderHomeNav from "@/components/header-home-nav";
 import useCustomerCount from "@/hooks/queries/use-customer-count-data";
+import useAnalysisCount from "@/hooks/queries/use-analysis-count-data";
+import useAnalysesByMember from "@/hooks/queries/use-analyses-by-member-data";
 
 export default function IndexPage() {
   const session = useSession();
   const navigate = useNavigate();
   const openAlertModal = useOpenAlertModal();
 
-  // 여기 error, isPending 일시에 처리해야함
-  const { data: customerCount } = useCustomerCount(session!.user.id);
-  const { data: shop } = useShopData(session!.user.id);
+  const { data: customerCount, isLoading: isFetchCustomerCountFetching } =
+    useCustomerCount({
+      memberId: session!.user.id,
+    });
+  const { data: analysisCount, isLoading: isFetchAnalysisCountFetching } =
+    useAnalysisCount({
+      memberId: session!.user.id,
+    });
+  const { data: shop, isLoading: isFetchShopLoading } = useShopData(
+    session!.user.id,
+  );
+  const { data: analyses, isLoading: isFetchAnalysesLoading } = useAnalysesByMember(session!.user.id); // isFetchAnalysesLoading 처리 고민
 
   const handleShopEditClick = () => {
     openAlertModal({
@@ -49,13 +60,14 @@ export default function IndexPage() {
             to={"/members/info"}
             className="text-primary mb-1 flex items-center text-2xl font-bold"
           >
-            {shop?.name} 님
+            {isFetchShopLoading ? "-" : shop?.name} 님
             <ChevronRight className="size-7" strokeWidth={1.5} />
           </Link>
           <div className="text-muted-foreground flex items-end gap-1">
             <BarChart2 className="size-4" />
             <p className="text-sm leading-none">
-              고객 {customerCount ?? 0}명 · 분석수 128건
+              고객 {isFetchCustomerCountFetching ? "-" : customerCount}명 ·
+              분석수 {isFetchAnalysisCountFetching ? "-" : analysisCount}건
             </p>
           </div>
         </div>
@@ -173,20 +185,21 @@ export default function IndexPage() {
         </div>
       </div>
 
-      <div className="mb-2 text-lg font-semibold">최근 분석 목록</div>
-      <Carousel>
-        <CarouselContent>
-          {/* {recentCustomers.map((customer) => (
-            <CarouselItem key={customer.id} className="basis-auto pl-2">
-              <CustomerCard
-                id={customer.id}
-                name={customer.name}
-                email={customer.phone}
-              />
-            </CarouselItem>
-          ))} */}
-        </CarouselContent>
-      </Carousel>
+      {analyses && analyses.length > 0 ? (
+        <>
+          <div className="mb-2 text-lg font-semibold">최근 분석 목록</div>
+
+          <Carousel>
+            <CarouselContent>
+              {analyses.map((a) => (
+                <CarouselItem key={a.id} className="basis-auto">
+                  <CustomerCard id={a.customer_id} name={a.customer_name} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
+        </>
+      ) : null}
     </div>
   );
 }

@@ -46,21 +46,43 @@ export async function fetchAnalysesByCustomer({
   }[];
 }
 
-export async function fetchAnalysesCountByCustomer({
+export async function fetchAnalysesByMember(memberId: string, limit = 5) {
+  const { data, error } = await supabase
+    .from("analysis")
+    .select("id, created_at, customer_id, customer!inner(name)") // inner join이라 customer_id가 null인 행은 조인 상대가 없어서 제외됨
+    .eq("member_id", memberId)
+    .order("created_at", { ascending: false })
+    .limit(limit);
+
+  if (error) throw error;
+  return (data ?? []).map((row) => ({
+    id: row.id,
+    created_at: row.created_at,
+    customer_id: row.customer_id!,
+    customer_name: row.customer.name,
+  }));
+}
+
+export async function fetchAnalysisCount({
+  memberId,
   customerId,
   personalType,
 }: {
-  customerId: string;
+  memberId?: string;
+  customerId?: string;
   personalType?: string;
 }) {
-  let query = supabase
-    .from("analysis")
-    .select("*", {
-      count: "exact",
-      head: true,
-    })
-    .eq("customer_id", customerId);
+  let query = supabase.from("analysis").select("*", {
+    count: "exact",
+    head: true,
+  });
 
+  if (memberId) {
+    query = query.eq("member_id", memberId);
+  }
+  if (customerId) {
+    query = query.eq("customer_id", customerId);
+  }
   if (personalType) {
     query = query.eq("result->>personalType", personalType);
   }
