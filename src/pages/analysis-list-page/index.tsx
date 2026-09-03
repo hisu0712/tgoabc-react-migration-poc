@@ -17,7 +17,8 @@ import { PERSONAL_TYPE_LABEL, type PersonalType } from "@/lib/analysis";
 import { useInView } from "react-intersection-observer";
 import useInfiniteAnalyses from "@/hooks/queries/use-infinite-analyses-data";
 import useAnalysisCount from "@/hooks/queries/use-analysis-count-data";
-import { Navigate } from "react-router";
+import ErrorRedirect from "@/components/error-redirect";
+import { CUSTOMER_HOME_PATH } from "@/lib/route";
 
 export default function AnalysisListPage() {
   const session = useSession();
@@ -46,7 +47,7 @@ export default function AnalysisListPage() {
     if (inView) fetchNextPage();
   }, [inView]);
 
-  if (isError) return <Navigate to={"/portal"} />;
+  if (isError) return <ErrorRedirect to={CUSTOMER_HOME_PATH} />;
 
   return (
     <div>

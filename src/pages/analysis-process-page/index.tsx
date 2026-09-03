@@ -1,12 +1,7 @@
 import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";
 import { useEffect, useRef, useState } from "react";
-import {
-  Navigate,
-  useNavigate,
-  useParams,
-  useSearchParams,
-} from "react-router";
+import { useNavigate, useParams, useSearchParams } from "react-router";
 import AnalysisLoading from "./analysis-loading";
 import analysisScriptUrl from "./personal-analysis.iife.js?url"; // module
 import analysisStyleUrl from "./personal-analysis.css?url"; // module
@@ -14,6 +9,9 @@ import type { Analysis } from "../analysis-result-page/constants";
 import useCreateAnalysis from "@/hooks/mutations/analysis/use-create-analysis";
 import { toast } from "sonner";
 import { useActiveRole } from "@/store/active-role";
+import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
+import ErrorRedirect from "@/components/error-redirect";
+import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
 
 const ANALYSIS_ELEMENT_NAME = "skin-analysis";
 const ANALYSIS_EVENT = "personal-analysis-complete";
@@ -48,6 +46,7 @@ export default function AnalysisProcessPage() {
   const navigate = useNavigate();
   const session = useSession();
   const activeRole = useActiveRole();
+  const redirectToHome = useRedirectToHome();
   const { analysisId } = useParams();
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get("customerId");
@@ -60,10 +59,7 @@ export default function AnalysisProcessPage() {
 
   const { mutate: uploadResultImage } = useUploadImage({
     onError: () => {
-      toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-        position: "top-center",
-      });
-      navigate("/", { replace: true });
+      redirectToHome();
     },
   });
 
@@ -90,12 +86,7 @@ export default function AnalysisProcessPage() {
     const script = document.createElement("script");
     script.src = analysisScriptUrl;
     script.onload = () => setIsModuleLoaded(true);
-    script.onerror = () => {
-      toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-        position: "top-center",
-      });
-      navigate("/", { replace: true });
-    };
+    script.onerror = () => redirectToHome();
     document.body.appendChild(script);
 
     return () => {
@@ -123,10 +114,7 @@ export default function AnalysisProcessPage() {
         payloadCustomerId = session!.user.id;
         payloadMemberId = null;
       } else {
-        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-          position: "top-center",
-        });
-        navigate("/", { replace: true });
+        redirectToHome();
         return;
       }
 
@@ -158,10 +146,7 @@ export default function AnalysisProcessPage() {
         );
       } catch (error) {
         console.error("결과 이미지 캡처 실패", error);
-        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-          position: "top-center",
-        });
-        navigate("/", { replace: true });
+        redirectToHome();
       }
     };
 
@@ -171,7 +156,12 @@ export default function AnalysisProcessPage() {
     };
   }, [isModuleLoaded]);
 
-  if (!analysisId || !imageUrl) return <Navigate to={"/"} />;
+  if (!analysisId || !imageUrl)
+    return (
+      <ErrorRedirect
+        to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
+      />
+    );
 
   return (
     <div className="fixed inset-0 z-50">

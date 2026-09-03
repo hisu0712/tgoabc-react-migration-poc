@@ -11,11 +11,13 @@ import { useNavigate, useSearchParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 import { useActiveRole } from "@/store/active-role";
+import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
 
 export default function AnalysisPhotoPage() {
   const session = useSession();
   const activeRole = useActiveRole();
   const navigate = useNavigate();
+  const redirectToHome = useRedirectToHome();
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get("customerId");
 
@@ -78,10 +80,7 @@ export default function AnalysisPhotoPage() {
     } else if (activeRole === "customer") {
       ownerId = session!.user.id;
     } else {
-      toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-        position: "top-center",
-      });
-      navigate("/", { replace: true });
+      redirectToHome();
       return;
     }
 

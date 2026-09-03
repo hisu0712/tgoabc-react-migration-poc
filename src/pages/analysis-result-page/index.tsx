@@ -1,5 +1,5 @@
 import HeaderNav from "@/components/header-nav";
-import { Navigate, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
 import { Share2Icon } from "lucide-react";
 import BottomNav from "@/components/layout/bottom-nav";
@@ -14,8 +14,10 @@ import FoundationSection from "./components/foundation-section";
 import BodyColorSection from "./components/body-color-section";
 import useAnalysisData from "@/hooks/queries/use-analysis-data";
 import GlobalLoader from "@/components/global-loader";
-import { toast } from "sonner";
 import { useActiveRole } from "@/store/active-role";
+import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
+import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
+import ErrorRedirect from "@/components/error-redirect";
 
 type LocationState = {
   analysis: Analysis;
@@ -26,6 +28,7 @@ export default function AnalysisResultPage() {
   const activeRole = useActiveRole();
   const { analysisId } = useParams();
   const location = useLocation();
+  const redirectToHome = useRedirectToHome();
   const { ref, inView } = useInView({
     initialInView: true,
     rootMargin: "-100px 0px 0px 0px",
@@ -43,21 +46,30 @@ export default function AnalysisResultPage() {
   const analysis = stateAnalysis ?? (data?.result as Analysis | undefined);
   const resultImageUrl = stateResultImageUrl ?? data?.result_image_url;
 
-  if (!analysisId) return <Navigate to={"/"} />;
+  if (!analysisId)
+    return (
+      <ErrorRedirect
+        to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
+        message="분석 결과를 불러오지 못했습니다."
+      />
+    );
   if (shouldFetch && isLoading) return <GlobalLoader />;
-  if (!analysis || !resultImageUrl || isError) {
-    toast.error("분석 결과를 불러오지 못했습니다.", { position: "top-center" });
-    return <Navigate to={"/"} />;
-  }
+  if (!analysis || !resultImageUrl || isError)
+    return (
+      <ErrorRedirect
+        to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
+        message="분석 결과를 불러오지 못했습니다."
+      />
+    );
 
   // 퍼스널컬러 타입에 맞는 결과 가져오기
   const analysisPreset = ANALYSIS_PRESET[analysis.personalType];
 
   if (!analysisPreset) {
-    toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-      position: "top-center",
-    });
-    return <Navigate to={"/"} />;
+    <ErrorRedirect
+      to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
+      message="분석 결과를 불러오지 못했습니다."
+    />;
   }
 
   return (

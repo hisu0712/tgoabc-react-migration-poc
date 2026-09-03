@@ -2,8 +2,10 @@ import BottomButton from "@/components/bottom-button";
 import GlobalLoader from "@/components/global-loader";
 import { useShopData } from "@/hooks/queries/use-shop-data";
 import { useSession } from "@/store/session";
-import { Navigate, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import surveyOutro from "@/assets/survey_outro.gif";
+import { MEMBER_HOME_PATH } from "@/lib/route";
+import ErrorRedirect from "@/components/error-redirect";
 
 export default function SignUpCompletePage() {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ export default function SignUpCompletePage() {
   } = useShopData(session!.user.id);
 
   if (isFetchShopPending) return <GlobalLoader />;
-  if (fetchShopError) return <Navigate to={"/"} replace={true} />;
+  if (fetchShopError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
     <>
@@ -31,7 +33,7 @@ export default function SignUpCompletePage() {
             티고ABC의 소중한 회원이 되어주셔서 감사합니다
           </div>
         </div>
-        
+
         <div className="flex items-center justify-center">
           <img
             className="w-full md:w-[70%]"
@@ -41,7 +43,9 @@ export default function SignUpCompletePage() {
         </div>
       </div>
 
-      <BottomButton onClick={() => navigate("/", { replace: true })}>
+      <BottomButton
+        onClick={() => navigate(MEMBER_HOME_PATH, { replace: true })}
+      >
         다음
       </BottomButton>
     </>
