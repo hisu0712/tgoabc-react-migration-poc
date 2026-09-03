@@ -73,7 +73,7 @@ export const MEMBER_NAV_ITEMS = [
 ];
 export const CUSTOMER_NAV_ITEMS = [
   { to: "/portal", label: "홈", icon: Home },
-  { to: "/portal-1", label: "메시지", icon: MessageCircle },
-  { to: "/portal-2", label: "매장찾기", icon: MapPin },
+  { to: "/portal/test/1", label: "메시지", icon: MessageCircle },
+  { to: "/portal/test/2", label: "매장찾기", icon: MapPin },
   { to: "/portal-settings", label: "설정", icon: Settings },
 ];

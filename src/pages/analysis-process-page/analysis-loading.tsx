@@ -1,4 +1,5 @@
 import loadingImage from "@/assets/loading_jaemi.gif";
+import AnalysisPrivacyNotice from "@/components/analysis-privacy-notice";
 import { Layout } from "@/components/layout/global-layout";
 
 export default function AnalysisLoading() {
@@ -65,10 +66,7 @@ export default function AnalysisLoading() {
           </div>
         </div>
 
-        <div className="text-muted-foreground flex flex-col text-center text-sm leading-tight font-medium">
-          <span>개인정보 보호를 위해</span>
-          <span>촬영 사진은 매장에 저장되지 않아요</span>
-        </div>
+        <AnalysisPrivacyNotice />
       </div>
     </Layout>
   );

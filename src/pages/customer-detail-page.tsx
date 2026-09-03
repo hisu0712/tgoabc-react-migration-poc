@@ -12,7 +12,7 @@ export default function CustomerDetailPage() {
   const session = useSession();
   const { customerId } = useParams();
 
-  const { data: customer, error: isFetchCustomerError } =
+  const { data: customer, isError: isFetchCustomerError } =
     useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
 
   const { data: designers } = useDesignersData(session!.user.id);

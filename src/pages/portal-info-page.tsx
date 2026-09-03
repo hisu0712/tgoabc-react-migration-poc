@@ -8,27 +8,22 @@ import {
 } from "@/schemas/customer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomerData from "@/hooks/queries/use-customer-data";
-import { useNavigate } from "react-router";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
-import useDesignersData from "@/hooks/queries/use-designers-data";
 import Loader from "@/components/loader";
 import DeleteUserButton from "@/components/delete-user-button";
+import { Navigate } from "react-router";
 
 export function PortalInfoPage() {
   const session = useSession();
-  const navigate = useNavigate();
-
-  const { data: designers, isLoading: isFetchDesignersLoading } =
-    useDesignersData(session!.user.id);
 
   const {
     data: customer,
     isLoading: isFetchCustomerLoading,
-    error: isFetchCustomerError,
+    isError: isFetchCustomerError,
   } = useCustomerData(session!.user.id);
 
   const { mutate: updateCustomer, isPending: isUpdateCustomerPending } =
@@ -62,8 +57,7 @@ export function PortalInfoPage() {
     formState: { isDirty },
   } = form;
 
-  //   if (!session?.user.id) return <Navigate to={"/"} />;
-  //   if (isFetchCustomerError) return <Navigate to={"/"} />;
+  if (isFetchCustomerError) return <Navigate to={"/portal"} />;
 
   const onSubmit = (values: CustomerFormValues) => {
     if (!isDirty) {
@@ -87,10 +81,13 @@ export function PortalInfoPage() {
           id="update-customer-form"
           className="grid gap-3"
         >
-          {isFetchCustomerLoading || isFetchDesignersLoading ? (
+          {isFetchCustomerLoading ? (
             <Loader />
           ) : (
-            <CustomerFormFields disabled={isUpdateCustomerPending} />
+            <CustomerFormFields
+              disabled={isUpdateCustomerPending}
+              emailReadOnly={true}
+            />
           )}
         </form>
       </Form>

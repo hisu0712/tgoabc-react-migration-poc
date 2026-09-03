@@ -52,9 +52,9 @@ export default function PortalPage() {
         </div>
       </div>
 
-      <div className="mb-7 grid grid-cols-2 gap-2">
+      <div className="mb-7 grid grid-cols-[3fr_2fr] gap-2">
         <LinkCard
-          to={"/portal-analysis/photo"}
+          to={"/analysis/photo"}
           variant={"feature2"}
           className="pr-0 pb-0"
         >
@@ -83,7 +83,7 @@ export default function PortalPage() {
             className="bg-feature-2/10 flex flex-col items-center justify-center gap-2 shadow-none"
           >
             <FileText
-              className="text-feature-1 fill-feature-1/10 size-6"
+              className="text-feature-1 size-6 fill-white"
               strokeWidth={1.3}
             />
             <span className="text-feature-2 text-lg font-semibold">
@@ -92,7 +92,7 @@ export default function PortalPage() {
           </LinkCard>
           <Card className="bg-feature-1/10 flex flex-col items-center justify-center gap-2 shadow-none">
             <FileText
-              className="text-feature-1 fill-feature-1/10 size-6"
+              className="text-feature-1 size-6 fill-white"
               strokeWidth={1.3}
             />
             <span className="text-feature-1 text-lg font-semibold">

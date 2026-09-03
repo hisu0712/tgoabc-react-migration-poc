@@ -26,12 +26,13 @@ import { useFormContext } from "react-hook-form";
 export default function CustomerFormFields({
   disabled,
   designers,
+  emailReadOnly,
 }: {
   disabled?: boolean;
   designers?: DesignerEntity[];
+  emailReadOnly?: boolean;
 }) {
   const { control } = useFormContext<CustomerFormValues>();
-  
 
   return (
     <>
@@ -59,11 +60,14 @@ export default function CustomerFormFields({
         render={({ field }) => (
           <FormItem>
             <FormLabel>이메일</FormLabel>
-            <FormHint>
-              고객 정보 식별을 위해 이메일을 정확히 입력해주세요.
-            </FormHint>
+            {!emailReadOnly && (
+              <FormHint>
+                고객 정보 식별을 위해 이메일을 정확히 입력해주세요.
+              </FormHint>
+            )}
             <FormControl>
               <Input
+                readOnly={emailReadOnly}
                 disabled={disabled}
                 placeholder="abc@example.com"
                 {...field}

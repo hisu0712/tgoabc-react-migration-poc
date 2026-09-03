@@ -15,6 +15,7 @@ import BodyColorSection from "./components/body-color-section";
 import useAnalysisData from "@/hooks/queries/use-analysis-data";
 import GlobalLoader from "@/components/global-loader";
 import { toast } from "sonner";
+import { useActiveRole } from "@/store/active-role";
 
 type LocationState = {
   analysis: Analysis;
@@ -22,6 +23,7 @@ type LocationState = {
 };
 
 export default function AnalysisResultPage() {
+  const activeRole = useActiveRole();
   const { analysisId } = useParams();
   const location = useLocation();
   const { ref, inView } = useInView({
@@ -71,7 +73,11 @@ export default function AnalysisResultPage() {
             ? "bg-transparent text-white backdrop-blur-none"
             : "text-black",
         )}
-        rightSlot={<Share2Icon className="size-6" strokeWidth={1.8} />}
+        rightSlot={
+          activeRole === "member" ? (
+            <Share2Icon className="size-6" strokeWidth={1.8} />
+          ) : undefined
+        }
       />
 
       <TypeIntroSection
