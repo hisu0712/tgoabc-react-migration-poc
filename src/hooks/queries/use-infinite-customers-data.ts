@@ -1,6 +1,6 @@
 import { fetchCustomersByMember } from "@/api/customer";
 import { QUERY_KEYS } from "@/lib/constants";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 
 const PAGE_SIZE = 10;
 
@@ -46,5 +46,6 @@ export default function useInfiniteCustomers({
     },
     staleTime: Infinity, // 가져온 데이터를 React Query가 자동으로 stale 상태로 만들지X
     enabled: !!memberId,
+    placeholderData: keepPreviousData, // queryKey가 바뀌어도 새 데이터가 올 때까지 이전 key의 값을 그대로 유지
   });
 }

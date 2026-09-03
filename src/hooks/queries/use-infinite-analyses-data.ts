@@ -1,6 +1,6 @@
 import { fetchAnalysesByCustomer } from "@/api/analysis";
 import { QUERY_KEYS } from "@/lib/constants";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 
 const PAGE_SIZE = 10;
 
@@ -31,5 +31,6 @@ export default function useInfiniteAnalyses({
     },
     staleTime: Infinity,
     enabled: !!customerId,
+    placeholderData: keepPreviousData,
   });
 }

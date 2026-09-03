@@ -1,6 +1,6 @@
 import { fetchAnalysesCountByCustomer } from "@/api/analysis";
 import { QUERY_KEYS } from "@/lib/constants";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function useAnalysisCount({
   customerId,
@@ -14,5 +14,6 @@ export default function useAnalysisCount({
     queryFn: () =>
       fetchAnalysesCountByCustomer({ customerId: customerId!, personalType }),
     enabled: !!customerId,
+    placeholderData: keepPreviousData,
   });
 }

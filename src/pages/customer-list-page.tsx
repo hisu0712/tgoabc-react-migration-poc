@@ -27,7 +27,11 @@ export default function CustomerListPage() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [designerId, setDesignerId] = useState("all");
 
-  const { data: customerCount } = useCustomerCount(session!.user.id);
+  const { data: customerCount } = useCustomerCount({
+    memberId: session!.user.id,
+    keyword: searchKeyword,
+    designerId: designerId === "all" ? undefined : Number(designerId),
+  });
   const { data: designers } = useDesignersData(session!.user.id);
 
   const {
