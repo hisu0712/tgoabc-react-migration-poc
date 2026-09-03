@@ -13,11 +13,12 @@ import useInfiniteCustomers from "@/hooks/queries/use-infinite-customers-data";
 import { useSession } from "@/store/session";
 import { Plus, Scissors, Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Navigate } from "react-router";
 import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/use-customer-count-data";
 import useDesignersData from "@/hooks/queries/use-designers-data";
 import EmptyContent from "@/components/emptyContent";
+import ErrorRedirect from "@/components/error-redirect";
+import { MEMBER_HOME_PATH } from "@/lib/route";
 
 export default function CustomerListPage() {
   const session = useSession();
@@ -59,7 +60,7 @@ export default function CustomerListPage() {
     return () => clearTimeout(timer);
   }, [keyword]);
 
-  if (isError) return <Navigate to={"/"} />;
+  if (isError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

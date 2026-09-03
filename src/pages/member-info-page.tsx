@@ -1,5 +1,6 @@
 import BottomButton from "@/components/bottom-button";
 import DeleteUserButton from "@/components/delete-user-button";
+import ErrorRedirect from "@/components/error-redirect";
 import GlobalLoader from "@/components/global-loader";
 import HeaderNav from "@/components/header-nav";
 import { Button } from "@/components/ui/button";
@@ -15,12 +16,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
 import { useMemberData } from "@/hooks/queries/use-member-data";
+import { MEMBER_HOME_PATH } from "@/lib/route";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
 import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 const MASKED_PASSWORD = "••••••••";
@@ -65,7 +67,7 @@ export default function MemberInfoPage() {
   } = form; // formState은 구독 안 된 속성은 아예 내부적으로 값 추적/계산 자체를 스킵
 
   if (isFetchMemberLoading) return <GlobalLoader />;
-  if (isFetchMemberError) return <Navigate to={"/"} />;
+  if (isFetchMemberError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   const onSubmit = (values: MemberFormValues) => {
     if (!isDirty) {

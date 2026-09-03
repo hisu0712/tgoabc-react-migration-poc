@@ -7,7 +7,7 @@ import {
   customerSchema,
 } from "@/schemas/customer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { useOpenAlertModal } from "@/store/alert";
@@ -19,6 +19,8 @@ import Loader from "@/components/loader";
 import useCustomerWithDesignerData from "@/hooks/queries/use-customer-with-designer-data";
 import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-update-customer-with-designer";
 import { Button } from "@/components/ui/button";
+import { MEMBER_HOME_PATH } from "@/lib/route";
+import ErrorRedirect from "@/components/error-redirect";
 
 export default function CustomerInfoPage() {
   const session = useSession();
@@ -49,7 +51,7 @@ export default function CustomerInfoPage() {
     useUnlinkCustomer({
       onSuccess: () => {
         toast.success("고객이 삭제되었습니다.", { position: "top-center" });
-        navigate("/", { replace: true });
+        navigate(MEMBER_HOME_PATH, { replace: true });
       },
       onError: () => {
         toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
@@ -81,8 +83,8 @@ export default function CustomerInfoPage() {
     formState: { isDirty },
   } = form;
 
-  if (!customerId) return <Navigate to={"/"} />;
-  if (isFetchCustomerError) return <Navigate to={"/"} />;
+  if (!customerId) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
+  if (isFetchCustomerError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   const onSubmit = (values: CustomerFormValues) => {
     if (!isDirty) {

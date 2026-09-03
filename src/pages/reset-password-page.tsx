@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useUpdatePassword } from "@/hooks/mutations/auth/use-update-password";
 import { generateErrorMessage } from "@/lib/error";
+import { MEMBER_HOME_PATH } from "@/lib/route";
 import {
   type ResetPasswordFormValues,
   resetPasswordSchema,
@@ -35,7 +36,7 @@ export default function ResetPasswordPage() {
         toast.success("비밀번호가 성공적으로 변경되었습니다.", {
           position: "top-center",
         });
-        navigate("/", { replace: true });
+        navigate(MEMBER_HOME_PATH, { replace: true });
       },
       onError: (error) => {
         const message = generateErrorMessage(error);

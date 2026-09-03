@@ -28,13 +28,18 @@ import AnalysisProcessPage from "./pages/analysis-process-page";
 import AnalysisListPage from "./pages/analysis-list-page";
 import UserOnlyLayout from "./components/layout/user-only-layout";
 import FallbackRedirect from "./components/fallback-redirect";
+import {
+  CUSTOMER_HOME_PATH,
+  MEMBER_HOME_PATH,
+  SIGN_IN_PATH,
+} from "./lib/route";
 
 export default function RootRoute() {
   return (
     <Routes>
       {/* GuestOnlyLayout */}
       <Route element={<GuestOnlyLayout />}>
-        <Route path="/sign-in" element={<SignInPage />} />
+        <Route path={SIGN_IN_PATH} element={<SignInPage />} />
         <Route element={<GlobalLayout />}>
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route
@@ -63,7 +68,7 @@ export default function RootRoute() {
         <Route
           element={<GlobalLayoutWithBottomNav navItems={MEMBER_NAV_ITEMS} />}
         >
-          <Route path="/" element={<IndexPage />} />
+          <Route path={MEMBER_HOME_PATH} element={<IndexPage />} />
           <Route path="/customers" element={<CustomerListPage />} />
           <Route
             path="/customers/:customerId"
@@ -79,7 +84,7 @@ export default function RootRoute() {
         <Route
           element={<GlobalLayoutWithBottomNav navItems={CUSTOMER_NAV_ITEMS} />}
         >
-          <Route path="/portal" element={<PortalPage />} />
+          <Route path={CUSTOMER_HOME_PATH} element={<PortalPage />} />
           <Route path="/portal-settings" element={<PortalSettingsPage />} />
           <Route path="/portal-analysis/list" element={<AnalysisListPage />} />
         </Route>

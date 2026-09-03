@@ -1,12 +1,14 @@
 import { Card, LinkCard } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
-import { Link, Navigate, useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { ChevronRight, FileText, Scissors, SquarePen } from "lucide-react";
 import HeaderHomeNav from "@/components/header-home-nav";
 import { useSession } from "@/store/session";
 import useCustomerWithDesignerData from "@/hooks/queries/use-customer-with-designer-data";
 import useDesignersData from "@/hooks/queries/use-designers-data";
+import ErrorRedirect from "@/components/error-redirect";
+import { MEMBER_HOME_PATH } from "@/lib/route";
 
 export default function CustomerDetailPage() {
   const session = useSession();
@@ -18,8 +20,8 @@ export default function CustomerDetailPage() {
   const { data: designers } = useDesignersData(session!.user.id);
   const designer = designers?.find((d) => d.id === customer?.designer_id);
 
-  if (!customerId) return <Navigate to={"/"} />;
-  if (isFetchCustomerError) return <Navigate to={"/"} />;
+  if (!customerId) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
+  if (isFetchCustomerError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
     <main>

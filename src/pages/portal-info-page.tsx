@@ -15,7 +15,8 @@ import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
 import Loader from "@/components/loader";
 import DeleteUserButton from "@/components/delete-user-button";
-import { Navigate } from "react-router";
+import { CUSTOMER_HOME_PATH } from "@/lib/route";
+import ErrorRedirect from "@/components/error-redirect";
 
 export function PortalInfoPage() {
   const session = useSession();
@@ -57,7 +58,7 @@ export function PortalInfoPage() {
     formState: { isDirty },
   } = form;
 
-  if (isFetchCustomerError) return <Navigate to={"/portal"} />;
+  if (isFetchCustomerError) return <ErrorRedirect to={CUSTOMER_HOME_PATH} />;
 
   const onSubmit = (values: CustomerFormValues) => {
     if (!isDirty) {

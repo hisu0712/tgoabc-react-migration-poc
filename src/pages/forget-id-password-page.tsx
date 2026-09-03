@@ -26,6 +26,7 @@ import { useNavigate } from "react-router";
 import HeaderNav from "@/components/header-nav";
 import { toast } from "sonner";
 import { Card } from "@/components/card";
+import { SIGN_IN_PATH } from "@/lib/route";
 
 export default function ForgetIdPasswordPage() {
   const openAlertModal = useOpenAlertModal();
@@ -36,7 +37,7 @@ export default function ForgetIdPasswordPage() {
       openAlertModal({
         title: "아이디 찾기",
         description: `검색결과 아이디는 아래와 같습니다. ${data.email}`,
-        onPositive: () => navigate("/sign-in"),
+        onPositive: () => navigate(SIGN_IN_PATH),
       }),
     onError: async (error) => {
       if (error instanceof FunctionsHttpError) {
