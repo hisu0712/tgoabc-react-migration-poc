@@ -1,7 +1,7 @@
 import HeaderNav from "@/components/header-nav";
 import { useLocation, useParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
-import { Share2Icon } from "lucide-react";
+import { Share2Icon, UserPlus } from "lucide-react";
 import BottomNav from "@/components/layout/bottom-nav";
 import { MEMBER_NAV_ITEMS } from "@/lib/constants";
 import { ANALYSIS_PRESET, type Analysis } from "./constants";
@@ -15,29 +15,38 @@ import BodyColorSection from "./components/body-color-section";
 import useAnalysisData from "@/hooks/queries/use-analysis-data";
 import GlobalLoader from "@/components/global-loader";
 import { useActiveRole } from "@/store/active-role";
-import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
 import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
+import { useOpenLinkCustomerModal } from "@/store/link-customer-modal";
 
 type LocationState = {
   analysis: Analysis;
   resultImageUrl: string;
+  customerId: string | null;
 };
+type ResultCase =
+  | { type: "MEMBER_SIMPLE" } // 회원 - 간편분석 [state]
+  | { type: "MEMBER_CUSTOMER"; customerId: string } // 회원 - 고객 분석 [state]
+  | { type: "CUSTOMER_FRESH" } // 고객 본인 - 분석 직후 진입 [state]
+  | { type: "CUSTOMER_LIST" }; // 고객 본인 - 기록 리스트에서 진입 [DB fetch]
 
 export default function AnalysisResultPage() {
   const activeRole = useActiveRole();
   const { analysisId } = useParams();
   const location = useLocation();
-  const redirectToHome = useRedirectToHome();
+  const openLinkCustomerModal = useOpenLinkCustomerModal();
   const { ref, inView } = useInView({
     initialInView: true,
     rootMargin: "-100px 0px 0px 0px",
   });
 
-  const { analysis: stateAnalysis, resultImageUrl: stateResultImageUrl } =
-    (location.state ?? {}) as Partial<LocationState>;
+  const {
+    analysis: stateAnalysis,
+    resultImageUrl: stateResultImageUrl,
+    customerId: stateCustomerId,
+  } = (location.state ?? {}) as Partial<LocationState>;
 
-  // location.state가 없을 때만 DB 조회 (기록 페이지 등에서 진입한 경우)
+  // location.state가 없을 때만 DB 조회
   const shouldFetch = !stateAnalysis;
   const { data, isLoading, isError } = useAnalysisData(
     shouldFetch ? analysisId : undefined,
@@ -45,8 +54,21 @@ export default function AnalysisResultPage() {
 
   const analysis = stateAnalysis ?? (data?.result as Analysis | undefined);
   const resultImageUrl = stateResultImageUrl ?? data?.result_image_url;
+  const customerId = stateCustomerId ?? data?.customer_id ?? null;
 
-  if (!analysisId)
+  let resultCase: ResultCase | undefined;
+
+  if (activeRole === "member") {
+    resultCase = customerId
+      ? { type: "MEMBER_CUSTOMER", customerId }
+      : { type: "MEMBER_SIMPLE" };
+  } else if (activeRole === "customer") {
+    resultCase = shouldFetch
+      ? { type: "CUSTOMER_LIST" }
+      : { type: "CUSTOMER_FRESH" };
+  }
+
+  if (!analysisId || !resultCase)
     return (
       <ErrorRedirect
         to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
@@ -66,10 +88,12 @@ export default function AnalysisResultPage() {
   const analysisPreset = ANALYSIS_PRESET[analysis.personalType];
 
   if (!analysisPreset) {
-    <ErrorRedirect
-      to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
-      message="분석 결과를 불러오지 못했습니다."
-    />;
+    return (
+      <ErrorRedirect
+        to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
+        message="분석 결과를 불러오지 못했습니다."
+      />
+    );
   }
 
   return (
@@ -86,7 +110,8 @@ export default function AnalysisResultPage() {
             : "text-black",
         )}
         rightSlot={
-          activeRole === "member" ? (
+          resultCase.type === "MEMBER_SIMPLE" ||
+          resultCase.type === "MEMBER_CUSTOMER" ? (
             <Share2Icon className="size-6" strokeWidth={1.8} />
           ) : undefined
         }
@@ -119,6 +144,17 @@ export default function AnalysisResultPage() {
       </Layout>
 
       <BottomNav navItems={MEMBER_NAV_ITEMS} />
+
+      {resultCase.type === "MEMBER_SIMPLE" && (
+        <button
+          type="button"
+          onClick={() => openLinkCustomerModal(analysisId)}
+          className="text-primary bg-background fixed right-6 bottom-24 z-20 flex size-15 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full shadow-lg"
+        >
+          <UserPlus className="ml-0.5 size-6" strokeWidth={1.8} />
+          <span className="text-xs font-medium">추가</span>
+        </button>
+      )}
     </div>
   );
 }

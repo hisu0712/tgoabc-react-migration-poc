@@ -2,6 +2,7 @@ import BottomButton from "@/components/bottom-button";
 import CustomerFormFields from "@/components/customer-form-fields";
 import HeaderNav from "@/components/header-nav";
 import { Form } from "@/components/ui/form";
+import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";
 import { useCreateCustomer } from "@/hooks/mutations/customer/use-create-customer";
 import useDesignersData from "@/hooks/queries/use-designers-data";
 import {
@@ -11,14 +12,32 @@ import {
 import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { toast } from "sonner";
+
+type LocationState = {
+  analysisId: string;
+};
 
 export default function CustomerNewPage() {
   const session = useSession();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { data: designers } = useDesignersData(session!.user.id);
+
+  // 간편분석 후 신규 고객 추가
+  const { analysisId } = (location.state ?? {}) as Partial<LocationState>;
+  const { mutate: linkAnalysisToCustomer } = useLinkAnalysisToCustomer({
+    onSuccess: () => {
+      toast.success("분석 결과가 저장되었습니다.", { position: "top-center" });
+    },
+    onError: () => {
+      toast.error("분석 결과 연결에 실패했습니다.", {
+        position: "top-center",
+      });
+    },
+  });
 
   const form = useForm<CustomerFormValues>({
     resolver: zodResolver(customerSchema),
@@ -35,6 +54,15 @@ export default function CustomerNewPage() {
     useCreateCustomer({
       onSuccess: (createdCustomerId) => {
         toast.success("고객이 등록되었습니다.", { position: "top-center" });
+
+        if (analysisId) {
+          linkAnalysisToCustomer({
+            analysisId,
+            memberId: session!.user.id,
+            customerId: createdCustomerId!,
+          });
+        }
+
         navigate(`/customers/${createdCustomerId}`, { replace: true });
       },
       onError: (error) => {

@@ -71,7 +71,6 @@ export default function AnalysisPhotoPage() {
     }
 
     const analysisId = crypto.randomUUID();
-    const fileExtension = faceImage.file.name.split(".").pop() || "webp";
 
     let ownerId: string;
 
@@ -87,7 +86,7 @@ export default function AnalysisPhotoPage() {
     uploadImage(
       {
         file: faceImage.file,
-        filePath: `${ownerId}/analysis/${analysisId}/original.${fileExtension}`,
+        filePath: `${ownerId}/analysis/${analysisId}/original.png`, // 파일의 실제 Content-Type은 업로드 시 넘기는 File 객체의 type 속성으로 결정됨
       },
       {
         onSuccess: (imageUrl) => {

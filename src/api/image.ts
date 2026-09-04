@@ -36,3 +36,17 @@ export async function deleteImagesInPath(path: string) {
 
   if (removeError) throw removeError;
 }
+
+export async function moveImage(fromPath: string, toPath: string) {
+  const { error: moveError } = await supabase.storage
+    .from(BUCKET_NAME)
+    .move(fromPath, toPath);
+
+  if (moveError) throw moveError;
+
+  const {
+    data: { publicUrl },
+  } = await supabase.storage.from(BUCKET_NAME).getPublicUrl(toPath);
+
+  return publicUrl;
+}

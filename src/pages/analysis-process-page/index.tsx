@@ -107,7 +107,7 @@ export default function AnalysisProcessPage() {
 
       if (activeRole === "member") {
         ownerId = customerId ?? session!.user.id;
-        payloadCustomerId = customerId;
+        payloadCustomerId = customerId ?? null;
         payloadMemberId = session!.user.id;
       } else if (activeRole === "customer") {
         ownerId = session!.user.id;
@@ -138,7 +138,7 @@ export default function AnalysisProcessPage() {
               });
 
               navigate(`/analysis/${analysisId}`, {
-                state: { analysis, resultImageUrl },
+                state: { analysis, resultImageUrl, customerId:payloadCustomerId },
                 replace: true,
               });
             },

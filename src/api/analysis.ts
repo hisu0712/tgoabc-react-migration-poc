@@ -2,6 +2,7 @@ import type { PersonalType } from "@/lib/analysis";
 import { supabase } from "@/lib/supabase";
 import type { Analysis } from "@/pages/analysis-result-page/constants";
 import type { AnalysisEntity } from "@/type";
+import { moveImage } from "./image";
 
 export async function fetchAnalysis(analysisId: string) {
   const { data, error } = await supabase
@@ -138,5 +139,54 @@ export async function createAnalysis({
     .single();
 
   if (error) throw error;
+  return data;
+}
+
+export async function linkAnalysisToCustomer({
+  analysisId,
+  memberId,
+  customerId,
+}: {
+  analysisId: string;
+  memberId: string;
+  customerId: string;
+}) {
+  const fromBase = `${memberId}/analysis/${analysisId}`;
+  const toBase = `${customerId}/analysis/${analysisId}`;
+
+  const originalImageUrl = await moveImage(
+    `${fromBase}/original.png`,
+    `${toBase}/original.png`,
+  );
+
+  let resultImageUrl: string;
+  try {
+    resultImageUrl = await moveImage(
+      `${fromBase}/result.png`,
+      `${toBase}/result.png`,
+    );
+  } catch (error) {
+    await moveImage(`${toBase}/original.png`, `${fromBase}/original.png`);
+    throw error;
+  }
+
+  const { data, error } = await supabase
+    .from("analysis")
+    .update({
+      customer_id: customerId,
+      original_image_url: originalImageUrl,
+      result_image_url: resultImageUrl,
+    })
+    .eq("id", analysisId)
+    .select()
+    .single();
+
+  if (error) {
+    await Promise.all([
+      moveImage(`${toBase}/original.png`, `${fromBase}/original.png`),
+      moveImage(`${toBase}/result.png`, `${fromBase}/result.png`),
+    ]);
+    throw error;
+  }
   return data;
 }
