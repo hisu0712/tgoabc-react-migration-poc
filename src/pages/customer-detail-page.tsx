@@ -39,7 +39,7 @@ export default function CustomerDetailPage() {
           <span>고객님, 환영합니다!</span>
         </div>
 
-        <div className="bg-muted flex items-center gap-1 rounded-md p-2 font-medium">
+        <div className="bg-muted flex items-center gap-1 rounded-md p-2">
           <Scissors className="size-4" />
           <span>
             {customer?.designer_id

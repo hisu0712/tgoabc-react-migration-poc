@@ -5,3 +5,14 @@ export function formatBirthDateInput(raw: string) {
     .filter(Boolean)
     .join("-");
 }
+
+export function formatPhoneInput(raw: string) {
+  const digits = toPhoneDigits(raw);
+
+  return [digits.slice(0, 3), digits.slice(3, 7), digits.slice(7, 11)]
+    .filter(Boolean)
+    .join("-");
+}
+export function toPhoneDigits(raw: string) {
+  return raw.replace(/\D/g, "").slice(0, 11);
+}

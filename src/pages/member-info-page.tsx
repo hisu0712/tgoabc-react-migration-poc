@@ -3,6 +3,7 @@ import DeleteUserButton from "@/components/delete-user-button";
 import ErrorRedirect from "@/components/error-redirect";
 import GlobalLoader from "@/components/global-loader";
 import HeaderNav from "@/components/header-nav";
+import { PhoneInput } from "@/components/phone-input";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -117,11 +118,7 @@ export default function MemberInfoPage() {
               <FormItem>
                 <FormLabel>휴대전화</FormLabel>
                 <FormControl>
-                  <Input
-                    disabled={isUpdateMemberPending}
-                    placeholder="휴대전화 번호를 -없이 입력해주세요"
-                    {...field}
-                  />
+                  <PhoneInput disabled={isUpdateMemberPending} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

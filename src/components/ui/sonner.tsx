@@ -1,3 +1,4 @@
+import { InfoIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 
@@ -10,6 +11,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
       richColors
       className="toaster group"
       toastOptions={{ classNames: { toast: "!p-3" } }}
+      icons={{
+        info: <InfoIcon className="fill-muted-foreground size-5 text-white" />,
+      }}
       style={
         {
           "--border-radius": "var(--radius)",
@@ -24,11 +28,12 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
           "--success-bg": "color-mix(in oklab, var(--primary) 80%, white)",
           "--success-text": "var(--primary-foreground)",
-          "--success-border": "var(--primary)",
+          "--success-border": "color-mix(in oklab, var(--primary) 80%, white)",
 
           "--error-bg": "color-mix(in oklab, var(--destructive) 80%, white)",
           "--error-text": "var(--destructive-foreground)",
-          "--error-border": "var(--destructive)",
+          "--error-border":
+            "color-mix(in oklab, var(--destructive) 80%, white)",
         } as React.CSSProperties
       }
       {...props}

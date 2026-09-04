@@ -15,7 +15,6 @@ export const passwordField = z
   .min(6, "비밀번호는 6자 이상이어야 합니다.");
 
 const phoneRegex = /^01[016789]\d{7,8}$/;
-
 export const phoneField = z
   .string()
   .trim()

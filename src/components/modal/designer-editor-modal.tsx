@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { isPostgrestError } from "@/lib/error";
 import { useUpdateDesigner } from "@/hooks/mutations/designer/use-update-designer";
 import { useDeleteDesigner } from "@/hooks/mutations/designer/use-delete-designer";
+import { PhoneInput } from "../phone-input";
 
 export default function DesignerEditorModal() {
   const session = useSession();
@@ -184,10 +185,7 @@ export default function DesignerEditorModal() {
                 <FormItem>
                   <FormLabel>휴대전화</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="휴대전화 번호를 -없이 입력해주세요"
-                      {...field}
-                    />
+                    <PhoneInput {...field} />
                   </FormControl>
                   <FormHint>
                     디자이너 식별을 위해 휴대전화 번호를 정확히 입력해 주세요.

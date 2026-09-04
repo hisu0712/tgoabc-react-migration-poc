@@ -27,6 +27,7 @@ import HeaderNav from "@/components/header-nav";
 import { toast } from "sonner";
 import { Card } from "@/components/card";
 import { SIGN_IN_PATH } from "@/lib/route";
+import { PhoneInput } from "@/components/phone-input";
 
 export default function ForgetIdPasswordPage() {
   const openAlertModal = useOpenAlertModal();
@@ -130,11 +131,7 @@ export default function ForgetIdPasswordPage() {
                     <FormItem>
                       <FormLabel>휴대전화</FormLabel>
                       <FormControl>
-                        <Input
-                          disabled={isFindIdPending}
-                          placeholder="휴대전화 번호를 -없이 입력해주세요"
-                          {...field}
-                        />
+                        <PhoneInput disabled={isFindIdPending} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

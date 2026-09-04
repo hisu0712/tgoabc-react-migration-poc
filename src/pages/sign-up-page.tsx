@@ -22,6 +22,7 @@ import { useVerifyOtp } from "@/hooks/mutations/auth/use-verify-otp";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/password-input";
 import { useSetActiveRole } from "@/store/active-role";
+import { PhoneInput } from "@/components/phone-input";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -215,11 +216,7 @@ export default function SignUpPage() {
               <FormItem>
                 <FormLabel>휴대전화</FormLabel>
                 <FormControl>
-                  <Input
-                    disabled={isCompleteMemberSignUp}
-                    placeholder="휴대전화 번호를 -없이 입력해주세요"
-                    {...field}
-                  />
+                  <PhoneInput disabled={isCompleteMemberSignUp} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
