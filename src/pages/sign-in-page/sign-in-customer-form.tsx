@@ -18,7 +18,7 @@ import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useCompleteCustomerSignIn } from "@/hooks/mutations/auth/use-complete-customer-sign-in";
 import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { generateErrorMessage } from "@/lib/error";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TabsContent } from "@/components/ui/tabs";
 import { useSetActiveRole } from "@/store/active-role";
 
@@ -65,6 +65,12 @@ export default function SignInCustomerForm() {
       });
     },
   });
+
+  useEffect(() => {
+    if (otp.length === 6 && !isCompleteCustomerSignInPending) {
+      customerForm.handleSubmit(onCustomerSubmit)();
+    }
+  }, [otp]);
 
   const onSignInWithOtp = async () => {
     // email 필드에 걸려있는 유효성 검사 규칙을 수동으로 실행 (Promise<boolean>을 반환함)
@@ -130,7 +136,9 @@ export default function SignInCustomerForm() {
             <FormControl>
               <Input
                 value={otp}
-                onChange={(e) => setOtp(e.target.value)}
+                onChange={
+                  (e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6)) // \D: 숫자가 아닌 문자, g: 전역
+                }
                 inputMode="numeric"
                 maxLength={6}
                 disabled={isCompleteCustomerSignInPending}
