@@ -6,7 +6,7 @@ import LogoutCard from "@/components/logout-card";
 export default function PortalSettingsPage() {
   return (
     <>
-      <HeaderNav title="설정" />
+      <HeaderNav title="설정" hideBack />
 
       <p className="text-muted-foreground mb-1">계정</p>
       <div className="flex flex-col gap-2">

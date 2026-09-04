@@ -7,6 +7,7 @@ interface HeaderProps {
   className?: string;
   title?: string;
   backTo?: string;
+  hideBack?: boolean;
   rightSlot?: ReactNode;
   bottomSlot?: ReactNode;
 }
@@ -15,6 +16,7 @@ export default function HeaderNav({
   className,
   title,
   backTo,
+  hideBack,
   rightSlot,
   bottomSlot,
 }: HeaderProps) {
@@ -36,13 +38,15 @@ export default function HeaderNav({
       )}
     >
       <div className="relative flex h-17 items-center justify-center">
-        <button
-          type="button"
-          onClick={handleBack}
-          className="absolute top-1/2 left-0 z-10 flex -translate-x-1/4 -translate-y-1/2"
-        >
-          <ChevronLeft className="size-10" strokeWidth={1} />
-        </button>
+        {!hideBack && (
+          <button
+            type="button"
+            onClick={handleBack}
+            className="absolute top-1/2 left-0 z-10 flex -translate-x-1/4 -translate-y-1/2"
+          >
+            <ChevronLeft className="size-10" strokeWidth={1} />
+          </button>
+        )}
 
         {title && <h1 className="text-lg font-semibold">{title}</h1>}
 

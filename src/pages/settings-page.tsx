@@ -6,7 +6,7 @@ import LogoutCard from "@/components/logout-card";
 export default function SettingsPage() {
   return (
     <>
-      <HeaderNav title="설정" />
+      <HeaderNav title="설정" hideBack />
 
       <p className="text-muted-foreground mb-1">디자이너</p>
       <div className="mb-5">
