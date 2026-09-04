@@ -21,7 +21,7 @@ import {
 import HeaderHomeNav from "@/components/header-home-nav";
 import useCustomerCount from "@/hooks/queries/use-customer-count-data";
 import useAnalysisCount from "@/hooks/queries/use-analysis-count-data";
-import useAnalysesByMember from "@/hooks/queries/use-analyses-by-member-data";
+import useRecentAnalyses from "@/hooks/queries/use-recent-analyses-data";
 
 export default function IndexPage() {
   const session = useSession();
@@ -39,7 +39,8 @@ export default function IndexPage() {
   const { data: shop, isLoading: isFetchShopLoading } = useShopData(
     session!.user.id,
   );
-  const { data: analyses, isLoading: isFetchAnalysesLoading } = useAnalysesByMember(session!.user.id); // isFetchAnalysesLoading 처리 고민
+  const { data: analyses, isLoading: isFetchAnalysesLoading } =
+    useRecentAnalyses({ memberId: session!.user.id });
 
   const handleShopEditClick = () => {
     openAlertModal({
@@ -193,7 +194,11 @@ export default function IndexPage() {
             <CarouselContent>
               {analyses.map((a) => (
                 <CarouselItem key={a.id} className="basis-auto">
-                  <CustomerCard id={a.customer_id} name={a.customer_name} />
+                  <CustomerCard
+                    id={a.customer_id}
+                    name={a.customer_name}
+                    className="gap-0 p-3 pr-2"
+                  />
                 </CarouselItem>
               ))}
             </CarouselContent>

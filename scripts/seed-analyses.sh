@@ -4,18 +4,25 @@
 # 실제 분석 모듈은 안 돌리고, personalType을 8종류로 순환시켜 임의의 result JSON을 채워 넣음
 # (리스트 페이지의 필터/뱃지/정렬 테스트용).
 #
+# 회원 이메일을 함께 주면 analysis.member_id 까지 채워서
+# "매장에서 회원이 고객 분석을 진행한 케이스"로 시딩한다. (회원 이메일 단독 사용 불가)
+#   - 고객 이메일만            -> member_id = null   (고객 앱에서 직접 진행한 케이스)
+#   - 고객 이메일 + 회원 이메일 -> member_id = 해당 회원
+#
 # 순서:
 #   1) customer 테이블에서 이메일로 customer id 조회
-#   2) face.png를 Storage(uploads 버킷)의 {customerId}/analysis/{analysisId}/original.png 에 업로드
+#   2) (회원 이메일이 있으면) member 테이블에서 이메일로 member id 조회
+#   3) face.png를 Storage(uploads 버킷)의 {customerId}/analysis/{analysisId}/original.png 에 업로드
 #      (원본/결과 이미지 구분이 테스트에 중요하지 않아 같은 파일을 재사용, 업로드는 1회만)
-#   3) analysis 테이블에 insert (member_id는 비워둠 -> 고객 앱에서 직접 진행한 케이스로 시딩)
+#   4) analysis 테이블에 insert
 #
 # 사용 전: 터미널에 서비스 롤 키를 환경변수로 설정해야 함 (커밋/채팅에 붙여넣지 말 것)
 #   export SUPABASE_SERVICE_ROLE_KEY="여기에_붙여넣기"
 #
 # 사용법:
-#   ./scripts/seed-analyses.sh <고객 이메일> [분석 수(기본 1)]
-#   ./scripts/seed-analyses.sh cust-1234-1@example.com 5
+#   ./scripts/seed-analyses.sh <고객 이메일> [회원 이메일] [분석 수(기본 1)]
+#   ./scripts/seed-analyses.sh customer@example.com 5
+#   ./scripts/seed-analyses.sh customer@example.com member@example.com 5
 
 set -euo pipefail
 
@@ -28,8 +35,16 @@ if [ -z "${SUPABASE_SERVICE_ROLE_KEY:-}" ]; then
   exit 1
 fi
 
-CUSTOMER_EMAIL="${1:?사용법: $0 <고객 이메일> [분석 수]}"
-COUNT="${2:-1}"
+CUSTOMER_EMAIL="${1:?사용법: $0 <고객 이메일> [회원 이메일] [분석 수]}"
+
+# 2번째 인자에 @가 있으면 회원 이메일로, 없으면 분석 수로 해석
+if [[ "${2:-}" == *@* ]]; then
+  MEMBER_EMAIL="$2"
+  COUNT="${3:-1}"
+else
+  MEMBER_EMAIL=""
+  COUNT="${2:-1}"
+fi
 
 FACE_IMAGE="$(dirname "$0")/../public/face.png"
 if [ ! -f "$FACE_IMAGE" ]; then
@@ -59,6 +74,30 @@ if [ -z "$CUSTOMER_ID" ]; then
 fi
 
 echo "customer id: $CUSTOMER_ID"
+
+MEMBER_ID=""
+if [ -n "$MEMBER_EMAIL" ]; then
+  echo "0-1) member 조회: $MEMBER_EMAIL"
+  MEMBER_RESPONSE=$(curl -sS -G "$SUPABASE_URL/rest/v1/member" \
+    "${ADMIN_HEADERS[@]}" \
+    --data-urlencode "select=id" \
+    --data-urlencode "email=eq.$MEMBER_EMAIL")
+
+  MEMBER_ID=$(echo "$MEMBER_RESPONSE" | grep -o '"id":"[^"]*"' | head -1 | cut -d'"' -f4)
+
+  if [ -z "$MEMBER_ID" ]; then
+    echo "해당 이메일의 member를 찾지 못했습니다: $MEMBER_RESPONSE" >&2
+    exit 1
+  fi
+
+  echo "member id: $MEMBER_ID"
+fi
+
+if [ -n "$MEMBER_ID" ]; then
+  MEMBER_ID_JSON="\"$MEMBER_ID\""
+else
+  MEMBER_ID_JSON="null"
+fi
 
 PERSONAL_TYPES=(
   springBright springLight summerLight summerMute
@@ -93,7 +132,7 @@ for i in $(seq 1 "$COUNT"); do
 {
   "id": "$ANALYSIS_ID",
   "customer_id": "$CUSTOMER_ID",
-  "member_id": null,
+  "member_id": $MEMBER_ID_JSON,
   "original_image_url": "$IMAGE_URL",
   "result_image_url": "$IMAGE_URL",
   "result": {
@@ -126,4 +165,8 @@ JSON
   echo "  -> analysis 생성 완료: $ANALYSIS_ID ($PERSONAL_TYPE, $CREATED_AT)"
 done
 
-echo "완료. $CUSTOMER_EMAIL 에게 분석 기록 $COUNT 건 추가함."
+if [ -n "$MEMBER_ID" ]; then
+  echo "완료. $CUSTOMER_EMAIL (회원: $MEMBER_EMAIL) 에게 분석 기록 $COUNT 건 추가함."
+else
+  echo "완료. $CUSTOMER_EMAIL 에게 분석 기록 $COUNT 건 추가함."
+fi

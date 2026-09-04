@@ -1,11 +1,11 @@
-import { fetchAnalysesByMember } from "@/api/analysis";
+import { fetchRecentAnalyses } from "@/api/analysis";
 import { QUERY_KEYS } from "@/lib/constants";
 import { useQuery } from "@tanstack/react-query";
 
-export default function useAnalysesByMember(memberId: string) {
+export default function useRecentAnalyses({ memberId }: { memberId: string }) {
   return useQuery({
     queryKey: QUERY_KEYS.analysis.memberList(memberId!),
-    queryFn: () => fetchAnalysesByMember(memberId!),
+    queryFn: () => fetchRecentAnalyses(memberId!),
     enabled: !!memberId,
   });
 }
