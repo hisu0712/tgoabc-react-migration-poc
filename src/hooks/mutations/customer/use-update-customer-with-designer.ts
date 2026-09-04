@@ -1,5 +1,6 @@
 import { updateCustomerWithDesigner } from "@/api/customer";
 import { QUERY_KEYS } from "@/lib/constants";
+import { useSession } from "@/store/session";
 import type {
   CustomerEntity,
   CustomerWithDesigner,
@@ -11,6 +12,7 @@ export function useUpdateCustomerWithDesigner(
   callbacks?: UseMutationCallback<CustomerEntity>,
 ) {
   const queryClient = useQueryClient();
+  const session = useSession();
 
   return useMutation({
     mutationFn: updateCustomerWithDesigner,
@@ -21,6 +23,9 @@ export function useUpdateCustomerWithDesigner(
         QUERY_KEYS.customer.byId(updatedCustomer.id),
         updatedCustomer,
       );
+      queryClient.invalidateQueries({
+        queryKey: ["customer", "memberList", session!.user.id],
+      });
     },
     onError: (error) => {
       if (callbacks?.onError) callbacks.onError(error);

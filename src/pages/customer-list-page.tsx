@@ -125,14 +125,20 @@ export default function CustomerListPage() {
           <Loader />
         ) : customers?.pages[0].length ? (
           customers.pages.map((page) =>
-            page.map((c) => (
-              <CustomerCard
-                key={c.id}
-                id={c.id}
-                name={c.name}
-                email={c.email}
-              />
-            )),
+            page.map((c) => {
+              const designerName = designers?.find(
+                (d) => d.id === c.designer_id,
+              )?.name;
+              return (
+                <CustomerCard
+                  key={c.id}
+                  id={c.id}
+                  name={c.name}
+                  birthDate={c.birth_date}
+                  designerName={designerName}
+                />
+              );
+            }),
           )
         ) : (
           <EmptyContent content="아직 등록된 고객이 없습니다." />

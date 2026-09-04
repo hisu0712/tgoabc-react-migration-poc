@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import type { Gender } from "@/type";
+import type { CustomerWithDesigner, Gender } from "@/type";
 
 export async function fetchCustomer(customerId: string) {
   const { data, error } = await supabase
@@ -201,10 +201,10 @@ export async function fetchCustomersByMember({
   memberId: string;
   keyword?: string;
   designerId?: number;
-}) {
+}): Promise<CustomerWithDesigner[]> {
   let query = supabase
     .from("customer")
-    .select("*, member_customer_mapping!inner(member_id)")
+    .select("*, member_customer_mapping!inner(member_id, designer_id)")
     .eq("member_customer_mapping.member_id", memberId);
 
   if (designerId) {
@@ -222,7 +222,10 @@ export async function fetchCustomersByMember({
     .range(from, to);
 
   if (error) throw error;
-  return data;
+  return data.map(({ member_customer_mapping, ...c }) => ({
+    ...c,
+    designer_id: member_customer_mapping[0]?.designer_id ?? null,
+  }));
 }
 
 export async function fetchCustomerCountByMember({

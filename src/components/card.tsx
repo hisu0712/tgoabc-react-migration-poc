@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ChevronRight, ListIcon } from "lucide-react";
+import { ChevronRight, ListIcon, Scissors } from "lucide-react";
 import { Link } from "react-router";
 
 const cardVariants = cva("rounded-xl p-4 shadow-[0_0_10px_rgba(0,0,0,0.1)]", {
@@ -49,28 +49,55 @@ function LinkCard({
 function CustomerCard({
   id,
   name,
-  email,
+  birthDate,
+  designerName,
+  variant = "default",
   className,
 }: {
   id: string;
   name: string;
-  email?: string;
+  birthDate?: string;
+  designerName?: string;
+  variant?: "default" | "compact";
 } & React.ComponentProps<"div">) {
+  const isCompact = variant === "compact";
+
   return (
     <LinkCard
       to={`/customers/${id}`}
-      className={cn("flex items-center justify-between gap-2", className)}
+      className={cn(
+        "flex items-center justify-between gap-2",
+        isCompact && "w-max gap-1 p-3",
+        className,
+      )}
     >
-      <div className="flex items-center gap-2">
-        <div className="bg-primary/10 text-primary flex size-6 items-center justify-center rounded-full text-sm leading-none font-semibold">
-          K
+      <div className={cn("flex", isCompact ? "gap-1.5" : "gap-2.5")}>
+        <div
+          className={cn(
+            "bg-primary/10 text-primary flex items-center justify-center rounded-full text-sm leading-none",
+            isCompact ? "size-6" : "size-7",
+          )}
+        >
+          {[...name.trim()][0] ?? "?"}
         </div>
-        <div className="flex gap-0.5 text-lg">
-          <span>{name}</span>
-          {email && <span>({email.split("@")[0].slice(0, 4)})</span>}
+        <div className="flex flex-col justify-center gap-1">
+          <div className="flex gap-0.5 leading-none font-medium">
+            <span>{name}</span>
+            {birthDate && <span>({birthDate.slice(5).replace("-", "")})</span>}
+          </div>
+
+          {!isCompact && (
+            <span className="text-muted-foreground flex items-center gap-0.5 text-sm leading-none">
+              <Scissors className="size-3" />
+              {designerName ? `${designerName} 디자이너` : "담당 없음"}
+            </span>
+          )}
         </div>
       </div>
-      <ChevronRight className="size-8" strokeWidth={1.2} />
+      <ChevronRight
+        className={cn("shrink-0", isCompact ? "size-5" : "size-7")}
+        strokeWidth={1.2}
+      />
     </LinkCard>
   );
 }
@@ -86,15 +113,15 @@ function DesignerCard({
   return (
     <Card className="flex items-center justify-between gap-2" {...props}>
       <div className="flex items-center gap-2">
-        <div className="bg-primary/10 text-primary flex size-6 items-center justify-center rounded-full text-sm leading-none font-semibold">
-          K
+        <div className="bg-primary/10 text-primary flex size-7 items-center justify-center rounded-full text-sm leading-none font-medium">
+          {[...name.trim()][0] ?? "?"}
         </div>
         <div className="flex gap-0.5 text-lg">
           <span>{name}</span>
           <span>({phone.slice(-4)})</span>
         </div>
       </div>
-      <ChevronRight className="size-8" strokeWidth={1.2} />
+      <ChevronRight className="size-7" strokeWidth={1.2} />
     </Card>
   );
 }

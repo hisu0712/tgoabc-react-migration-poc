@@ -197,7 +197,7 @@ export default function IndexPage() {
                   <CustomerCard
                     id={a.customer_id}
                     name={a.customer_name}
-                    className="gap-0 p-3 pr-2"
+                    variant="compact"
                   />
                 </CarouselItem>
               ))}
