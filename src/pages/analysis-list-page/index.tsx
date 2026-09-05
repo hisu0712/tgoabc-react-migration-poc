@@ -99,7 +99,7 @@ export default function AnalysisListPage() {
         )}
 
         {isFetchingNextPage && <Loader />}
-        <div className="mt-30" ref={ref}></div>
+        <div ref={ref}></div>
       </div>
     </div>
   );
