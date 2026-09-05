@@ -1,14 +1,17 @@
 import { createCustomer } from "@/api/customer";
-import type { CustomerEntity, UseMutationCallback } from "@/type";
+import type { UseMutationCallback } from "@/type";
 import { useMutation } from "@tanstack/react-query";
 
 export function useCreateCustomer(
-  callbacks?: UseMutationCallback<CustomerEntity["id"]>,
+  callbacks?: UseMutationCallback<{
+    customerId: string;
+    isAlreadyExists: boolean;
+  }>,
 ) {
   return useMutation({
     mutationFn: createCustomer,
-    onSuccess: (createdCustomerId) => {
-      if (callbacks?.onSuccess) callbacks.onSuccess(createdCustomerId);
+    onSuccess: (result) => {
+      if (callbacks?.onSuccess) callbacks.onSuccess(result);
     },
     onError: (error) => {
       if (callbacks?.onError) callbacks.onError(error);

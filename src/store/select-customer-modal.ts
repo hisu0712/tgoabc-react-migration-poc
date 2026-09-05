@@ -16,7 +16,7 @@ const initialState = {
   isOpen: false,
 } as State;
 
-const useLinkCustomerModalStore = create(
+const useSelectCustomerModalStore = create(
   devtools(
     combine(initialState, (set) => ({
       actions: {
@@ -28,21 +28,16 @@ const useLinkCustomerModalStore = create(
         },
       },
     })),
-    { name: "linkCustomerModal" },
+    { name: "selectCustomerModal" },
   ),
 );
 
-export const useOpenLinkCustomerModal = () => {
-  const open = useLinkCustomerModalStore((store) => store.actions.open);
+export const useOpenSelectCustomerModal = () => {
+  const open = useSelectCustomerModalStore((store) => store.actions.open);
   return open;
 };
 
-export const useCloseLinkCustomerModal = () => {
-  const close = useLinkCustomerModalStore((store) => store.actions.close);
-  return close;
-};
-
-export const useLinkCustomerModal = () => {
-  const store = useLinkCustomerModalStore();
+export const useSelectCustomerModal = () => {
+  const store = useSelectCustomerModalStore();
   return store as typeof store & State;
 };

@@ -1,6 +1,5 @@
 import { CustomerCard, LinkCard } from "@/components/card";
 import HeaderNav from "@/components/header-nav";
-import { Input } from "@/components/ui/input";
 import { useInView } from "react-intersection-observer";
 import {
   Select,
@@ -11,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import useInfiniteCustomers from "@/hooks/queries/use-infinite-customers-data";
 import { useSession } from "@/store/session";
-import { Plus, Scissors, Search } from "lucide-react";
+import { Plus, Scissors } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/use-customer-count-data";
@@ -19,12 +18,12 @@ import useDesignersData from "@/hooks/queries/use-designers-data";
 import EmptyContent from "@/components/emptyContent";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
+import SearchInput from "@/components/search-input";
 
 export default function CustomerListPage() {
   const session = useSession();
   const { ref, inView } = useInView();
 
-  const [keyword, setKeyword] = useState("");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [designerId, setDesignerId] = useState("all");
 
@@ -52,21 +51,7 @@ export default function CustomerListPage() {
     if (inView) fetchNextPage();
   }, [inView]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setSearchKeyword(keyword);
-    }, 300); // 0.3초마다 자동 검색
-
-    return () => clearTimeout(timer);
-  }, [keyword]);
-
   if (isError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setSearchKeyword(keyword);
-  };
 
   return (
     <div>
@@ -74,17 +59,10 @@ export default function CustomerListPage() {
         title="고객 목록"
         hideBack
         bottomSlot={
-          <div className="relative">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-            <form onSubmit={handleSubmit}>
-              <Input
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                placeholder="이름 또는 이메일"
-                className="bg-card h-12 pl-9"
-              />
-            </form>
-          </div>
+          <SearchInput
+            onSearch={setSearchKeyword}
+            placeholder="이름 또는 이메일"
+          />
         }
       />
 
@@ -145,7 +123,7 @@ export default function CustomerListPage() {
         )}
 
         {isFetchingNextPage && <Loader />}
-        <div className="mt-30" ref={ref}></div>
+        <div ref={ref}></div>
       </div>
     </div>
   );

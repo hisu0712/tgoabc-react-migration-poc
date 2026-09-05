@@ -45,7 +45,7 @@ export async function createCustomer({
   birthDate: string;
   gender: Gender;
   designerId: number | null;
-}) {
+}): Promise<{ customerId: string; isAlreadyExists: boolean }> {
   // 1. 이미 존재하는 고객인지 확인 (email 중복 확인)
   const { data: existingCustomer, error: findCustomerError } = await supabase
     .from("customer")
@@ -67,7 +67,7 @@ export async function createCustomer({
     if (findMappingError) throw findMappingError;
 
     if (existingMapping) {
-      throw new Error("이미 존재하는 고객입니다.");
+      return { customerId: existingCustomer.id, isAlreadyExists: true };
     }
 
     // *고객은 있지만 이 회원과의 매핑이 없는 경우 (-> mapping만 추가)
@@ -81,7 +81,7 @@ export async function createCustomer({
 
     if (insertMappingError) throw insertMappingError;
 
-    return existingCustomer.id;
+    return { customerId: existingCustomer.id, isAlreadyExists: false };
   }
 
   // 2. 신규 고객: auth 생성 + customer insert + mapping insert
@@ -93,7 +93,7 @@ export async function createCustomer({
 
   if (createError) throw createError;
 
-  return result!.customerId;
+  return { customerId: result!.customerId, isAlreadyExists: false };
 }
 
 export async function updateCustomer({

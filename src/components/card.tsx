@@ -5,7 +5,6 @@ import {
   type PersonalType,
 } from "@/lib/analysis";
 import { cn } from "@/lib/utils";
-
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { ChevronRight, ListIcon, Scissors } from "lucide-react";
@@ -46,6 +45,21 @@ function LinkCard({
   );
 }
 
+type CustomerCardProps = {
+  id: string;
+  name: string;
+  birthDate?: string;
+  designerName?: string;
+  variant?: "default" | "compact";
+  className?: string;
+} & (
+  | ({ asButton?: false } & Omit<
+      React.ComponentProps<typeof LinkCard>,
+      "to" | "className" | "variant"
+    >)
+  | ({ asButton: true } & Omit<React.ComponentProps<"button">, "className">)
+);
+
 function CustomerCard({
   id,
   name,
@@ -53,24 +67,12 @@ function CustomerCard({
   designerName,
   variant = "default",
   className,
-}: {
-  id: string;
-  name: string;
-  birthDate?: string;
-  designerName?: string;
-  variant?: "default" | "compact";
-} & React.ComponentProps<"div">) {
+  ...props
+}: CustomerCardProps) {
   const isCompact = variant === "compact";
 
-  return (
-    <LinkCard
-      to={`/customers/${id}`}
-      className={cn(
-        "flex items-center justify-between gap-2",
-        isCompact && "w-max gap-1 p-3",
-        className,
-      )}
-    >
+  const content = (
+    <>
       <div className={cn("flex", isCompact ? "gap-1.5" : "gap-2.5")}>
         <div
           className={cn(
@@ -87,7 +89,7 @@ function CustomerCard({
           </div>
 
           {!isCompact && (
-            <span className="text-muted-foreground flex items-center gap-0.5 text-sm leading-none">
+            <span className="text-muted-foreground -mb-0.5 flex items-center gap-0.5 text-sm leading-none">
               <Scissors className="size-3" />
               {designerName ? `${designerName} 디자이너` : "담당 없음"}
             </span>
@@ -98,6 +100,35 @@ function CustomerCard({
         className={cn("shrink-0", isCompact ? "size-5" : "size-7")}
         strokeWidth={1.2}
       />
+    </>
+  );
+
+  const cardClassName = cn(
+    "flex items-center justify-between gap-2",
+    isCompact && "w-max gap-1 p-3",
+    className,
+  );
+
+  if (props.asButton) {
+    const { asButton, ...buttonProps } = props;
+    return (
+      <button
+        type="button"
+        className={cn(
+          cardVariants({ className: cardClassName }),
+          "cursor-pointer",
+        )}
+        {...buttonProps}
+      >
+        {content}
+      </button>
+    );
+  }
+
+  const { asButton, ...linkProps } = props;
+  return (
+    <LinkCard to={`/customers/${id}`} className={cardClassName} {...linkProps}>
+      {content}
     </LinkCard>
   );
 }

@@ -52,18 +52,27 @@ export default function CustomerNewPage() {
 
   const { mutate: createCustomer, isPending: isCreateCustomerPending } =
     useCreateCustomer({
-      onSuccess: (createdCustomerId) => {
-        toast.success("고객이 등록되었습니다.", { position: "top-center" });
+      onSuccess: (result) => {
+        const { customerId, isAlreadyExists } = result!;
+
+        toast.success(
+          isAlreadyExists
+            ? "이미 등록된 고객입니다."
+            : "고객이 등록되었습니다.",
+          { position: "top-center" },
+        );
 
         if (analysisId) {
           linkAnalysisToCustomer({
             analysisId,
             memberId: session!.user.id,
-            customerId: createdCustomerId!,
+            customerId: customerId,
           });
         }
 
-        navigate(`/customers/${createdCustomerId}`, { replace: true });
+        navigate(`/customers/${customerId}`, {
+          replace: true,
+        });
       },
       onError: (error) => {
         toast.error(error.message || "고객 등록에 실패했습니다.", {

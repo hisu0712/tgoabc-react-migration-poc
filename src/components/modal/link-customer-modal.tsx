@@ -7,10 +7,12 @@ import {
 } from "../ui/dialog";
 import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
+import { useOpenSelectCustomerModal } from "@/store/select-customer-modal";
 
 export default function LinkCustomerModal() {
-  const linkCustomerModal = useLinkCustomerModal();
   const navigate = useNavigate();
+  const linkCustomerModal = useLinkCustomerModal();
+  const openSelectCustomerModal = useOpenSelectCustomerModal();
 
   if (!linkCustomerModal.isOpen) return null;
 
@@ -21,7 +23,9 @@ export default function LinkCustomerModal() {
     linkCustomerModal.actions.close();
   };
 
-  const handleSelectExistingCustomer = () => {};
+  const handleSelectExistingCustomer = () => {
+    openSelectCustomerModal(linkCustomerModal.analysisId);
+  };
 
   return (
     <Dialog
