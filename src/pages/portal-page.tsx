@@ -29,7 +29,7 @@ export default function PortalPage() {
   };
 
   return (
-    <div className="pb-25">
+    <div>
       <HeaderHomeNav />
 
       <div className="mb-4 flex items-center justify-between">

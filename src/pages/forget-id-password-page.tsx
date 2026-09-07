@@ -144,7 +144,7 @@ export default function ForgetIdPasswordPage() {
               disabled={isFindIdPending}
               form="find-id-form"
               type="submit"
-              className="w-full py-5"
+              className="w-full py-5 cursor-pointer"
             >
               아이디 찾기
             </Button>
@@ -182,7 +182,7 @@ export default function ForgetIdPasswordPage() {
               disabled={isResetPasswordPending}
               form="find-password-form"
               type="submit"
-              className="w-full py-5"
+              className="w-full py-5 cursor-pointer"
             >
               인증 메일 요청하기
             </Button>

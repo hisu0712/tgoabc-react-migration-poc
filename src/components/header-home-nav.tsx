@@ -21,7 +21,6 @@ export default function HeaderHomeNav({
         <img className="w-37" src={logoSrc} alt="티고ABC 로고" />
         <div className="flex items-center gap-2.5">
           <ThemeButton />
-          <Globe className="size-6.5" strokeWidth={1.5} />
         </div>
       </div>
     </header>
