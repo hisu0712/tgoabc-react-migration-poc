@@ -111,7 +111,7 @@ export default function ForgetIdPasswordPage() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>이름</FormLabel>
+                      <FormLabel required>이름</FormLabel>
                       <FormControl>
                         <Input
                           disabled={isFindIdPending}
@@ -129,7 +129,7 @@ export default function ForgetIdPasswordPage() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>휴대전화</FormLabel>
+                      <FormLabel required>휴대전화</FormLabel>
                       <FormControl>
                         <PhoneInput disabled={isFindIdPending} {...field} />
                       </FormControl>
@@ -163,7 +163,7 @@ export default function ForgetIdPasswordPage() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>이메일(아이디)</FormLabel>
+                      <FormLabel required>이메일(아이디)</FormLabel>
                       <FormControl>
                         <Input
                           disabled={isResetPasswordPending}

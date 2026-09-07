@@ -132,7 +132,7 @@ export default function SignUpPage() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>이름</FormLabel>
+                <FormLabel required>이름</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isCompleteMemberSignUp}
@@ -151,7 +151,7 @@ export default function SignUpPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이메일</FormLabel>
+                  <FormLabel required>이메일</FormLabel>
                   <div className="relative">
                     <FormControl>
                       <Input
@@ -214,7 +214,7 @@ export default function SignUpPage() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>휴대전화</FormLabel>
+                <FormLabel required>휴대전화</FormLabel>
                 <FormControl>
                   <PhoneInput disabled={isCompleteMemberSignUp} {...field} />
                 </FormControl>
@@ -229,7 +229,7 @@ export default function SignUpPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>비밀번호</FormLabel>
+                  <FormLabel required>비밀번호</FormLabel>
                   <FormControl>
                     <PasswordInput
                       disabled={isCompleteMemberSignUp}
@@ -264,7 +264,7 @@ export default function SignUpPage() {
             name="shopName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>매장명</FormLabel>
+                <FormLabel required>매장명</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isCompleteMemberSignUp}

@@ -93,7 +93,7 @@ export default function MemberInfoPage() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>이름</FormLabel>
+                <FormLabel required>이름</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isUpdateMemberPending}
@@ -116,7 +116,7 @@ export default function MemberInfoPage() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>휴대전화</FormLabel>
+                <FormLabel required>휴대전화</FormLabel>
                 <FormControl>
                   <PhoneInput disabled={isUpdateMemberPending} {...field} />
                 </FormControl>
@@ -133,7 +133,7 @@ export default function MemberInfoPage() {
                 disabled={isUpdateMemberPending}
                 type="button"
                 variant={"link"}
-                className="-transform-y-1/2 absolute top-0 right-0 h-full cursor-pointer"
+                className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer"
                 onClick={() => navigate("/reset-password")}
               >
                 변경하기

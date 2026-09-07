@@ -74,7 +74,7 @@ export default function ResetPasswordPage() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>신규 비밀번호</FormLabel>
+                <FormLabel required>신규 비밀번호</FormLabel>
                 <FormControl>
                   <PasswordInput
                     disabled={isUpdatePasswordPending}
@@ -92,7 +92,7 @@ export default function ResetPasswordPage() {
             name="repassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>비밀번호 확인</FormLabel>
+                <FormLabel required>비밀번호 확인</FormLabel>
                 <FormControl>
                   <PasswordInput
                     disabled={isUpdatePasswordPending}

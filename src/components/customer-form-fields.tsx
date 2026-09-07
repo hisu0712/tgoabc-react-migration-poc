@@ -41,7 +41,7 @@ export default function CustomerFormFields({
         name="name"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>이름</FormLabel>
+            <FormLabel required>이름</FormLabel>
             <FormControl>
               <Input
                 disabled={disabled}
@@ -59,7 +59,7 @@ export default function CustomerFormFields({
         name="email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>이메일</FormLabel>
+            <FormLabel required={!emailReadOnly}>이메일</FormLabel>
             {!emailReadOnly && (
               <FormHint>
                 고객 정보 식별을 위해 이메일을 정확히 입력해주세요.
@@ -83,7 +83,7 @@ export default function CustomerFormFields({
         name="birthDate"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>생년월일</FormLabel>
+            <FormLabel required>생년월일</FormLabel>
             <FormControl>
               <Input
                 inputMode="numeric"
@@ -106,7 +106,7 @@ export default function CustomerFormFields({
         name="gender"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>성별</FormLabel>
+            <FormLabel required>성별</FormLabel>
             <FormControl>
               <div role="radiogroup" className="grid grid-cols-2 gap-2">
                 {GENDER_FORM_VALUES.map((option) => (
