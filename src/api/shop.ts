@@ -39,6 +39,7 @@ export async function updateShop({
   address,
   address_detail,
   shopImageFile,
+  removeShopImage,
 }: {
   memberId: string;
   name: string;
@@ -46,13 +47,13 @@ export async function updateShop({
   address?: string;
   address_detail?: string;
   shopImageFile?: File;
+  removeShopImage?: boolean;
 }) {
+  let newShopImageUrl;
+
   if (shopImageFile) {
     await deleteImagesInPath(`${memberId}/shop`);
-  }
 
-  let newShopImageUrl;
-  if (shopImageFile) {
     const fileExtension = shopImageFile.name.split(".").pop() || "webp";
     const filePath = `${memberId}/shop/${new Date().getTime()}-${crypto.randomUUID()}.${fileExtension}`;
 
@@ -60,6 +61,9 @@ export async function updateShop({
       file: shopImageFile,
       filePath,
     });
+  } else if (removeShopImage) {
+    await deleteImagesInPath(`${memberId}/shop`);
+    newShopImageUrl = null;
   }
 
   const { data, error } = await supabase
