@@ -126,7 +126,7 @@ export default function SignInMemberForm() {
 
           <Button
             form="member-sign-in-form"
-            className="h-auto py-2.5 text-base"
+            className="h-auto cursor-pointer py-2.5 text-base"
             disabled={isSignInWithPasswordPending}
             type="submit"
           >

@@ -153,7 +153,7 @@ export default function SignInCustomerForm() {
         <Button
           disabled={isCompleteCustomerSignInPending}
           form="customer-sign-in-form"
-          className="h-auto py-2.5 text-base"
+          className="h-auto py-2.5 text-base cursor-pointer"
           type="submit"
         >
           로그인

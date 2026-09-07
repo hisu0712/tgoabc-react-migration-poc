@@ -72,7 +72,7 @@ export default function IndexPage() {
             </p>
           </div>
         </div>
-        <div onClick={handleShopEditClick} className="relative size-20">
+        <div onClick={handleShopEditClick} className="relative size-20 cursor-pointer">
           <img
             className="h-full w-full overflow-hidden rounded-full object-cover"
             src={shop?.logo_url || defaultShop}
