@@ -1,4 +1,3 @@
-import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 import logoBlue from "@/assets/logo_blue.png";
 import ThemeButton from "./theme-button";
