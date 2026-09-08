@@ -1,4 +1,4 @@
-import { useShopData } from "@/hooks/queries/use-shop-data";
+import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { useOpenAlertModal } from "@/store/alert";
 import { useSession } from "@/store/session";
 import { BarChart2, ChevronRight, Plus } from "lucide-react";
@@ -19,9 +19,9 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import HeaderHomeNav from "@/components/header-home-nav";
-import useCustomerCount from "@/hooks/queries/use-customer-count-data";
-import useAnalysisCount from "@/hooks/queries/use-analysis-count-data";
-import useRecentAnalyses from "@/hooks/queries/use-recent-analyses-data";
+import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
+import useAnalysisCount from "@/hooks/queries/analysis/use-analysis-count-data";
+import useRecentAnalyses from "@/hooks/queries/analysis/use-recent-analyses-data";
 
 export default function IndexPage() {
   const session = useSession();
@@ -72,7 +72,7 @@ export default function IndexPage() {
             </p>
           </div>
         </div>
-        <div onClick={handleShopEditClick} className="relative size-20 cursor-pointer">
+        <div onClick={handleShopEditClick} className="relative size-18 cursor-pointer">
           <img
             className="h-full w-full overflow-hidden rounded-full object-cover"
             src={shop?.logo_url || defaultShop}

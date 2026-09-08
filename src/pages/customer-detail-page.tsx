@@ -5,8 +5,8 @@ import { Link, useParams } from "react-router";
 import { ChevronRight, FileText, Scissors, SquarePen } from "lucide-react";
 import HeaderHomeNav from "@/components/header-home-nav";
 import { useSession } from "@/store/session";
-import useCustomerWithDesignerData from "@/hooks/queries/use-customer-with-designer-data";
-import useDesignersData from "@/hooks/queries/use-designers-data";
+import useCustomerWithDesignerData from "@/hooks/queries/customer/use-customer-with-designer-data";
+import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 

@@ -8,13 +8,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useInfiniteCustomers from "@/hooks/queries/use-infinite-customers-data";
+import useInfiniteCustomers from "@/hooks/queries/customer/use-infinite-customers-data";
 import { useSession } from "@/store/session";
 import { Plus, Scissors } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
-import useCustomerCount from "@/hooks/queries/use-customer-count-data";
-import useDesignersData from "@/hooks/queries/use-designers-data";
+import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
+import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import EmptyContent from "@/components/emptyContent";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";

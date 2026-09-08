@@ -1,6 +1,6 @@
 import BottomButton from "@/components/bottom-button";
 import GlobalLoader from "@/components/global-loader";
-import { useShopData } from "@/hooks/queries/use-shop-data";
+import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { useSession } from "@/store/session";
 import { useNavigate } from "react-router";
 import surveyOutro from "@/assets/survey_outro.gif";

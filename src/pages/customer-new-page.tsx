@@ -4,7 +4,7 @@ import HeaderNav from "@/components/header-nav";
 import { Form } from "@/components/ui/form";
 import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";
 import { useCreateCustomer } from "@/hooks/mutations/customer/use-create-customer";
-import useDesignersData from "@/hooks/queries/use-designers-data";
+import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import {
   customerSchema,
   type CustomerFormValues,

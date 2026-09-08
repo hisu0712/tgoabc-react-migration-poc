@@ -1,7 +1,7 @@
 import GlobalLoader from "@/components/global-loader";
 import { Input } from "@/components/ui/input";
 import { useUpdateShop } from "@/hooks/mutations/shop/use-update-shop";
-import { useShopData } from "@/hooks/queries/use-shop-data";
+import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { shopSchema, type ShopFormValues } from "@/schemas/shop.schema";
 import { useOpenAlertModal } from "@/store/alert";
 import {

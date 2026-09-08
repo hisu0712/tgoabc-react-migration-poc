@@ -7,7 +7,7 @@ import {
   customerSchema,
 } from "@/schemas/customer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useCustomerData from "@/hooks/queries/use-customer-data";
+import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";

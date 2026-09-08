@@ -4,13 +4,13 @@ import { Link } from "react-router";
 import memuPersonal from "@/assets/menu_personal.png";
 import HeaderHomeNav from "@/components/header-home-nav";
 import { useSession } from "@/store/session";
-import { useShopsData } from "@/hooks/queries/use-shops-data";
+import { useShopsData } from "@/hooks/queries/shop/use-shops-data";
 import { Button } from "@/components/ui/button";
 import defaultShop from "@/assets/default-shop.png";
 import defaultUser from "@/assets/customer_profile__joa.png";
 import { useOpenAlertModal } from "@/store/alert";
 import type { ShopEntity } from "@/type";
-import useCustomerData from "@/hooks/queries/use-customer-data";
+import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 
 export default function PortalPage() {
   const session = useSession();
@@ -43,7 +43,7 @@ export default function PortalPage() {
             <ChevronRight className="size-7" strokeWidth={1.5} />
           </Link>
         </div>
-        <div className="relative size-20">
+        <div className="relative size-18">
           <img
             className="h-full w-full overflow-hidden rounded-full object-cover"
             src={defaultUser}

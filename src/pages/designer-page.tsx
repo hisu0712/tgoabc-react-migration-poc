@@ -1,6 +1,6 @@
 import { Card, DesignerCard } from "@/components/card";
 import HeaderNav from "@/components/header-nav";
-import useDesignersData from "@/hooks/queries/use-designers-data";
+import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import {
   useOpenCreateDesignerModal,
   useOpenEditDesignerModal,

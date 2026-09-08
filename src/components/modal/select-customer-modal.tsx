@@ -2,7 +2,7 @@ import { useSelectCustomerModal } from "@/store/select-customer-modal";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import SearchInput from "../search-input";
 import { useState } from "react";
-import useInfiniteCustomers from "@/hooks/queries/use-infinite-customers-data";
+import useInfiniteCustomers from "@/hooks/queries/customer/use-infinite-customers-data";
 import { useSession } from "@/store/session";
 import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";
 import { toast } from "sonner";

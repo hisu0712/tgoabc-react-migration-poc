@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
-import { useMemberData } from "@/hooks/queries/use-member-data";
+import { useMemberData } from "@/hooks/queries/member/use-member-data";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import { type MemberFormValues, memberSchema } from "@/schemas/member.schema";
 import { useSession } from "@/store/session";
