@@ -1,7 +1,7 @@
 import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useSession } from "@/store/session";
-import { BarChart2, ChevronRight, Plus } from "lucide-react";
+import { BarChart2Icon, ChevronRightIcon, PlusIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import defaultShop from "@/assets/customer_profile__joa.png";
 import icoAddCustomer from "@/assets/ico_addCustomer.svg";
@@ -51,7 +51,7 @@ export default function IndexPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderHomeNav />
 
       <div className="mb-5 flex items-center justify-between">
@@ -62,10 +62,10 @@ export default function IndexPage() {
             className="text-primary mb-1 flex items-center text-2xl font-bold"
           >
             {isFetchShopLoading ? "-" : shop?.name} 님
-            <ChevronRight className="size-7" strokeWidth={1.5} />
+            <ChevronRightIcon className="size-7" strokeWidth={1.5} />
           </Link>
           <div className="text-muted-foreground flex items-end gap-1">
-            <BarChart2 className="size-4" />
+            <BarChart2Icon className="size-4" />
             <p className="text-sm leading-none">
               고객 {isFetchCustomerCountFetching ? "-" : customerCount}명 ·
               분석수 {isFetchAnalysisCountFetching ? "-" : analysisCount}건
@@ -79,7 +79,7 @@ export default function IndexPage() {
             alt={shop?.name}
           />
           <span className="bg-card absolute right-0 bottom-0 h-[25%] w-[25%] rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)]">
-            <Plus
+            <PlusIcon
               className="text-primary absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2"
               strokeWidth={2.3}
             />
@@ -205,6 +205,6 @@ export default function IndexPage() {
           </Carousel>
         </>
       ) : null}
-    </div>
+    </>
   );
 }

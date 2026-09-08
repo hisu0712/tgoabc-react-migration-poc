@@ -5,7 +5,7 @@ import FindPasswordForm from "./components/find-password-form";
 
 export default function ForgetIdPasswordPage() {
   return (
-    <div>
+    <>
       <HeaderNav title="아이디 / 비밀번호 찾기" />
 
       <Tabs defaultValue="id" className="w-full">
@@ -22,6 +22,6 @@ export default function ForgetIdPasswordPage() {
           <FindPasswordForm />
         </TabsContent>
       </Tabs>
-    </div>
+    </>
   );
 }

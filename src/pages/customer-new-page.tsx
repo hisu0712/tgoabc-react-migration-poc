@@ -91,7 +91,7 @@ export default function CustomerNewPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderNav title="신규 고객 추가" />
 
       <div className="mb-5 text-lg font-semibold">
@@ -118,6 +118,6 @@ export default function CustomerNewPage() {
       >
         저장
       </BottomButton>
-    </div>
+    </>
   );
 }

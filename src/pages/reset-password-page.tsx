@@ -9,7 +9,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useUpdatePassword } from "@/hooks/mutations/auth/use-update-password";
 import { generateErrorMessage } from "@/lib/error";
 import { MEMBER_HOME_PATH } from "@/lib/route";
@@ -18,17 +17,12 @@ import {
   resetPasswordSchema,
 } from "@/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [showRepassword, setShowRepassword] = useState(false);
 
   const { mutate: updatePassword, isPending: isUpdatePasswordPending } =
     useUpdatePassword({

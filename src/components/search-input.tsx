@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
+import { SearchIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function SearchInput({
@@ -32,7 +32,7 @@ export default function SearchInput({
 
   return (
     <div className="relative">
-      <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+      <SearchIcon className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
       <form onSubmit={handleSubmit}>
         <Input
           value={keyword}

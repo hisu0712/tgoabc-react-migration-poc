@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { ChevronRight, Scissors } from "lucide-react";
+import { ChevronRightIcon, ScissorsIcon } from "lucide-react";
 import { Link } from "react-router";
 
 const cardVariants = cva("rounded-xl p-4 shadow-[0_0_10px_rgba(0,0,0,0.1)]", {
@@ -84,13 +84,13 @@ function CustomerCard({
 
           {!isCompact && (
             <span className="text-muted-foreground -mb-0.5 flex items-center gap-0.5 text-sm leading-none">
-              <Scissors className="size-3" />
+              <ScissorsIcon className="size-3" />
               {designerName ? `${designerName} 디자이너` : "담당 없음"}
             </span>
           )}
         </div>
       </div>
-      <ChevronRight
+      <ChevronRightIcon
         className={cn("shrink-0", isCompact ? "size-5" : "size-7")}
         strokeWidth={1.2}
       />

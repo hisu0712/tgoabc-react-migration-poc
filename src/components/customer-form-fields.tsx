@@ -20,7 +20,7 @@ import { formatBirthDateInput } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { CustomerFormValues } from "@/schemas/customer.schema";
 import type { DesignerEntity } from "@/types";
-import { Scissors } from "lucide-react";
+import { ScissorsIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 export default function CustomerFormFields({
@@ -144,7 +144,7 @@ export default function CustomerFormFields({
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
                     <div className="flex items-center gap-2">
-                      <Scissors className="size-4" strokeWidth={1.5} />
+                      <ScissorsIcon className="size-4" strokeWidth={1.5} />
                       <SelectValue placeholder="디자이너 없음" />
                     </div>
                   </SelectTrigger>

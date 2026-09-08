@@ -2,7 +2,12 @@ import { Card, LinkCard } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import { Link, useParams } from "react-router";
-import { ChevronRight, FileText, Scissors, SquarePen } from "lucide-react";
+import {
+  ChevronRightIcon,
+  FileTextIcon,
+  ScissorsIcon,
+  SquarePenIcon,
+} from "lucide-react";
 import HeaderHomeNav from "@/components/layout/header-home-nav";
 import { useSession } from "@/store/session";
 import useCustomerWithDesignerData from "@/hooks/queries/customer/use-customer-with-designer-data";
@@ -24,7 +29,7 @@ export default function CustomerDetailPage() {
   if (isFetchCustomerError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
-    <main>
+    <>
       <HeaderHomeNav />
 
       <div className="mb-5 flex items-end justify-between">
@@ -34,13 +39,13 @@ export default function CustomerDetailPage() {
             className="text-primary flex items-center"
           >
             {customer?.name}
-            <ChevronRight className="size-7" strokeWidth={1.3} />
+            <ChevronRightIcon className="size-7" strokeWidth={1.3} />
           </Link>
           <span>고객님, 환영합니다!</span>
         </div>
 
         <div className="bg-muted flex items-center gap-1 rounded-md p-2">
-          <Scissors className="size-4" />
+          <ScissorsIcon className="size-4" />
           <span>
             {customer?.designer_id
               ? `${designer?.name} 디자이너`
@@ -95,7 +100,7 @@ export default function CustomerDetailPage() {
 
         <Card className="flex flex-col justify-between gap-9">
           <div className="flex items-center gap-1.5">
-            <FileText
+            <FileTextIcon
               className="text-feature-1 fill-feature-1/10 size-6"
               strokeWidth={1.3}
             />
@@ -105,12 +110,12 @@ export default function CustomerDetailPage() {
           </div>
           <div className="text-muted-foreground flex items-center">
             <span className="text-sm font-normal">분석 기록 모아보기</span>
-            <ChevronRight className="size-5" strokeWidth={1} />
+            <ChevronRightIcon className="size-5" strokeWidth={1} />
           </div>
         </Card>
         <Card className="flex flex-col justify-between gap-9">
           <div className="flex items-center gap-1.5">
-            <SquarePen
+            <SquarePenIcon
               className="text-feature-2 fill-feature-2/10 size-6"
               strokeWidth={1.3}
             />
@@ -120,10 +125,10 @@ export default function CustomerDetailPage() {
           </div>
           <div className="text-muted-foreground flex items-center">
             <span className="text-sm font-normal">상담 및 시술 메모</span>
-            <ChevronRight className="size-5" strokeWidth={1} />
+            <ChevronRightIcon className="size-5" strokeWidth={1} />
           </div>
         </Card>
       </div>
-    </main>
+    </>
   );
 }

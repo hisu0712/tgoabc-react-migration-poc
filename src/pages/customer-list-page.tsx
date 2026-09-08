@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import useInfiniteCustomers from "@/hooks/queries/customer/use-infinite-customers-data";
 import { useSession } from "@/store/session";
-import { Plus, Scissors } from "lucide-react";
+import { PlusIcon, ScissorsIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
@@ -54,7 +54,7 @@ export default function CustomerListPage() {
   if (isError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
-    <div>
+    <>
       <HeaderNav
         title="고객 목록"
         hideBack
@@ -72,7 +72,7 @@ export default function CustomerListPage() {
         className="mb-4 flex items-center justify-between"
       >
         <span className="text-lg font-semibold">신규 고객 추가</span>
-        <Plus className="size-9" strokeWidth={1.3} />
+        <PlusIcon className="size-9" strokeWidth={1.3} />
       </LinkCard>
 
       <div className="bg-muted-foreground/20 mb-7 h-px w-full"></div>
@@ -84,7 +84,7 @@ export default function CustomerListPage() {
 
         <Select value={designerId} onValueChange={setDesignerId}>
           <SelectTrigger>
-            <Scissors className="size-4" strokeWidth={1.5} />
+            <ScissorsIcon className="size-4" strokeWidth={1.5} />
             <SelectValue />
           </SelectTrigger>
           <SelectContent position="popper">
@@ -125,6 +125,6 @@ export default function CustomerListPage() {
         {isFetchingNextPage && <Loader />}
         <div ref={ref}></div>
       </div>
-    </div>
+    </>
   );
 }

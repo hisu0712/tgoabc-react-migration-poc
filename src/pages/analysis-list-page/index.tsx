@@ -50,7 +50,7 @@ export default function AnalysisListPage() {
   if (isError) return <ErrorRedirect to={CUSTOMER_HOME_PATH} />;
 
   return (
-    <div>
+    <>
       <HeaderNav title="기록리스트" />
 
       <div className="mb-4 text-xl font-semibold">
@@ -101,6 +101,6 @@ export default function AnalysisListPage() {
         {isFetchingNextPage && <Loader />}
         <div ref={ref}></div>
       </div>
-    </div>
+    </>
   );
 }

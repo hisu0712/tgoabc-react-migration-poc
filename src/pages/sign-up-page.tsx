@@ -113,7 +113,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderNav title="회원가입" />
 
       <div className="mb-5 text-lg font-semibold">
@@ -286,6 +286,6 @@ export default function SignUpPage() {
       >
         다음
       </BottomButton>
-    </div>
+    </>
   );
 }

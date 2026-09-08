@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeftIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router";
 
@@ -44,7 +44,7 @@ export default function HeaderNav({
             onClick={handleBack}
             className="absolute top-1/2 left-0 z-10 flex -translate-x-1/4 -translate-y-1/2 cursor-pointer"
           >
-            <ChevronLeft className="size-10" strokeWidth={1} />
+            <ChevronLeftIcon className="size-10" strokeWidth={1} />
           </button>
         )}
 

@@ -132,7 +132,7 @@ export default function MemberShopPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderNav title="매장 정보" />
 
       <div className="mb-5 font-semibold">
@@ -285,6 +285,6 @@ export default function MemberShopPage() {
       >
         저장
       </BottomButton>
-    </div>
+    </>
   );
 }

@@ -79,7 +79,7 @@ export default function MemberInfoPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderNav title="계정 정보" />
 
       <Form {...form}>
@@ -152,6 +152,6 @@ export default function MemberInfoPage() {
       >
         수정
       </BottomButton>
-    </div>
+    </>
   );
 }

@@ -1,5 +1,10 @@
 import { Card, LinkCard } from "@/components/card";
-import { ChevronRight, FileText, MessageCircle, Store } from "lucide-react";
+import {
+  ChevronRightIcon,
+  FileTextIcon,
+  MessageCircleIcon,
+  StoreIcon,
+} from "lucide-react";
 import { Link } from "react-router";
 import memuPersonal from "@/assets/menu_personal.png";
 import HeaderHomeNav from "@/components/layout/header-home-nav";
@@ -29,7 +34,7 @@ export default function PortalPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderHomeNav />
 
       <div className="mb-4 flex items-center justify-between">
@@ -40,7 +45,7 @@ export default function PortalPage() {
             className="text-primary flex items-center text-2xl font-bold"
           >
             {customer?.name} 님
-            <ChevronRight className="size-7" strokeWidth={1.5} />
+            <ChevronRightIcon className="size-7" strokeWidth={1.5} />
           </Link>
         </div>
         <div className="relative size-18">
@@ -82,7 +87,7 @@ export default function PortalPage() {
             to={"/portal-analysis/list"}
             className="bg-feature-2/10 flex flex-col items-center justify-center gap-2 shadow-none"
           >
-            <FileText
+            <FileTextIcon
               className="text-feature-1 size-6 fill-white"
               strokeWidth={1.3}
             />
@@ -91,7 +96,7 @@ export default function PortalPage() {
             </span>
           </LinkCard>
           <Card className="bg-feature-1/10 flex flex-col items-center justify-center gap-2 shadow-none">
-            <FileText
+            <FileTextIcon
               className="text-feature-1 size-6 fill-white"
               strokeWidth={1.3}
             />
@@ -130,7 +135,7 @@ export default function PortalPage() {
       <div className="grid grid-cols-2 gap-2">
         <Card className="flex flex-col justify-between gap-5">
           <div className="flex items-center gap-1.5">
-            <MessageCircle
+            <MessageCircleIcon
               className="text-feature-1 fill-feature-1 size-6"
               strokeWidth={1.3}
             />
@@ -138,13 +143,13 @@ export default function PortalPage() {
           </div>
           <div className="text-muted-foreground flex items-center">
             <span className="text-sm font-normal">메시지 확인하기</span>
-            <ChevronRight className="size-5" strokeWidth={1} />
+            <ChevronRightIcon className="size-5" strokeWidth={1} />
           </div>
         </Card>
 
         <Card className="flex flex-col justify-between gap-5">
           <div className="flex items-center gap-1.5">
-            <Store
+            <StoreIcon
               className="text-feature-2 fill-feature-2/8 size-6"
               strokeWidth={1.3}
             />
@@ -154,11 +159,11 @@ export default function PortalPage() {
             <span>티고ABC</span>
             <span className="flex items-center">
               제휴매장 찾기
-              <ChevronRight className="size-5" strokeWidth={1} />
+              <ChevronRightIcon className="size-5" strokeWidth={1} />
             </span>
           </div>
         </Card>
       </div>
-    </div>
+    </>
   );
 }

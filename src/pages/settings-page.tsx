@@ -1,6 +1,6 @@
 import { LinkCard } from "@/components/card";
 import HeaderNav from "@/components/layout/header-nav";
-import { List, Scissors, User } from "lucide-react";
+import { ListIcon, ScissorsIcon, UserIcon } from "lucide-react";
 import LogoutCard from "@/components/logout-card";
 
 export default function SettingsPage() {
@@ -14,7 +14,7 @@ export default function SettingsPage() {
           to={"/designers"}
           className="flex cursor-pointer items-center gap-3"
         >
-          <Scissors className="text-primary size-5" strokeWidth={1.5} />
+          <ScissorsIcon className="text-primary size-5" strokeWidth={1.5} />
           <span>디자이너 관리</span>
         </LinkCard>
       </div>
@@ -25,7 +25,7 @@ export default function SettingsPage() {
           to={"/members/info"}
           className="flex cursor-pointer items-center gap-3"
         >
-          <User className="text-primary size-5" strokeWidth={1.5} />
+          <UserIcon className="text-primary size-5" strokeWidth={1.5} />
           <span>내 정보</span>
         </LinkCard>
 
@@ -33,7 +33,7 @@ export default function SettingsPage() {
           to={"/members/shop"}
           className="flex cursor-pointer items-center gap-3"
         >
-          <List className="text-primary size-5" strokeWidth={1.5} />
+          <ListIcon className="text-primary size-5" strokeWidth={1.5} />
           <span>매장 정보</span>
         </LinkCard>
 

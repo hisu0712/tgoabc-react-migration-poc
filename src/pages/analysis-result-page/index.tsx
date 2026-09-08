@@ -1,7 +1,7 @@
 import HeaderNav from "@/components/layout/header-nav";
 import { useLocation, useParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
-import { Share2Icon, UserPlus } from "lucide-react";
+import { Share2Icon, UserPlusIcon } from "lucide-react";
 import BottomNav from "@/components/layout/bottom-nav";
 import { ANALYSIS_PRESET } from "./constants";
 import { useInView } from "react-intersection-observer";
@@ -148,7 +148,7 @@ export default function AnalysisResultPage() {
           onClick={() => openLinkCustomerModal(analysisId)}
           className="text-primary bg-background fixed right-6 bottom-24 z-20 flex size-15 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full shadow-lg"
         >
-          <UserPlus className="ml-0.5 size-6" strokeWidth={1.8} />
+          <UserPlusIcon className="ml-0.5 size-6" strokeWidth={1.8} />
           <span className="text-xs font-medium">추가</span>
         </button>
       )}

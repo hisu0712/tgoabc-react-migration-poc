@@ -112,7 +112,7 @@ export default function CustomerInfoPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderNav title="고객 정보" />
 
       <Form {...form}>
@@ -150,6 +150,6 @@ export default function CustomerInfoPage() {
       >
         저장
       </BottomButton>
-    </div>
+    </>
   );
 }

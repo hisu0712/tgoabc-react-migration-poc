@@ -6,7 +6,7 @@ import {
   useOpenEditDesignerModal,
 } from "@/store/modals/designer-editor-modal";
 import { useSession } from "@/store/session";
-import { Plus } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import Loader from "@/components/loader";
 import EmptyContent from "@/components/empty-content";
 import DesignerCard from "./components/designer-card";
@@ -19,7 +19,7 @@ export default function DesignerPage() {
   const { data, isLoading } = useDesignersData(session?.user.id);
 
   return (
-    <div>
+    <>
       <HeaderNav title="디자이너 목록" />
 
       <Card
@@ -28,7 +28,7 @@ export default function DesignerPage() {
         className="mb-6 flex items-center justify-between cursor-pointer"
       >
         <span className="text-lg font-semibold">신규 디자이너 추가</span>
-        <Plus className="size-9" strokeWidth={1.3} />
+        <PlusIcon className="size-9" strokeWidth={1.3} />
       </Card>
 
       <div className="bg-muted-foreground/20 mb-6 h-px w-full"></div>
@@ -55,6 +55,6 @@ export default function DesignerPage() {
           <EmptyContent content="아직 등록된 디자이너가 없습니다." />
         )}
       </div>
-    </div>
+    </>
   );
 }

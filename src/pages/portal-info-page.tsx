@@ -73,7 +73,7 @@ export function PortalInfoPage() {
   };
 
   return (
-    <div>
+    <>
       <HeaderNav title="계정 정보" />
 
       <Form {...form}>
@@ -101,6 +101,6 @@ export function PortalInfoPage() {
       >
         저장
       </BottomButton>
-    </div>
+    </>
   );
 }

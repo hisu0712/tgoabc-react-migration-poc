@@ -1,6 +1,6 @@
 import { LinkCard } from "@/components/card";
 import HeaderNav from "@/components/layout/header-nav";
-import { User } from "lucide-react";
+import { UserIcon } from "lucide-react";
 import LogoutCard from "@/components/logout-card";
 
 export default function PortalSettingsPage() {
@@ -14,7 +14,7 @@ export default function PortalSettingsPage() {
           to={"/portal-info"}
           className="flex cursor-pointer items-center gap-3"
         >
-          <User className="text-primary size-5" strokeWidth={1.5} />
+          <UserIcon className="text-primary size-5" strokeWidth={1.5} />
           <span>내 정보</span>
         </LinkCard>
 

@@ -1,7 +1,7 @@
 import { signOut } from "@/api/auth";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { Card } from "./card";
-import { LogOut } from "lucide-react";
+import { LogOutIcon } from "lucide-react";
 
 export default function LogoutCard() {
   const openAlertModal = useOpenAlertModal();
@@ -19,7 +19,7 @@ export default function LogoutCard() {
       onClick={handleLogoutClick}
       className="text-destructive flex cursor-pointer items-center gap-3"
     >
-      <LogOut className="size-5" strokeWidth={1.5} />
+      <LogOutIcon className="size-5" strokeWidth={1.5} />
       <span>로그아웃</span>
     </Card>
   );
