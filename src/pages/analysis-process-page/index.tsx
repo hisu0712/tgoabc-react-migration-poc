@@ -2,16 +2,16 @@ import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router";
-import AnalysisLoading from "./analysis-loading";
+import AnalysisLoading from "./components/analysis-loading";
 import analysisScriptUrl from "./personal-analysis.iife.js?url"; // module
 import analysisStyleUrl from "./personal-analysis.css?url"; // module
-import type { Analysis } from "../analysis-result-page/constants";
 import useCreateAnalysis from "@/hooks/mutations/analysis/use-create-analysis";
 import { toast } from "sonner";
 import { useActiveRole } from "@/store/active-role";
 import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
 import ErrorRedirect from "@/components/error-redirect";
 import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
+import type { Analysis } from "@/lib/analysis";
 
 const ANALYSIS_ELEMENT_NAME = "skin-analysis";
 const ANALYSIS_EVENT = "personal-analysis-complete";
@@ -138,7 +138,11 @@ export default function AnalysisProcessPage() {
               });
 
               navigate(`/analysis/${analysisId}`, {
-                state: { analysis, resultImageUrl, customerId:payloadCustomerId },
+                state: {
+                  analysis,
+                  resultImageUrl,
+                  customerId: payloadCustomerId,
+                },
                 replace: true,
               });
             },

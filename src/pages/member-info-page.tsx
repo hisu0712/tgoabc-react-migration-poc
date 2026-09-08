@@ -1,9 +1,9 @@
-import BottomButton from "@/components/bottom-button";
+import BottomButton from "@/components/layout/bottom-button";
 import DeleteUserButton from "@/components/delete-user-button";
 import ErrorRedirect from "@/components/error-redirect";
 import GlobalLoader from "@/components/global-loader";
-import HeaderNav from "@/components/header-nav";
-import { PhoneInput } from "@/components/phone-input";
+import HeaderNav from "@/components/layout/header-nav";
+import { PhoneInput } from "@/components/form/phone-input";
 import { Button } from "@/components/ui/button";
 import {
   Form,

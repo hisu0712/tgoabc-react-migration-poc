@@ -1,4 +1,4 @@
-import { BUCKET_NAME } from "@/lib/constants";
+import { BUCKET_NAME } from "@/constants";
 import { supabase } from "@/lib/supabase";
 
 export async function uploadImage({

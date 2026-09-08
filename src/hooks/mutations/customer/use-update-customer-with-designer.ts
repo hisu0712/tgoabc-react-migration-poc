@@ -1,11 +1,11 @@
 import { updateCustomerWithDesigner } from "@/api/customer";
-import { QUERY_KEYS } from "@/lib/constants";
+import { QUERY_KEYS } from "@/constants/query-keys";
 import { useSession } from "@/store/session";
 import type {
   CustomerEntity,
   CustomerWithDesigner,
   UseMutationCallback,
-} from "@/type";
+} from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateCustomerWithDesigner(

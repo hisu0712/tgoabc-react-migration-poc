@@ -2,14 +2,14 @@ import { Card, LinkCard } from "@/components/card";
 import { ChevronRight, FileText, MessageCircle, Store } from "lucide-react";
 import { Link } from "react-router";
 import memuPersonal from "@/assets/menu_personal.png";
-import HeaderHomeNav from "@/components/header-home-nav";
+import HeaderHomeNav from "@/components/layout/header-home-nav";
 import { useSession } from "@/store/session";
 import { useShopsData } from "@/hooks/queries/shop/use-shops-data";
 import { Button } from "@/components/ui/button";
 import defaultShop from "@/assets/default-shop.png";
 import defaultUser from "@/assets/customer_profile__joa.png";
-import { useOpenAlertModal } from "@/store/alert";
-import type { ShopEntity } from "@/type";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
+import type { ShopEntity } from "@/types";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 
 export default function PortalPage() {

@@ -1,6 +1,5 @@
-import { AnalysisCard } from "@/components/card";
-import EmptyContent from "@/components/emptyContent";
-import HeaderNav from "@/components/header-nav";
+import EmptyContent from "@/components/empty-content";
+import HeaderNav from "@/components/layout/header-nav";
 import Loader from "@/components/loader";
 import { useSession } from "@/store/session";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
@@ -19,6 +18,7 @@ import useInfiniteAnalyses from "@/hooks/queries/analysis/use-infinite-analyses-
 import useAnalysisCount from "@/hooks/queries/analysis/use-analysis-count-data";
 import ErrorRedirect from "@/components/error-redirect";
 import { CUSTOMER_HOME_PATH } from "@/lib/route";
+import AnalysisCard from "./components/analysis-card";
 
 export default function AnalysisListPage() {
   const session = useSession();

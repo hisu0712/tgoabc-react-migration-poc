@@ -1,5 +1,5 @@
 import { formatPhoneInput, toPhoneDigits } from "@/lib/format";
-import { Input } from "./ui/input";
+import { Input } from "../ui/input";
 
 export function PhoneInput({
   value,

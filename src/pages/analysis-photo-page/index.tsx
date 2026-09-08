@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import AnalysisPhotoIntro from "./analysis-photo-intro";
-import HeaderNav from "@/components/header-nav";
+import AnalysisPhotoIntro from "./components/analysis-photo-intro";
+import HeaderNav from "@/components/layout/header-nav";
 import defaultImage from "/face.png";
 import { Button } from "@/components/ui/button";
-import type { Image } from "@/type";
+import type { Image } from "@/types";
 import { toast } from "sonner";
 import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";

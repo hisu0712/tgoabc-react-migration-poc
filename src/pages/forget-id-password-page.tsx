@@ -18,16 +18,16 @@ import {
   type FindIdFormValues,
   type FindPasswordFormValues,
 } from "@/schemas/auth.schema";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { toast } from "sonner";
 import { Card } from "@/components/card";
 import { SIGN_IN_PATH } from "@/lib/route";
-import { PhoneInput } from "@/components/phone-input";
+import { PhoneInput } from "@/components/form/phone-input";
 
 export default function ForgetIdPasswordPage() {
   const openAlertModal = useOpenAlertModal();

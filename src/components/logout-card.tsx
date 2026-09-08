@@ -1,5 +1,5 @@
 import { signOut } from "@/api/auth";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { Card } from "./card";
 import { LogOut } from "lucide-react";
 

@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import type { CustomerWithDesigner, Gender } from "@/type";
+import type { CustomerWithDesigner, Gender } from "@/types";
 
 export async function fetchCustomer(customerId: string) {
   const { data, error } = await supabase

@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { CheckIcon, SunIcon } from "lucide-react";
-import type { Theme } from "@/type";
+import type { Theme } from "@/types";
 
 const THEMES: Theme[] = ["system", "dark", "light"];
 const THEMES_LABELS: Record<Theme, string> = {

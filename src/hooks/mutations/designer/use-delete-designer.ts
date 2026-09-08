@@ -1,7 +1,7 @@
 import { deleteDesigner } from "@/api/designer";
-import { QUERY_KEYS } from "@/lib/constants";
+import { QUERY_KEYS } from "@/constants/query-keys";
 import { useSession } from "@/store/session";
-import type { DesignerEntity, UseMutationCallback } from "@/type";
+import type { DesignerEntity, UseMutationCallback } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useDeleteDesigner(callbacks?: UseMutationCallback) {

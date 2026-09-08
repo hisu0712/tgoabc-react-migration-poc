@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
-import { Button } from "./ui/button";
-import { Layout } from "./layout/global-layout";
+import { Button } from "../ui/button";
+import { Layout } from "./global-layout";
 import { cn } from "@/lib/utils";
 
 export default function BottomButton({

@@ -1,4 +1,4 @@
-import { useLinkCustomerModal } from "@/store/link-customer-modal";
+import { useLinkCustomerModal } from "@/store/modals/link-customer-modal";
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
 } from "../ui/dialog";
 import { useNavigate } from "react-router";
 import { Button } from "../ui/button";
-import { useOpenSelectCustomerModal } from "@/store/select-customer-modal";
+import { useOpenSelectCustomerModal } from "@/store/modals/select-customer-modal";
 
 export default function LinkCustomerModal() {
   const navigate = useNavigate();

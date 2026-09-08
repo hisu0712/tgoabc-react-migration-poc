@@ -1,5 +1,5 @@
 import { CustomerCard, LinkCard } from "@/components/card";
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { useInView } from "react-intersection-observer";
 import {
   Select,
@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";
-import EmptyContent from "@/components/emptyContent";
+import EmptyContent from "@/components/empty-content";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import SearchInput from "@/components/search-input";

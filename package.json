@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type-gen": "npx supabase gen types typescript --project-id \"xexodjsipilbscjnwfqx\" --schema public > src/database.types.ts"
+    "type-gen": "npx supabase gen types typescript --project-id \"xexodjsipilbscjnwfqx\" --schema public > src/types/database.types.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
@@ -22,6 +22,7 @@
     "@tanstack/react-query-devtools": "^5.83.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cn": "^0.2.6",
     "dayjs": "^1.11.21",
     "embla-carousel-react": "^8.6.0",
     "immer": "^10.1.1",

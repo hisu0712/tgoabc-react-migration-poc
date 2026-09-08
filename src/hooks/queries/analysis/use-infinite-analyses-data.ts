@@ -1,5 +1,5 @@
 import { fetchAnalysesByCustomer } from "@/api/analysis";
-import { QUERY_KEYS } from "@/lib/constants";
+import { QUERY_KEYS } from "@/constants/query-keys";
 import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 
 const PAGE_SIZE = 10;

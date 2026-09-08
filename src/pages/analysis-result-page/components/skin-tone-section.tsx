@@ -4,10 +4,9 @@ import {
   getChromaAdjective,
   getHueAdjective,
   getLightnessAdjective,
-  type Analysis,
   type AnalysisPreset,
 } from "../constants";
-import { PERSONAL_TYPE_LABEL } from "@/lib/analysis";
+import { PERSONAL_TYPE_LABEL, type Analysis } from "@/lib/analysis";
 
 export default function SkinToneSection({
   analysis,

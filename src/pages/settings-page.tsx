@@ -1,5 +1,5 @@
 import { LinkCard } from "@/components/card";
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { List, Scissors, User } from "lucide-react";
 import LogoutCard from "@/components/logout-card";
 

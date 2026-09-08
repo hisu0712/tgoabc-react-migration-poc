@@ -1,7 +1,7 @@
-import { useDesignerEditorModal } from "@/store/designer-editor-modal";
+import { useDesignerEditorModal } from "@/store/modals/designer-editor-modal";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import {
   Form,
   FormControl,
@@ -17,7 +17,7 @@ import {
   type DesignerFormValues,
   designerSchema,
 } from "@/schemas/designer.schema";
-import FormHint from "../form-hint";
+import FormHint from "../form/form-hint";
 import { useCreateDesigner } from "@/hooks/mutations/designer/use-create-designer";
 import { useSession } from "@/store/session";
 import { toast } from "sonner";
@@ -25,7 +25,7 @@ import { useEffect } from "react";
 import { isPostgrestError } from "@/lib/error";
 import { useUpdateDesigner } from "@/hooks/mutations/designer/use-update-designer";
 import { useDeleteDesigner } from "@/hooks/mutations/designer/use-delete-designer";
-import { PhoneInput } from "../phone-input";
+import { PhoneInput } from "../form/phone-input";
 
 export default function DesignerEditorModal() {
   const session = useSession();

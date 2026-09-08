@@ -20,7 +20,7 @@ import { TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import { PasswordInput } from "@/components/password-input";
+import { PasswordInput } from "@/components/form/password-input";
 import { useSetActiveRole } from "@/store/active-role";
 
 const REMEMBERED_ID_KEY = "rememberedId";

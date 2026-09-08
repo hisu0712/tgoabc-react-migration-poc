@@ -1,4 +1,4 @@
-import BottomButton from "@/components/bottom-button";
+import BottomButton from "@/components/layout/bottom-button";
 import GlobalLoader from "@/components/global-loader";
 import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { useSession } from "@/store/session";

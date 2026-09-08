@@ -1,3 +1,18 @@
+export type Undertone = "cool" | "warm" | "neutral";
+
+export type Analysis = {
+  personalType: PersonalType;
+  axis: {
+    chroma: { value: number; min: number; max: number };
+    hue: { value: number; min: number; max: number };
+    lightness: { value: number; min: number; max: number };
+  };
+  cheek: { avgRgb: string };
+  hair: { avgRgb: string };
+  pupil: { avgRgb: string };
+  skin: { skinCode: string[]; skinTone: Undertone };
+};
+
 export type PersonalType =
   | "springBright"
   | "springLight"
@@ -28,24 +43,3 @@ export const PERSONAL_TYPE_LABEL = {
   winterBright: "겨울 브라이트",
   winterDark: "겨울 다크",
 } as const satisfies Record<PersonalType, PersonalTypeLabel>;
-
-// analysis-list-page
-export type Season = "spring" | "summer" | "autumn" | "winter";
-
-export const PERSONAL_TYPE_SEASON = {
-  springBright: "spring",
-  springLight: "spring",
-  summerLight: "summer",
-  summerMute: "summer",
-  autumnMute: "autumn",
-  autumnDark: "autumn",
-  winterBright: "winter",
-  winterDark: "winter",
-} as const satisfies Record<PersonalType, Season>;
-
-export const SEASON_BADGE_COLOR = {
-  spring: { bg: "#FFE3E6", text: "#DB4455" },
-  summer: { bg: "#DFDFFF", text: "#5653DF" },
-  autumn: { bg: "#FFEBDD", text: "#AC7F5E" },
-  winter: { bg: "#F1E6FF", text: "#7229CB" },
-} as const satisfies Record<Season, { bg: string; text: string }>;

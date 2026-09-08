@@ -1,4 +1,4 @@
-import { useAlertModal } from "@/store/alert";
+import { useAlertModal } from "@/store/modals/alert-modal";
 import {
   AlertDialog,
   AlertDialogAction,

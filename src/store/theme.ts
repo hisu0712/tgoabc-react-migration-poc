@@ -1,4 +1,4 @@
-import type { Theme } from "@/type";
+import type { Theme } from "@/types";
 import { create } from "zustand";
 import { combine, devtools, persist } from "zustand/middleware";
 

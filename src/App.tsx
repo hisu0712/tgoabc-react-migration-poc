@@ -1,5 +1,5 @@
-import ModalProvider from "./provider/modal-provider";
-import SessionProvider from "./provider/session-provider";
+import ModalProvider from "./providers/modal-provider";
+import SessionProvider from "./providers/session-provider";
 import RootRoute from "./root-route";
 
 export default function App() {

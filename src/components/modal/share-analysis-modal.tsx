@@ -1,4 +1,4 @@
-import { useShareAnalysisModal } from "@/store/share-analysis-modal";
+import { useShareAnalysisModal } from "@/store/modals/share-analysis-modal";
 import {
   Dialog,
   DialogContent,

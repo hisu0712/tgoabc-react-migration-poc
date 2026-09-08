@@ -1,14 +1,15 @@
-import { Card, DesignerCard } from "@/components/card";
-import HeaderNav from "@/components/header-nav";
+import { Card } from "@/components/card";
+import HeaderNav from "@/components/layout/header-nav";
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import {
   useOpenCreateDesignerModal,
   useOpenEditDesignerModal,
-} from "@/store/designer-editor-modal";
+} from "@/store/modals/designer-editor-modal";
 import { useSession } from "@/store/session";
 import { Plus } from "lucide-react";
 import Loader from "@/components/loader";
-import EmptyContent from "@/components/emptyContent";
+import EmptyContent from "@/components/empty-content";
+import DesignerCard from "./components/designer-card";
 
 export default function DesignerPage() {
   const session = useSession();
@@ -24,7 +25,7 @@ export default function DesignerPage() {
       <Card
         onClick={openCreateDesignerModal}
         variant={"gradient"}
-        className="mb-6 flex items-center justify-between"
+        className="mb-6 flex items-center justify-between cursor-pointer"
       >
         <span className="text-lg font-semibold">신규 디자이너 추가</span>
         <Plus className="size-9" strokeWidth={1.3} />

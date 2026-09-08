@@ -1,5 +1,5 @@
 import { useShopData } from "@/hooks/queries/shop/use-shop-data";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useSession } from "@/store/session";
 import { BarChart2, ChevronRight, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router";
@@ -18,7 +18,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import HeaderHomeNav from "@/components/header-home-nav";
+import HeaderHomeNav from "@/components/layout/header-home-nav";
 import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
 import useAnalysisCount from "@/hooks/queries/analysis/use-analysis-count-data";
 import useRecentAnalyses from "@/hooks/queries/analysis/use-recent-analyses-data";

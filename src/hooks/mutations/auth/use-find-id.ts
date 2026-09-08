@@ -1,5 +1,5 @@
 import { findId } from "@/api/auth";
-import type { UseMutationCallback } from "@/type";
+import type { UseMutationCallback } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 type FindIdResponse = Awaited<ReturnType<typeof findId>>;

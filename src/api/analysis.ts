@@ -1,7 +1,6 @@
-import type { PersonalType } from "@/lib/analysis";
+import type { Analysis, PersonalType } from "@/lib/analysis";
 import { supabase } from "@/lib/supabase";
-import type { Analysis } from "@/pages/analysis-result-page/constants";
-import type { AnalysisEntity } from "@/type";
+import type { AnalysisEntity } from "@/types";
 import { moveImage } from "./image";
 
 export async function fetchAnalysis(analysisId: string) {

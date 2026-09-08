@@ -1,5 +1,5 @@
 import type { Database } from "./database.types";
-import type { Analysis } from "./pages/analysis-result-page/constants";
+import type { Analysis } from "../lib/analysis";
 
 // Database (Tables)
 export type MemberEntity = Database["public"]["Tables"]["member"]["Row"];

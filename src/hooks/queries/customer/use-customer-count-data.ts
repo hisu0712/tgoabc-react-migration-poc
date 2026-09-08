@@ -1,5 +1,5 @@
 import { fetchCustomerCountByMember } from "@/api/customer";
-import { QUERY_KEYS } from "@/lib/constants";
+import { QUERY_KEYS } from "@/constants/query-keys";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export default function useCustomerCount({

@@ -1,6 +1,6 @@
-import type { Analysis } from "../constants";
 import { DropletIcon, EyeIcon, WavesIcon } from "lucide-react";
 import { GuideLabel } from "./guide-label";
+import type { Analysis } from "@/lib/analysis";
 
 export default function BodyColorSection({
   analysis,

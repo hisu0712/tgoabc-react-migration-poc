@@ -1,4 +1,4 @@
-import type { PersonalType, PersonalTypeLabel } from "@/lib/analysis";
+import type { PersonalType, Undertone } from "@/lib/analysis";
 import typeImageSpringBright from "@/assets/personal-springBright.png";
 import typeImageSpringLight from "@/assets/personal-springLight.png";
 import typeImageSummerLight from "@/assets/personal-summerLight.png";
@@ -7,8 +7,6 @@ import typeImageAutumnMute from "@/assets/personal-autumnMute.png";
 import typeImageAutumnDark from "@/assets/personal-autumnDark.png";
 import typeImageWinterBright from "@/assets/personal-winterBright.png";
 import typeImageWinterDark from "@/assets/personal-winterDark.png";
-
-export type Undertone = "cool" | "warm" | "neutral";
 
 export const UNDERTONE = {
   neutral: {
@@ -33,19 +31,6 @@ export const UNDERTONE = {
     hex: "#FFEDB1",
   },
 } as const satisfies Record<Undertone, Record<string, string>>;
-
-export type Analysis = {
-  personalType: PersonalType;
-  axis: {
-    chroma: { value: number; min: number; max: number };
-    hue: { value: number; min: number; max: number };
-    lightness: { value: number; min: number; max: number };
-  };
-  cheek: { avgRgb: string };
-  hair: { avgRgb: string };
-  pupil: { avgRgb: string };
-  skin: { skinCode: string[]; skinTone: Undertone };
-};
 
 export type AnalysisPreset = {
   engTitle: string;

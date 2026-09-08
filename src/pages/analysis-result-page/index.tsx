@@ -1,10 +1,9 @@
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { useLocation, useParams } from "react-router";
 import { Layout } from "@/components/layout/global-layout";
 import { Share2Icon, UserPlus } from "lucide-react";
 import BottomNav from "@/components/layout/bottom-nav";
-import { MEMBER_NAV_ITEMS } from "@/lib/constants";
-import { ANALYSIS_PRESET, type Analysis } from "./constants";
+import { ANALYSIS_PRESET } from "./constants";
 import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
 import TypeIntroSection from "./components/type-intro-section";
@@ -16,8 +15,10 @@ import GlobalLoader from "@/components/global-loader";
 import { useActiveRole } from "@/store/active-role";
 import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
-import { useOpenLinkCustomerModal } from "@/store/link-customer-modal";
-import { useOpenShareAnalysisModal } from "@/store/share-analysis-modal";
+import { useOpenLinkCustomerModal } from "@/store/modals/link-customer-modal";
+import { useOpenShareAnalysisModal } from "@/store/modals/share-analysis-modal";
+import type { Analysis } from "@/lib/analysis";
+import { MEMBER_NAV_ITEMS } from "@/constants/nav";
 
 type LocationState = {
   analysis: Analysis;

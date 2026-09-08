@@ -1,6 +1,6 @@
-import BottomButton from "@/components/bottom-button";
-import HeaderNav from "@/components/header-nav";
-import { PasswordInput } from "@/components/password-input";
+import BottomButton from "@/components/layout/bottom-button";
+import HeaderNav from "@/components/layout/header-nav";
+import { PasswordInput } from "@/components/form/password-input";
 import {
   Form,
   FormControl,

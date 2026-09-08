@@ -1,5 +1,5 @@
 import { linkAnalysisToCustomer } from "@/api/analysis";
-import type { UseMutationCallback } from "@/type";
+import type { UseMutationCallback } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 export default function useLinkAnalysisToCustomer(

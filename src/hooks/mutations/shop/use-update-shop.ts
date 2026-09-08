@@ -1,6 +1,6 @@
 import { updateShop } from "@/api/shop";
-import { QUERY_KEYS } from "@/lib/constants";
-import type { ShopEntity, UseMutationCallback } from "@/type";
+import { QUERY_KEYS } from "@/constants/query-keys";
+import type { ShopEntity, UseMutationCallback } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateShop(callbacks?: UseMutationCallback) {

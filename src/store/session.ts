@@ -1,4 +1,4 @@
-import type { UserType } from "@/type";
+import type { UserType } from "@/types";
 import type { Session } from "@supabase/supabase-js";
 import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";

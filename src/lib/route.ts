@@ -1,4 +1,4 @@
-import type { UserType } from "@/type";
+import type { UserType } from "@/types";
 
 export const SIGN_IN_PATH = "/sign-in";
 export const MEMBER_HOME_PATH = "/";

@@ -1,6 +1,6 @@
 import { updateCustomer } from "@/api/customer";
-import { QUERY_KEYS } from "@/lib/constants";
-import type { CustomerEntity, UseMutationCallback } from "@/type";
+import { QUERY_KEYS } from "@/constants/query-keys";
+import type { CustomerEntity, UseMutationCallback } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateCustomer(

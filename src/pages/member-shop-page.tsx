@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { useUpdateShop } from "@/hooks/mutations/shop/use-update-shop";
 import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { shopSchema, type ShopFormValues } from "@/schemas/shop.schema";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import {
   Form,
   FormControl,
@@ -19,10 +19,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import defaultShopImage from "@/assets/default-shop.png";
 import { Label } from "@/components/ui/label";
-import BottomButton from "@/components/bottom-button";
-import HeaderNav from "@/components/header-nav";
-import FormHint from "@/components/form-hint";
-import type { Image } from "@/type";
+import BottomButton from "@/components/layout/bottom-button";
+import HeaderNav from "@/components/layout/header-nav";
+import FormHint from "@/components/form/form-hint";
+import type { Image } from "@/types";
 import { XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useKakaoPostcodePopup } from "react-daum-postcode";

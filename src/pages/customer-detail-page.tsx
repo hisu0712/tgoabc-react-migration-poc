@@ -3,7 +3,7 @@ import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
 import { Link, useParams } from "react-router";
 import { ChevronRight, FileText, Scissors, SquarePen } from "lucide-react";
-import HeaderHomeNav from "@/components/header-home-nav";
+import HeaderHomeNav from "@/components/layout/header-home-nav";
 import { useSession } from "@/store/session";
 import useCustomerWithDesignerData from "@/hooks/queries/customer/use-customer-with-designer-data";
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";

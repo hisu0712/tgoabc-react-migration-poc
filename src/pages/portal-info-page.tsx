@@ -1,6 +1,6 @@
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { Form } from "@/components/ui/form";
-import BottomButton from "@/components/bottom-button";
+import BottomButton from "@/components/layout/bottom-button";
 import { useForm } from "react-hook-form";
 import {
   type CustomerFormValues,

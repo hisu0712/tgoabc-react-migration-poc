@@ -1,4 +1,4 @@
-import { useSelectCustomerModal } from "@/store/select-customer-modal";
+import { useSelectCustomerModal } from "@/store/modals/select-customer-modal";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import SearchInput from "../search-input";
 import { useState } from "react";
@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import Loader from "../loader";
 import { CustomerCard } from "../card";
-import { useCloseLinkCustomerModal } from "@/store/link-customer-modal";
+import { useCloseLinkCustomerModal } from "@/store/modals/link-customer-modal";
 
 export default function SelectCustomerModal() {
   const session = useSession();

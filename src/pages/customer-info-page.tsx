@@ -1,6 +1,6 @@
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { Form } from "@/components/ui/form";
-import BottomButton from "@/components/bottom-button";
+import BottomButton from "@/components/layout/bottom-button";
 import { useForm } from "react-hook-form";
 import {
   type CustomerFormValues,
@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
 import { toast } from "sonner";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-customer";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";

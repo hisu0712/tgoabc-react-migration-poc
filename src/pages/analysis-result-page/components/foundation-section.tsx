@@ -1,7 +1,8 @@
 import { Card } from "@/components/card";
 import { GuideLabel } from "./guide-label";
 import { ThumbsUpIcon } from "lucide-react";
-import { SKIN_CODE_MAP, UNDERTONE, type Analysis } from "../constants";
+import { SKIN_CODE_MAP, UNDERTONE } from "../constants";
+import type { Analysis } from "@/lib/analysis";
 
 export default function FoundationSection({
   skin,

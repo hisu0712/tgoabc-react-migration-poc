@@ -1,4 +1,4 @@
-import HeaderHomeNav from "@/components/header-home-nav";
+import HeaderHomeNav from "@/components/layout/header-home-nav";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -6,8 +6,8 @@ import loginMemberImage from "@/assets/login_member.svg";
 import loginCustomerImage from "@/assets/login_customer.svg";
 import logoBlue from "@/assets/logo_blue.png";
 import logoWhite from "@/assets/logo_white.png";
-import SignInMemberForm from "./sign-in-member-form";
-import SignInCustomerForm from "./sign-in-customer-form";
+import SignInMemberForm from "./components/sign-in-member-form";
+import SignInCustomerForm from "./components/sign-in-customer-form";
 
 export default function SignInPage() {
   const [authType, setAuthType] = useState<"member" | "customer">("member");

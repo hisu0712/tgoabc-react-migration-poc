@@ -1,4 +1,4 @@
-import type { UserType } from "@/type";
+import type { UserType } from "@/types";
 import { create } from "zustand";
 import { combine, devtools } from "zustand/middleware";
 import { useSessionUserRoles } from "./session";

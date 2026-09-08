@@ -1,5 +1,5 @@
 import { fetchDesigners } from "@/api/designer";
-import { QUERY_KEYS } from "@/lib/constants";
+import { QUERY_KEYS } from "@/constants/query-keys";
 import { useQuery } from "@tanstack/react-query";
 
 export default function useDesignersData(memberId?: string) {

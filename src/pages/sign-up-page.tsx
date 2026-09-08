@@ -14,15 +14,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import BottomButton from "@/components/bottom-button";
-import HeaderNav from "@/components/header-nav";
+import BottomButton from "@/components/layout/bottom-button";
+import HeaderNav from "@/components/layout/header-nav";
 import { useState } from "react";
 import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { useVerifyOtp } from "@/hooks/mutations/auth/use-verify-otp";
 import { Button } from "@/components/ui/button";
-import { PasswordInput } from "@/components/password-input";
+import { PasswordInput } from "@/components/form/password-input";
 import { useSetActiveRole } from "@/store/active-role";
-import { PhoneInput } from "@/components/phone-input";
+import { PhoneInput } from "@/components/form/phone-input";
 
 export default function SignUpPage() {
   const navigate = useNavigate();

@@ -22,10 +22,8 @@ import CustomerOnlyLayout from "./components/layout/customer-only-layout";
 import DesignerPage from "./pages/designer-page";
 import { PortalInfoPage } from "./pages/portal-info-page";
 import SettingsPage from "./pages/settings-page";
-import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./lib/constants";
 import PortalSettingsPage from "./pages/portal-settings-page";
 import AnalysisProcessPage from "./pages/analysis-process-page";
-import AnalysisListPage from "./pages/analysis-list-page";
 import UserOnlyLayout from "./components/layout/user-only-layout";
 import FallbackRedirect from "./components/fallback-redirect";
 import {
@@ -34,6 +32,9 @@ import {
   SIGN_IN_PATH,
 } from "./lib/route";
 import AnalysisSharedPage from "./pages/analysis-shared-page";
+import DashboardPage from "./pages/dashboard-page";
+import AnalysisListPage from "./pages/analysis-list-page";
+import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./constants/nav";
 
 export default function RootRoute() {
   return (
@@ -76,6 +77,7 @@ export default function RootRoute() {
             element={<CustomerDetailPage />}
           />
           <Route path="/designers" element={<DesignerPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>

@@ -1,5 +1,5 @@
 import { useDeleteUser } from "@/hooks/mutations/auth/use-delete-user";
-import { useOpenAlertModal } from "@/store/alert";
+import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useSetSession } from "@/store/session";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";

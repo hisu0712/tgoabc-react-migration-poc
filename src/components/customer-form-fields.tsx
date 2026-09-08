@@ -1,4 +1,4 @@
-import FormHint from "@/components/form-hint";
+import FormHint from "@/components/form/form-hint";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -15,11 +15,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { GENDER_FORM_VALUES } from "@/lib/constants";
+import { GENDER_FORM_VALUES } from "@/constants";
 import { formatBirthDateInput } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type { CustomerFormValues } from "@/schemas/customer.schema";
-import type { DesignerEntity } from "@/type";
+import type { DesignerEntity } from "@/types";
 import { Scissors } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 

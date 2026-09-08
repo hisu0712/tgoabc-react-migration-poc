@@ -1,6 +1,6 @@
-import BottomButton from "@/components/bottom-button";
+import BottomButton from "@/components/layout/bottom-button";
 import CustomerFormFields from "@/components/customer-form-fields";
-import HeaderNav from "@/components/header-nav";
+import HeaderNav from "@/components/layout/header-nav";
 import { Form } from "@/components/ui/form";
 import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";
 import { useCreateCustomer } from "@/hooks/mutations/customer/use-create-customer";

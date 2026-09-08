@@ -42,7 +42,7 @@ export default function HeaderNav({
           <button
             type="button"
             onClick={handleBack}
-            className="absolute top-1/2 left-0 z-10 flex -translate-x-1/4 -translate-y-1/2"
+            className="absolute top-1/2 left-0 z-10 flex -translate-x-1/4 -translate-y-1/2 cursor-pointer"
           >
             <ChevronLeft className="size-10" strokeWidth={1} />
           </button>
