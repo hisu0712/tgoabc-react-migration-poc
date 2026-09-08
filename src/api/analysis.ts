@@ -9,7 +9,7 @@ export async function fetchAnalysis(analysisId: string) {
     .from("analysis")
     .select("*")
     .eq("id", analysisId)
-    .single();
+    .maybeSingle();
 
   if (error) throw error;
   return data as unknown as AnalysisEntity;
@@ -189,4 +189,45 @@ export async function linkAnalysisToCustomer({
     throw error;
   }
   return data;
+}
+
+export async function fetchSharedAnalysis(analysisId: string) {
+  const { data, error } = await supabase
+    .rpc("get_shared_analysis", { p_analysis_id: analysisId })
+    .maybeSingle(); // 공유 안 한 분석, 만료된 링크 → 0행 반환 가능성 있음
+
+  if (error) throw error;
+  return data
+    ? {
+        result: data.result as Analysis,
+        result_image_url: data.result_image_url,
+      }
+    : null;
+}
+
+export async function enableAnalysisShare(analysisId: string) {
+  const { data, error } = await supabase
+    .from("analysis")
+    .select("share_expires_at")
+    .eq("id", analysisId)
+    .single();
+
+  if (error) throw error;
+
+  const hasValidLink =
+    !!data.share_expires_at &&
+    new Date(data.share_expires_at).getTime() > Date.now();
+
+  if (hasValidLink) return;
+
+  const shareExpiresAt = new Date(
+    Date.now() + 7 * 24 * 60 * 60 * 1000,
+  ).toISOString(); // 만료 기간 7일 설정
+
+  const { error: updateError } = await supabase
+    .from("analysis")
+    .update({ share_expires_at: shareExpiresAt })
+    .eq("id", analysisId);
+
+  if (updateError) throw updateError;
 }

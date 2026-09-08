@@ -33,6 +33,7 @@ import {
   MEMBER_HOME_PATH,
   SIGN_IN_PATH,
 } from "./lib/route";
+import AnalysisSharedPage from "./pages/analysis-shared-page";
 
 export default function RootRoute() {
   return (
@@ -104,6 +105,12 @@ export default function RootRoute() {
         />
         <Route path="/analysis/:analysisId" element={<AnalysisResultPage />} />
       </Route>
+
+      {/* public */}
+      <Route
+        path="/share/analysis/:analysisId"
+        element={<AnalysisSharedPage />}
+      />
 
       <Route path="*" element={<FallbackRedirect />} />
     </Routes>

@@ -44,6 +44,7 @@ export const QUERY_KEYS = {
   analysis: {
     all: ["analysis"],
     byId: (analysisId: string) => ["analysis", analysisId],
+    shared: (analysisId: string) => ["analysis", "shared", analysisId],
     customerList: (customerId: string, personalType?: string) => [
       "analysis",
       "customerList",

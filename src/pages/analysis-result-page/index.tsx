@@ -7,17 +7,17 @@ import { MEMBER_NAV_ITEMS } from "@/lib/constants";
 import { ANALYSIS_PRESET, type Analysis } from "./constants";
 import { useInView } from "react-intersection-observer";
 import { cn } from "@/lib/utils";
-import { GuideLabel } from "./components/guide-label";
 import TypeIntroSection from "./components/type-intro-section";
 import SkinToneSection from "./components/skin-tone-section";
 import FoundationSection from "./components/foundation-section";
 import BodyColorSection from "./components/body-color-section";
-import useAnalysisData from "@/hooks/queries/use-analysis-data";
+import useAnalysisData from "@/hooks/queries/analysis/use-analysis-data";
 import GlobalLoader from "@/components/global-loader";
 import { useActiveRole } from "@/store/active-role";
 import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
 import { useOpenLinkCustomerModal } from "@/store/link-customer-modal";
+import { useOpenShareAnalysisModal } from "@/store/share-analysis-modal";
 
 type LocationState = {
   analysis: Analysis;
@@ -35,6 +35,7 @@ export default function AnalysisResultPage() {
   const { analysisId } = useParams();
   const location = useLocation();
   const openLinkCustomerModal = useOpenLinkCustomerModal();
+  const openShareAnalysisModal = useOpenShareAnalysisModal();
   const { ref, inView } = useInView({
     initialInView: true,
     rootMargin: "-100px 0px 0px 0px",
@@ -112,7 +113,13 @@ export default function AnalysisResultPage() {
         rightSlot={
           resultCase.type === "MEMBER_SIMPLE" ||
           resultCase.type === "MEMBER_CUSTOMER" ? (
-            <Share2Icon className="size-6" strokeWidth={1.8} />
+            <button
+              type="button"
+              onClick={() => openShareAnalysisModal(analysisId)}
+              className="cursor-pointer"
+            >
+              <Share2Icon className="size-6" strokeWidth={1.8} />
+            </button>
           ) : undefined
         }
       />
@@ -125,18 +132,7 @@ export default function AnalysisResultPage() {
       <div ref={ref} aria-hidden className="h-px"></div>
 
       <Layout className="-mt-0.5 bg-[#FFFAF6] pt-12 pb-30">
-        <p className="mb-4 text-xl font-bold">나의 신체색 분석 결과</p>
-
         <BodyColorSection analysis={analysis} resultImageUrl={resultImageUrl} />
-
-        <div className="mb-7">
-          <GuideLabel className="w-full rounded-md py-2">
-            <p className="md:inline">
-              신체색은 타고난 피부색, 모발색, 눈동자색을 말하며,{" "}
-            </p>
-            <p className="md:inline">퍼스널 컬러 진단의 기준이 됩니다.</p>
-          </GuideLabel>
-        </div>
 
         <SkinToneSection analysis={analysis} analysisPreset={analysisPreset} />
 
