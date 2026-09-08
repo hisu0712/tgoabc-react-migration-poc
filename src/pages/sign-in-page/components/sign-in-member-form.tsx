@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
-import { TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
@@ -65,85 +64,70 @@ export default function SignInMemberForm() {
   };
 
   return (
-    <TabsContent
-      value="member"
-      className="flex flex-1 flex-col justify-between"
-    >
-      <Form {...form}>
-        <div className="flex flex-col gap-3">
-          <form
-            id="member-sign-in-form"
-            className="flex flex-col gap-1"
-            onSubmit={form.handleSubmit(onMemberSubmit)}
-          >
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSignInWithPasswordPending}
-                      className="h-auto py-2"
-                      placeholder="이메일(아이디) 입력"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <PasswordInput
-                      disabled={isSignInWithPasswordPending}
-                      className="h-auto py-2"
-                      placeholder="비밀번호 입력"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
-
-          <div className="text-muted-foreground mb-0.5 flex justify-between text-sm">
-            <label className="flex cursor-pointer items-center gap-1">
-              <Checkbox
-                checked={rememberId}
-                onCheckedChange={(checked) => setRememberId(!!checked)}
-              />
-              <span>아이디 기억</span>
-            </label>
-            <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
-          </div>
-
-          <Button
-            form="member-sign-in-form"
-            className="h-auto cursor-pointer py-2.5 text-base"
-            disabled={isSignInWithPasswordPending}
-            type="submit"
-          >
-            로그인
-          </Button>
-        </div>
-      </Form>
-
-      <div className="mb-7">
-        <p className="text-muted-foreground mb-1 text-sm">회원이 아니신가요?</p>
-        <Button
-          asChild
-          className="bg-card text-primary hover:bg-muted h-auto w-full py-2.5 text-base"
+    <Form {...form}>
+      <div className="flex flex-col gap-3">
+        <form
+          id="member-sign-in-form"
+          className="flex flex-col gap-1"
+          onSubmit={form.handleSubmit(onMemberSubmit)}
         >
-          <Link to={"/sign-up"}>회원가입 하기</Link>
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Input
+                    disabled={isSignInWithPasswordPending}
+                    className="h-auto py-2"
+                    placeholder="이메일(아이디) 입력"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <PasswordInput
+                    disabled={isSignInWithPasswordPending}
+                    className="h-auto py-2"
+                    placeholder="비밀번호 입력"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+
+        <div className="text-muted-foreground mb-0.5 flex justify-between text-sm">
+          <label className="flex cursor-pointer items-center gap-1">
+            <Checkbox
+              checked={rememberId}
+              onCheckedChange={(checked) => setRememberId(!!checked)}
+            />
+            <span>아이디 기억</span>
+          </label>
+          <Link to={"/forget-id-password"}>아이디/비밀번호 찾기</Link>
+        </div>
+
+        <Button
+          form="member-sign-in-form"
+          className="h-auto cursor-pointer py-2.5 text-base"
+          disabled={isSignInWithPasswordPending}
+          type="submit"
+        >
+          로그인
         </Button>
       </div>
-    </TabsContent>
+    </Form>
   );
 }

@@ -19,7 +19,6 @@ import { useCompleteCustomerSignIn } from "@/hooks/mutations/auth/use-complete-c
 import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { generateErrorMessage } from "@/lib/error";
 import { useEffect, useState } from "react";
-import { TabsContent } from "@/components/ui/tabs";
 import { useSetActiveRole } from "@/store/active-role";
 
 export default function SignInCustomerForm() {
@@ -96,7 +95,6 @@ export default function SignInCustomerForm() {
   };
 
   return (
-    <TabsContent value="customer" className="flex flex-col gap-2">
       <Form {...customerForm}>
         <form
           id="customer-sign-in-form"
@@ -159,6 +157,5 @@ export default function SignInCustomerForm() {
           로그인
         </Button>
       </Form>
-    </TabsContent>
   );
 }

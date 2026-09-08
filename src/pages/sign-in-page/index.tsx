@@ -1,5 +1,5 @@
 import HeaderHomeNav from "@/components/layout/header-home-nav";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import loginMemberImage from "@/assets/login_member.svg";
@@ -8,6 +8,8 @@ import logoBlue from "@/assets/logo_blue.png";
 import logoWhite from "@/assets/logo_white.png";
 import SignInMemberForm from "./components/sign-in-member-form";
 import SignInCustomerForm from "./components/sign-in-customer-form";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
 
 export default function SignInPage() {
   const [authType, setAuthType] = useState<"member" | "customer">("member");
@@ -66,9 +68,28 @@ export default function SignInPage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* TabsContent */}
-          <SignInMemberForm />
-          <SignInCustomerForm />
+          <TabsContent
+            value="member"
+            className="flex flex-1 flex-col justify-between"
+          >
+            <SignInMemberForm />
+
+            <div className="mb-7">
+              <p className="text-muted-foreground mb-1 text-sm">
+                회원이 아니신가요?
+              </p>
+              <Button
+                asChild
+                className="bg-card text-primary hover:bg-muted h-auto w-full py-2.5 text-base"
+              >
+                <Link to={"/sign-up"}>회원가입 하기</Link>
+              </Button>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="customer" className="flex flex-col gap-2">
+            <SignInCustomerForm />
+          </TabsContent>
         </Tabs>
       </div>
     </div>
