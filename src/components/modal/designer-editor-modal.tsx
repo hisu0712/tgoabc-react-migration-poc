@@ -21,7 +21,7 @@ import FormHint from "../form/form-hint";
 import { useCreateDesigner } from "@/hooks/mutations/designer/use-create-designer";
 import { useSession } from "@/store/session";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { isPostgrestError } from "@/lib/error";
 import { useUpdateDesigner } from "@/hooks/mutations/designer/use-update-designer";
 import { useDeleteDesigner } from "@/hooks/mutations/designer/use-delete-designer";
@@ -31,6 +31,8 @@ export default function DesignerEditorModal() {
   const session = useSession();
   const designerEditorModal = useDesignerEditorModal();
   const openAlertModal = useOpenAlertModal();
+
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const { mutate: createDesigner, isPending: isCreateDesignerPending } =
     useCreateDesigner({
@@ -100,16 +102,16 @@ export default function DesignerEditorModal() {
   } = form;
 
   useEffect(() => {
-    if (!designerEditorModal.isOpen) {
-      return;
-    }
+    if (!designerEditorModal.isOpen) return;
 
     if (designerEditorModal.type === "EDIT") {
+      setIsEditMode(true);
       form.reset({
         name: designerEditorModal.name,
         phone: designerEditorModal.phone,
       });
     } else {
+      setIsEditMode(false);
       form.reset({ name: "", phone: "" });
     }
   }, [designerEditorModal.isOpen]);
@@ -157,7 +159,9 @@ export default function DesignerEditorModal() {
   return (
     <Dialog open={designerEditorModal.isOpen} onOpenChange={handleCloseModal}>
       <DialogContent>
-        <DialogTitle>디자이너 추가</DialogTitle>
+        <DialogTitle>
+          {isEditMode ? "디자이너 수정" : "디자이너 추가"}
+        </DialogTitle>
 
         <Form {...form}>
           <form
@@ -198,19 +202,17 @@ export default function DesignerEditorModal() {
         </Form>
 
         <div className="flex gap-2">
-          {/* 여기에 isopen이 있다고 보니까 닫힐때 버튼이 사라지게 되면서 일시적으로 한개의 버튼처럼 보임 */}
-          {designerEditorModal.isOpen &&
-            designerEditorModal.type === "EDIT" && (
-              <Button
-                disabled={isDeleteDesignerPending}
-                onClick={handleDeleteDesigner}
-                type="button"
-                className="flex-1"
-                variant={"secondary"}
-              >
-                삭제
-              </Button>
-            )}
+          {isEditMode && (
+            <Button
+              disabled={isDeleteDesignerPending}
+              onClick={handleDeleteDesigner}
+              type="button"
+              className="flex-1"
+              variant={"secondary"}
+            >
+              삭제
+            </Button>
+          )}
           <Button
             disabled={isCreateDesignerPending || isUpdateDesignerPending}
             type="submit"
