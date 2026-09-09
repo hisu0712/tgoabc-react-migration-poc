@@ -18,7 +18,7 @@ export default function AnalysisCard({
     <LinkCard to={to} className="flex items-center justify-between gap-2">
       <div className="flex flex-col gap-1">
         <span
-          className="w-max rounded-sm px-1.5 py-0.5 text-sm"
+          className="w-max rounded-sm px-1 text-sm leading-relaxed"
           style={{
             backgroundColor: badgeColor.bg,
             color: badgeColor.text,
@@ -28,7 +28,7 @@ export default function AnalysisCard({
         </span>
         <div className="flex items-center gap-1">
           <ListIcon className="size-4" strokeWidth={1.8} />
-          <span className="font-semibold">{date}</span>
+          <span className="font-medium -mb-0.5">{date}</span>
         </div>
       </div>
       <ChevronRightIcon className="size-8" strokeWidth={1.2} />
