@@ -12,13 +12,14 @@ import useInfiniteCustomers from "@/hooks/queries/customer/use-infinite-customer
 import { useSession } from "@/store/session";
 import { PlusIcon, ScissorsIcon } from "lucide-react";
 import { useEffect, useState } from "react";
-import Loader from "@/components/loader";
 import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import EmptyContent from "@/components/empty-content";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import SearchInput from "@/components/search-input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 export default function CustomerListPage() {
   const session = useSession();
@@ -27,19 +28,22 @@ export default function CustomerListPage() {
   const [searchKeyword, setSearchKeyword] = useState("");
   const [designerId, setDesignerId] = useState("all");
 
-  const { data: customerCount } = useCustomerCount({
-    memberId: session!.user.id,
-    keyword: searchKeyword,
-    designerId: designerId === "all" ? undefined : Number(designerId),
-  });
+  const { data: customerCount, isLoading: isFetchCustomerCountLoading } =
+    useCustomerCount({
+      memberId: session!.user.id,
+      keyword: searchKeyword,
+      designerId: designerId === "all" ? undefined : Number(designerId),
+    });
   const { data: designers } = useDesignersData(session!.user.id);
 
   const {
     data: customers,
-    isError,
+    isError: isFetchCustomersError,
     isPending,
+    hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isPlaceholderData,
   } = useInfiniteCustomers({
     memberId: session?.user.id,
     keyword: searchKeyword,
@@ -48,10 +52,10 @@ export default function CustomerListPage() {
 
   useEffect(() => {
     // 스크롤이 하단에 닿았을 때 다음페이지 호출
-    if (inView) fetchNextPage();
-  }, [inView]);
+    if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
+  }, [inView, hasNextPage, isFetchingNextPage]);
 
-  if (isError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
+  if (isFetchCustomersError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
     <>
@@ -78,9 +82,13 @@ export default function CustomerListPage() {
       <div className="bg-muted-foreground/20 mb-7 h-px w-full"></div>
 
       <div className="mb-3 flex items-center justify-between">
-        <div className="text-muted-foreground text-sm">
-          고객 {customerCount ?? 0}명
-        </div>
+        {isFetchCustomerCountLoading ? (
+          <Skeleton className="h-5 w-13" />
+        ) : (
+          <div className="text-muted-foreground text-sm">
+            고객 {customerCount ?? "-"}명
+          </div>
+        )}
 
         <Select value={designerId} onValueChange={setDesignerId}>
           <SelectTrigger>
@@ -98,9 +106,18 @@ export default function CustomerListPage() {
         </Select>
       </div>
 
-      <div className="flex flex-col gap-2">
+      <div
+        className={cn(
+          "flex flex-col gap-2",
+          isPlaceholderData && "opacity-60 transition-opacity",
+        )}
+      >
         {isPending ? (
-          <Loader />
+          <>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-16 w-full rounded-xl" />
+            ))}
+          </>
         ) : customers?.pages[0].length ? (
           customers.pages.map((page) =>
             page.map((c) => {
@@ -122,7 +139,13 @@ export default function CustomerListPage() {
           <EmptyContent content="아직 등록된 고객이 없습니다." />
         )}
 
-        {isFetchingNextPage && <Loader />}
+        {isFetchingNextPage && (
+          <>
+            {Array.from({ length: 2 }).map((_, i) => (
+              <Skeleton key={i} className="h-16 w-full rounded-xl" />
+            ))}
+          </>
+        )}
         <div ref={ref}></div>
       </div>
     </>

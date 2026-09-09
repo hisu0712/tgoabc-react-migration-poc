@@ -22,12 +22,15 @@ import type { CustomerFormValues } from "@/schemas/customer.schema";
 import type { DesignerEntity } from "@/types";
 import { ScissorsIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
+import { FieldSkeleton } from "./form/field-skeleton";
 
 export default function CustomerFormFields({
+  isLoading,
   disabled,
   designers,
   emailReadOnly,
 }: {
+  isLoading?: boolean;
   disabled?: boolean;
   designers?: DesignerEntity[];
   emailReadOnly?: boolean;
@@ -43,11 +46,15 @@ export default function CustomerFormFields({
           <FormItem>
             <FormLabel required>이름</FormLabel>
             <FormControl>
-              <Input
-                disabled={disabled}
-                placeholder="이름을 입력해주세요."
-                {...field}
-              />
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
+                <Input
+                  disabled={disabled}
+                  placeholder="이름을 입력해주세요."
+                  {...field}
+                />
+              )}
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -66,12 +73,16 @@ export default function CustomerFormFields({
               </FormHint>
             )}
             <FormControl>
-              <Input
-                readOnly={emailReadOnly}
-                disabled={disabled}
-                placeholder="abc@example.com"
-                {...field}
-              />
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
+                <Input
+                  readOnly={emailReadOnly}
+                  disabled={disabled}
+                  placeholder="abc@example.com"
+                  {...field}
+                />
+              )}
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -85,16 +96,20 @@ export default function CustomerFormFields({
           <FormItem>
             <FormLabel required>생년월일</FormLabel>
             <FormControl>
-              <Input
-                inputMode="numeric"
-                maxLength={10}
-                disabled={disabled}
-                placeholder="YYYY-MM-DD"
-                value={field.value}
-                onChange={(e) =>
-                  field.onChange(formatBirthDateInput(e.target.value))
-                }
-              />
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
+                <Input
+                  inputMode="numeric"
+                  maxLength={10}
+                  disabled={disabled}
+                  placeholder="YYYY-MM-DD"
+                  value={field.value}
+                  onChange={(e) =>
+                    field.onChange(formatBirthDateInput(e.target.value))
+                  }
+                />
+              )}
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -108,39 +123,45 @@ export default function CustomerFormFields({
           <FormItem>
             <FormLabel required>성별</FormLabel>
             <FormControl>
-              <div role="radiogroup" className="grid grid-cols-2 gap-2">
-                {GENDER_FORM_VALUES.map((option) => (
-                  <Button
-                    disabled={disabled}
-                    key={option.value}
-                    type="button"
-                    role="radio"
-                    aria-checked={field.value === option.value}
-                    onClick={() => field.onChange(option.value)}
-                    variant={"outline"}
-                    className={cn(
-                      field.value === option.value &&
-                        "border-primary text-primary bg-primary/10",
-                    )}
-                  >
-                    {option.label}
-                  </Button>
-                ))}
-              </div>
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
+                <div role="radiogroup" className="grid grid-cols-2 gap-2">
+                  {GENDER_FORM_VALUES.map((option) => (
+                    <Button
+                      disabled={disabled}
+                      key={option.value}
+                      type="button"
+                      role="radio"
+                      aria-checked={field.value === option.value}
+                      onClick={() => field.onChange(option.value)}
+                      variant={"outline"}
+                      className={cn(
+                        field.value === option.value &&
+                          "border-primary text-primary bg-primary/10",
+                      )}
+                    >
+                      {option.label}
+                    </Button>
+                  ))}
+                </div>
+              )}
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      {!!designers?.length && (
-        <FormField
-          control={control}
-          name="designerId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>담당 디자이너</FormLabel>
-              <FormControl>
+      <FormField
+        control={control}
+        name="designerId"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>담당 디자이너</FormLabel>
+            <FormControl>
+              {isLoading ? (
+                <FieldSkeleton />
+              ) : (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger className="w-full">
                     <div className="flex items-center gap-2">
@@ -157,12 +178,12 @@ export default function CustomerFormFields({
                     ))}
                   </SelectContent>
                 </Select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
+              )}
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </>
   );
 }
