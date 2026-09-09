@@ -6,7 +6,7 @@ import ForgetIdPasswordPage from "./pages/forget-id-password-page";
 import SignUpCompletePage from "./pages/sign-up-complete";
 import GuestOnlyLayout from "./components/layout/guest-only-layout";
 import MemberOnlyLayout from "./components/layout/member-only-layout";
-import CustomerDetailPage from "./pages/customer-detail-page";
+import CustomerDetailPage from "./pages/customer-page";
 import CustomerNewPage from "./pages/customer-new-page";
 import CustomerInfoPage from "./pages/customer-info-page";
 import CustomerListPage from "./pages/customer-list-page";

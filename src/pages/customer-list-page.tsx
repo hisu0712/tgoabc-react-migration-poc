@@ -20,10 +20,11 @@ import { MEMBER_HOME_PATH } from "@/lib/route";
 import SearchInput from "@/components/search-input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import ListSkeleton from "@/components/list-skeleton";
 
 export default function CustomerListPage() {
   const session = useSession();
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ rootMargin: "0px 0px -80px 0px" });
 
   const [searchKeyword, setSearchKeyword] = useState("");
   const [designerId, setDesignerId] = useState("all");
@@ -113,11 +114,7 @@ export default function CustomerListPage() {
         )}
       >
         {isPending ? (
-          <>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-xl" />
-            ))}
-          </>
+          <ListSkeleton />
         ) : customers?.pages[0].length ? (
           customers.pages.map((page) =>
             page.map((c) => {
@@ -139,13 +136,7 @@ export default function CustomerListPage() {
           <EmptyContent content="아직 등록된 고객이 없습니다." />
         )}
 
-        {isFetchingNextPage && (
-          <>
-            {Array.from({ length: 2 }).map((_, i) => (
-              <Skeleton key={i} className="h-16 w-full rounded-xl" />
-            ))}
-          </>
-        )}
+        {isFetchingNextPage && <ListSkeleton count={2} />}
         <div ref={ref}></div>
       </div>
     </>

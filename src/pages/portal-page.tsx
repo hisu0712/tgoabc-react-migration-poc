@@ -16,13 +16,19 @@ import defaultUser from "@/assets/customer_profile__joa.png";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import type { ShopEntity } from "@/types";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
+import { Skeleton } from "@/components/ui/skeleton";
+import ListSkeleton from "@/components/list-skeleton";
 
 export default function PortalPage() {
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
 
-  const { data: customer } = useCustomerData(session?.user.id);
-  const { data: shops } = useShopsData(session!.user.id);
+  const { data: customer, isLoading: isFetchCustomerLoading } = useCustomerData(
+    session!.user.id,
+  );
+  const { data: shops, isLoading: isFetchShopsLoading } = useShopsData(
+    session!.user.id,
+  );
 
   const handleButtonClick = (shop: ShopEntity) => {
     openAlertModal({
@@ -40,13 +46,17 @@ export default function PortalPage() {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex flex-col">
           <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
-          <Link
-            to={"/portal-info"}
-            className="text-primary flex items-center text-2xl font-bold"
-          >
-            {customer?.name} 님
-            <ChevronRightIcon className="size-7" strokeWidth={1.5} />
-          </Link>
+          {isFetchCustomerLoading ? (
+            <Skeleton className="h-8 w-28" />
+          ) : (
+            <Link
+              to={"/portal-info"}
+              className="text-primary flex items-center text-2xl font-bold"
+            >
+              {customer?.name ? `${customer?.name} 님` : "안녕하세요"}
+              <ChevronRightIcon className="size-7" strokeWidth={1.5} />
+            </Link>
+          )}
         </div>
         <div className="relative size-18">
           <img
@@ -107,12 +117,14 @@ export default function PortalPage() {
         </div>
       </div>
 
-      {!!shops?.length && (
-        <div className="mb-6">
-          <div className="mb-2 flex items-center gap-2">
-            <div className="text-lg font-semibold">내 매장 예약하기</div>
-            <span className="text-muted-foreground text-sm">전화예약</span>
-          </div>
+      <div className="mb-6">
+        <div className="mb-2 flex items-center gap-2">
+          <div className="text-lg font-semibold">내 매장 예약하기</div>
+          <span className="text-muted-foreground text-sm">전화예약</span>
+        </div>
+        {isFetchShopsLoading ? (
+          <ListSkeleton count={1} className="h-18" />
+        ) : (
           <div className="flex flex-col gap-2">
             {shops?.map((shop) => (
               <Card key={shop.id} className="flex items-center justify-between">
@@ -128,8 +140,8 @@ export default function PortalPage() {
               </Card>
             ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="mb-2 text-lg font-semibold">서비스 바로가기</div>
       <div className="grid grid-cols-2 gap-2">

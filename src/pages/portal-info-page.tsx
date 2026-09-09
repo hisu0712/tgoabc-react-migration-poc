@@ -13,7 +13,6 @@ import { toast } from "sonner";
 import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
-import Loader from "@/components/loader";
 import DeleteUserButton from "@/components/delete-user-button";
 import { CUSTOMER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
@@ -82,14 +81,11 @@ export function PortalInfoPage() {
           id="update-customer-form"
           className="grid gap-3"
         >
-          {isFetchCustomerLoading ? (
-            <Loader />
-          ) : (
-            <CustomerFormFields
-              disabled={isUpdateCustomerPending}
-              emailReadOnly={true}
-            />
-          )}
+          <CustomerFormFields
+            isLoading={isFetchCustomerLoading}
+            disabled={isUpdateCustomerPending}
+            emailReadOnly={true}
+          />
         </form>
       </Form>
 

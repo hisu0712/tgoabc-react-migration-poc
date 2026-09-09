@@ -7,9 +7,9 @@ import { useSession } from "@/store/session";
 import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
-import Loader from "../loader";
 import { CustomerCard } from "../card";
 import { useCloseLinkCustomerModal } from "@/store/modals/link-customer-modal";
+import ListSkeleton from "../list-skeleton";
 
 export default function SelectCustomerModal() {
   const session = useSession();
@@ -19,11 +19,14 @@ export default function SelectCustomerModal() {
 
   const [searchKeyword, setSearchKeyword] = useState("");
 
-  const { data: customers, isPending: isFetchCustomersPending } =
-    useInfiniteCustomers({
-      memberId: searchKeyword ? session!.user.id : undefined, // 검색으로만 고객 리스트 제공
-      keyword: searchKeyword,
-    });
+  const {
+    data: customers,
+    isLoading: isFetchCustomersLoading,
+    isPlaceholderData,
+  } = useInfiniteCustomers({
+    memberId: searchKeyword ? session!.user.id : undefined, // 검색으로만 고객 리스트 제공
+    keyword: searchKeyword,
+  });
 
   const {
     mutate: linkAnalysisToCustomer,
@@ -76,8 +79,8 @@ export default function SelectCustomerModal() {
             <p className="text-muted-foreground py-8 text-center text-sm">
               검색해서 고객을 찾아보세요
             </p>
-          ) : isFetchCustomersPending ? (
-            <Loader />
+          ) : isFetchCustomersLoading || isPlaceholderData ? (
+            <ListSkeleton count={2} className="h-12" />
           ) : customers?.pages[0].length ? (
             customers.pages.map((page) =>
               page.map((c) => (

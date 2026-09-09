@@ -7,9 +7,9 @@ import {
 } from "@/store/modals/designer-editor-modal";
 import { useSession } from "@/store/session";
 import { PlusIcon } from "lucide-react";
-import Loader from "@/components/loader";
 import EmptyContent from "@/components/empty-content";
 import DesignerCard from "./components/designer-card";
+import ListSkeleton from "@/components/list-skeleton";
 
 export default function DesignerPage() {
   const session = useSession();
@@ -25,7 +25,7 @@ export default function DesignerPage() {
       <Card
         onClick={openCreateDesignerModal}
         variant={"gradient"}
-        className="mb-6 flex items-center justify-between cursor-pointer"
+        className="mb-6 flex cursor-pointer items-center justify-between"
       >
         <span className="text-lg font-semibold">신규 디자이너 추가</span>
         <PlusIcon className="size-9" strokeWidth={1.3} />
@@ -35,7 +35,7 @@ export default function DesignerPage() {
 
       <div className="flex flex-col gap-2">
         {isLoading ? (
-          <Loader />
+          <ListSkeleton className="h-15" />
         ) : data?.length ? (
           data.map((designer) => (
             <DesignerCard
