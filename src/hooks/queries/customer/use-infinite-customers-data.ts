@@ -13,7 +13,6 @@ export default function useInfiniteCustomers({
   keyword?: string;
   designerId?: number;
 }) {
-  // 현재는 memberId가 있어야 고객 리스트 호출이 가능하지만 추후 재사용성을 고려한 수정 가능
   return useInfiniteQuery({
     queryKey: QUERY_KEYS.customer.memberList(memberId!, keyword, designerId),
     queryFn: ({ pageParam }) => {
@@ -27,17 +26,6 @@ export default function useInfiniteCustomers({
         keyword,
         designerId,
       });
-
-      // 여기 캐시 업데이트 필요함 없으면 designerId 바뀌어도 새로고침 안하면 업데이트 안됨
-
-      // customers.forEach((customer) => {
-      //   queryClient.setQueryData(
-      //     QUERY_KEYS.customer.byId(customer.id),
-      //     customer,
-      //   );
-      // });
-
-      // return customers.map((cutomer) => cutomer.id);
     },
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => {
