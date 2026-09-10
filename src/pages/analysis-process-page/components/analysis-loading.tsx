@@ -1,5 +1,5 @@
 import loadingImage from "@/assets/loading_jaemi.gif";
-import AnalysisPrivacyNotice from "@/components/analysis-privacy-notice";
+import AnalysisPrivacyNotice from "@/components/analysis/analysis-privacy-notice";
 import { Layout } from "@/components/layout/global-layout";
 
 export default function AnalysisLoading() {
