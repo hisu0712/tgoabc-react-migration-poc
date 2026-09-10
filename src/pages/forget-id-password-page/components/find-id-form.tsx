@@ -40,7 +40,7 @@ export default function FindIdForm() {
       if (error instanceof FunctionsHttpError) {
         const body = await error.context.json().catch(() => null);
         toastError(
-          body.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+          body?.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
         );
         findIdForm.reset();
         return;
