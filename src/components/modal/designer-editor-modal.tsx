@@ -20,12 +20,12 @@ import {
 import FormHint from "../form/form-hint";
 import { useCreateDesigner } from "@/hooks/mutations/designer/use-create-designer";
 import { useSession } from "@/store/session";
-import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { isPostgrestError } from "@/lib/error";
 import { useUpdateDesigner } from "@/hooks/mutations/designer/use-update-designer";
 import { useDeleteDesigner } from "@/hooks/mutations/designer/use-delete-designer";
 import { PhoneInput } from "../form/phone-input";
+import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
 
 export default function DesignerEditorModal() {
   const session = useSession();
@@ -37,42 +37,30 @@ export default function DesignerEditorModal() {
   const { mutate: createDesigner, isPending: isCreateDesignerPending } =
     useCreateDesigner({
       onSuccess: () => {
-        toast.success("디자이너가 등록되었습니다.", {
-          position: "top-center",
-        });
+        toastSuccess("디자이너가 등록되었습니다.");
         designerEditorModal.actions.close();
       },
       onError: (error) => {
         if (isPostgrestError(error) && error.code === "23505") {
-          toast.error("이미 등록된 전화번호입니다.", {
-            position: "top-center",
-          });
+          toastError("이미 등록된 전화번호입니다.");
           return;
         }
-        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-          position: "top-center",
-        });
+        toastError("문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
       },
     });
 
   const { mutate: updateDesigner, isPending: isUpdateDesignerPending } =
     useUpdateDesigner({
       onSuccess: () => {
-        toast.success("디자이너 정보가 수정되었습니다.", {
-          position: "top-center",
-        });
+        toastSuccess("디자이너 정보가 수정되었습니다.");
         designerEditorModal.actions.close();
       },
       onError: (error) => {
         if (isPostgrestError(error) && error.code === "23505") {
-          toast.error("이미 등록된 전화번호입니다.", {
-            position: "top-center",
-          });
+          toastError("이미 등록된 전화번호입니다.");
           return;
         }
-        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-          position: "top-center",
-        });
+        toastError("문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
       },
     });
 
@@ -80,15 +68,11 @@ export default function DesignerEditorModal() {
     // 배정된 고객이 있을 때 alert으로 한번 더 확인할지 고민
     useDeleteDesigner({
       onSuccess: () => {
-        toast.success("디자이너가 삭제되었습니다.", {
-          position: "top-center",
-        });
+        toastSuccess("디자이너가 삭제되었습니다.");
         designerEditorModal.actions.close();
       },
       onError: () => {
-        toast.error("문제가 발생했습니다. 잠시 후 다시 시도해주세요.", {
-          position: "top-center",
-        });
+        toastError("문제가 발생했습니다. 잠시 후 다시 시도해주세요.");
       },
     });
 
@@ -123,7 +107,7 @@ export default function DesignerEditorModal() {
       createDesigner({ memberId: session!.user.id, ...values });
     } else if (designerEditorModal.type === "EDIT") {
       if (!isDirty) {
-        toast.info("변경된 내용이 없습니다.", { position: "top-center" });
+        toastNoChange();
         return;
       }
       updateDesigner({ designerId: designerEditorModal.designerId, ...values });

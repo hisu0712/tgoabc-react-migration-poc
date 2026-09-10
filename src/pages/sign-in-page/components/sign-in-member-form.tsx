@@ -7,7 +7,6 @@ import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { generateErrorMessage } from "@/lib/error";
-import { toast } from "sonner";
 import {
   Form,
   FormControl,
@@ -21,6 +20,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/form/password-input";
 import { useSetActiveRole } from "@/store/active-role";
+import { toastError } from "@/lib/toast";
 
 const REMEMBERED_ID_KEY = "rememberedId";
 
@@ -40,9 +40,7 @@ export default function SignInMemberForm() {
       },
       onError: (error) => {
         const message = generateErrorMessage(error);
-        toast.error(message, {
-          position: "top-center",
-        });
+        toastError(message);
       },
     });
 

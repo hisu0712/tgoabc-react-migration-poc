@@ -19,7 +19,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -27,16 +27,12 @@ export default function ResetPasswordPage() {
   const { mutate: updatePassword, isPending: isUpdatePasswordPending } =
     useUpdatePassword({
       onSuccess: () => {
-        toast.success("비밀번호가 성공적으로 변경되었습니다.", {
-          position: "top-center",
-        });
+        toastSuccess("비밀번호가 성공적으로 변경되었습니다.");
         navigate(MEMBER_HOME_PATH, { replace: true });
       },
       onError: (error) => {
         const message = generateErrorMessage(error);
-        toast.error(message, {
-          position: "top-center",
-        });
+        toastError(message);
         form.reset();
       },
     });

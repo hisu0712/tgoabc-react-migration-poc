@@ -11,8 +11,8 @@ import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import MemberFormFields from "./components/member-form-fields";
+import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
 
 export default function MemberInfoPage() {
   const session = useSession();
@@ -26,10 +26,10 @@ export default function MemberInfoPage() {
   const { mutate: updateMember, isPending: isUpdateMemberPending } =
     useUpdateMember({
       onSuccess: () => {
-        toast.success("정보가 수정되었습니다.", { position: "top-center" });
+        toastSuccess("정보가 수정되었습니다.");
       },
       onError: () => {
-        toast.error("정보 수정에 실패했습니다.", { position: "top-center" });
+        toastError("정보 수정에 실패했습니다.");
       },
     });
 
@@ -54,7 +54,7 @@ export default function MemberInfoPage() {
 
   const onSubmit = (values: MemberFormValues) => {
     if (!isDirty) {
-      toast.info("변경된 내용이 없습니다.", { position: "top-center" });
+      toastNoChange();
       return;
     }
     updateMember({ memberId: session!.user.id, ...values });

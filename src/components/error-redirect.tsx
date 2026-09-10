@@ -1,7 +1,7 @@
 import { REDIRECT_ERROR_MESSAGE } from "@/hooks/use-redirect-to-home";
+import { toastError } from "@/lib/toast";
 import { useEffect } from "react";
 import { Navigate } from "react-router";
-import { toast } from "sonner";
 
 export default function ErrorRedirect({
   to,
@@ -11,7 +11,7 @@ export default function ErrorRedirect({
   message?: string;
 }) {
   useEffect(() => {
-    toast.error(message, { position: "top-center" });
+    toastError(message);
   }, [message]);
 
   return <Navigate to={to} replace />;

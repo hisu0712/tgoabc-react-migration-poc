@@ -13,7 +13,7 @@ import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
-import { toast } from "sonner";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 type LocationState = {
   analysisId: string;
@@ -30,12 +30,10 @@ export default function CustomerNewPage() {
   const { analysisId } = (location.state ?? {}) as Partial<LocationState>;
   const { mutate: linkAnalysisToCustomer } = useLinkAnalysisToCustomer({
     onSuccess: () => {
-      toast.success("분석 결과가 저장되었습니다.", { position: "top-center" });
+      toastSuccess("분석 결과가 저장되었습니다.");
     },
     onError: () => {
-      toast.error("분석 결과 연결에 실패했습니다.", {
-        position: "top-center",
-      });
+      toastError("분석 결과 연결에 실패했습니다.");
     },
   });
 
@@ -55,11 +53,10 @@ export default function CustomerNewPage() {
       onSuccess: (result) => {
         const { customerId, isAlreadyExists } = result!;
 
-        toast.success(
+        toastSuccess(
           isAlreadyExists
             ? "이미 등록된 고객입니다."
             : "고객이 등록되었습니다.",
-          { position: "top-center" },
         );
 
         if (analysisId) {
@@ -75,9 +72,7 @@ export default function CustomerNewPage() {
         });
       },
       onError: (error) => {
-        toast.error(error.message || "고객 등록에 실패했습니다.", {
-          position: "top-center",
-        });
+        toastError(error.message || "고객 등록에 실패했습니다.");
       },
     });
 
