@@ -16,7 +16,17 @@ export const MEMBER_NAV_ITEMS = [
 ];
 export const CUSTOMER_NAV_ITEMS = [
   { to: CUSTOMER_HOME_PATH, label: "홈", icon: HomeIcon },
-  { to: "/portal/test/1", label: "메시지", icon: MessageCircleIcon },
-  { to: "/portal/test/2", label: "매장찾기", icon: MapPinIcon },
+  {
+    to: "#",
+    label: "메시지",
+    icon: MessageCircleIcon,
+    disabled: true,
+  },
+  {
+    to: "#",
+    label: "매장찾기",
+    icon: MapPinIcon,
+    disabled: true,
+  },
   { to: "/portal-settings", label: "설정", icon: SettingsIcon },
 ];
