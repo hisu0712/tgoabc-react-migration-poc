@@ -1,5 +1,5 @@
+import AnalysisResultView from "@/components/analysis-result/analysis-result-view";
 import { SAMPLE_ANALYSIS, SAMPLE_RESULT_IMAGE_URL } from "./constants";
-import AnalysisResultView from "../analysis-result-page/components/analysis-result-view";
 
 export default function AnalysisPreviewPage() {
   return (

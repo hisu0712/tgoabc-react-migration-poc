@@ -7,10 +7,10 @@ import ErrorRedirect from "@/components/error-redirect";
 import { useOpenLinkCustomerModal } from "@/store/modals/link-customer-modal";
 import { useOpenShareAnalysisModal } from "@/store/modals/share-analysis-modal";
 import type { Analysis } from "@/lib/analysis";
-import AnalysisResultView from "./components/analysis-result-view";
 import { Share2Icon, UserPlusIcon } from "lucide-react";
 import BottomNav from "@/components/layout/bottom-nav";
 import { MEMBER_NAV_ITEMS } from "@/constants/nav";
+import AnalysisResultView from "@/components/analysis-result/analysis-result-view";
 
 type LocationState = {
   analysis: Analysis;

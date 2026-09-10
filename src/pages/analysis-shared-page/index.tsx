@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import GlobalLoader from "@/components/global-loader";
 import ExpiredError from "./components/expired-error";
 import useSharedAnalysis from "@/hooks/queries/analysis/use-shared-analysis-data";
-import AnalysisResultView from "../analysis-result-page/components/analysis-result-view";
+import AnalysisResultView from "@/components/analysis-result/analysis-result-view";
 
 export default function AnalysisSharedPage() {
   const { analysisId } = useParams();

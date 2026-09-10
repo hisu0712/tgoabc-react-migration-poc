@@ -1,13 +1,13 @@
 import HeaderNav from "@/components/layout/header-nav";
 import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
-import { ANALYSIS_PRESET } from "../constants";
 import { useInView } from "react-intersection-observer";
 import TypeIntroSection from "./type-intro-section";
 import BodyColorSection from "./body-color-section";
 import SkinToneSection from "./skin-tone-section";
-import FoundationSection from "./foundation-section";
 import type { Analysis } from "@/lib/analysis";
+import { ANALYSIS_PRESET } from "./constants";
+import FoundationSection from "./foundation-section";
 
 export default function AnalysisResultView({
   analysis,
