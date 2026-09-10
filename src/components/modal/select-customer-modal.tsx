@@ -5,11 +5,11 @@ import { useState } from "react";
 import useInfiniteCustomers from "@/hooks/queries/customer/use-infinite-customers-data";
 import { useSession } from "@/store/session";
 import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";
-import { toast } from "sonner";
 import { useNavigate } from "react-router";
 import { CustomerCard } from "../card";
 import { useCloseLinkCustomerModal } from "@/store/modals/link-customer-modal";
 import ListSkeleton from "../list-skeleton";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function SelectCustomerModal() {
   const session = useSession();
@@ -33,12 +33,10 @@ export default function SelectCustomerModal() {
     isPending: isLinkAnalysisToCustomerPending,
   } = useLinkAnalysisToCustomer({
     onSuccess: () => {
-      toast.success("분석 결과가 저장되었습니다.", { position: "top-center" });
+      toastSuccess("분석 결과가 저장되었습니다.");
     },
     onError: () => {
-      toast.error("분석 결과 연결에 실패했습니다. 잠시 후 다시 시도해주세요.", {
-        position: "top-center",
-      });
+      toastError("분석 결과 연결에 실패했습니다. 잠시 후 다시 시도해주세요.");
     },
   });
 

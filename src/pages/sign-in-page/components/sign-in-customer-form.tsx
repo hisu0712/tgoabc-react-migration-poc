@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import {
   type CustomerSignInFormValues,
   customerSignInSchema,
@@ -20,6 +19,7 @@ import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { generateErrorMessage } from "@/lib/error";
 import { useEffect, useState } from "react";
 import { useSetActiveRole } from "@/store/active-role";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function SignInCustomerForm() {
   const setActiveRole = useSetActiveRole();
@@ -36,10 +36,10 @@ export default function SignInCustomerForm() {
     useSignInWithOtp({
       onSuccess: () => {
         setIsOtpSent(true);
-        toast.success("인증번호를 발송했습니다.", { position: "top-center" });
+        toastSuccess("인증번호를 발송했습니다.");
       },
       onError: (error) => {
-        toast.error(generateErrorMessage(error), { position: "top-center" });
+        toastError(generateErrorMessage(error));
       },
     });
 
@@ -50,18 +50,13 @@ export default function SignInCustomerForm() {
     onSuccess: () => setActiveRole("customer"),
     onError: async (error) => {
       if (error instanceof FunctionsHttpError) {
-        const body = await error.context.json().catch(() => null);
-        toast.error(
+        const body = await error.context.json().catch(() => null); // 파싱 실패 -> null
+        toastError(
           body?.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
-          {
-            position: "top-center",
-          },
         );
         return;
       }
-      toast.error(generateErrorMessage(error), {
-        position: "top-center",
-      });
+      toastError(generateErrorMessage(error));
     },
   });
 
@@ -84,7 +79,7 @@ export default function SignInCustomerForm() {
 
   const onCustomerSubmit = async (values: CustomerSignInFormValues) => {
     if (!otp) {
-      toast.error("이메일 인증을 완료해주세요.", { position: "top-center" });
+      toastError("이메일 인증을 완료해주세요.");
       return;
     }
 

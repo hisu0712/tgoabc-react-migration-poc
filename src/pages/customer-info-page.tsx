@@ -9,7 +9,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams } from "react-router";
 import { useMemo } from "react";
-import { toast } from "sonner";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-customer";
 import { useSession } from "@/store/session";
@@ -20,6 +19,7 @@ import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-up
 import { Button } from "@/components/ui/button";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
+import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
 
 export default function CustomerInfoPage() {
   const session = useSession();
@@ -39,21 +39,21 @@ export default function CustomerInfoPage() {
   const { mutate: updateCustomer, isPending: isUpdateCustomerPending } =
     useUpdateCustomerWithDesigner({
       onSuccess: () => {
-        toast.success("정보가 수정되었습니다.", { position: "top-center" });
+        toastSuccess("정보가 수정되었습니다.");
       },
       onError: () => {
-        toast.error("정보 수정에 실패했습니다.", { position: "top-center" });
+        toastError("정보 수정에 실패했습니다.");
       },
     });
 
   const { mutate: unlinkCustomer, isPending: isUnlinkCustomerPending } =
     useUnlinkCustomer({
       onSuccess: () => {
-        toast.success("고객이 삭제되었습니다.", { position: "top-center" });
+        toastSuccess("고객이 삭제되었습니다.");
         navigate(MEMBER_HOME_PATH, { replace: true });
       },
       onError: () => {
-        toast.error("고객 삭제에 실패했습니다.", { position: "top-center" });
+        toastError("고객 삭제에 실패했습니다.");
       },
     });
 
@@ -87,7 +87,7 @@ export default function CustomerInfoPage() {
 
   const onSubmit = (values: CustomerFormValues) => {
     if (!isDirty) {
-      toast.info("변경된 내용이 없습니다.", { position: "top-center" });
+      toastNoChange();
       return;
     }
 

@@ -11,13 +11,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { useResetPassword } from "@/hooks/mutations/auth/use-reset-password-for-email";
 import { generateErrorMessage } from "@/lib/error";
+import { toastError, toastInfo } from "@/lib/toast";
 import {
   findPasswordSchema,
   type FindPasswordFormValues,
 } from "@/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 export default function FindPasswordForm() {
   const findPasswordForm = useForm<FindPasswordFormValues>({
@@ -28,16 +28,12 @@ export default function FindPasswordForm() {
   const { mutate: resetPassword, isPending: isResetPasswordPending } =
     useResetPassword({
       onSuccess: () => {
-        toast.info("인증 메일이 잘 발송되었습니다.", {
-          position: "top-center",
-        });
+        toastInfo("인증 메일이 잘 발송되었습니다.");
         findPasswordForm.reset();
       },
       onError: (error) => {
         const message = generateErrorMessage(error);
-        toast.error(message, {
-          position: "top-center",
-        });
+        toastError(message);
         findPasswordForm.reset();
       },
     });

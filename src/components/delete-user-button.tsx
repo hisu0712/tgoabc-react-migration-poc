@@ -2,9 +2,9 @@ import { useDeleteUser } from "@/hooks/mutations/auth/use-delete-user";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useSetSession } from "@/store/session";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { SIGN_IN_PATH } from "@/lib/route";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function DeleteUserButton() {
   const openAlertModal = useOpenAlertModal();
@@ -14,13 +14,11 @@ export default function DeleteUserButton() {
   const { mutate: deleteUser, isPending: isDeleteUserPending } = useDeleteUser({
     onSuccess: () => {
       setSession(null); // Auth.users가 없는 상태이기 때문에 signOut 불가
-      toast.success("회원 탈퇴가 완료되었습니다.", { position: "top-center" });
+      toastSuccess("회원 탈퇴가 완료되었습니다.");
       navigate(SIGN_IN_PATH, { replace: true });
     },
     onError: () => {
-      toast.error("회원 탈퇴 중 오류가 발생했습니다.", {
-        position: "top-center",
-      });
+      toastError("회원 탈퇴 중 오류가 발생했습니다.");
     },
   });
 

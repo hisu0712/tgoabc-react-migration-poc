@@ -6,12 +6,12 @@ import AnalysisLoading from "./components/analysis-loading";
 import analysisScriptUrl from "./personal-analysis.iife.js?url"; // module
 import analysisStyleUrl from "./personal-analysis.css?url"; // module
 import useCreateAnalysis from "@/hooks/mutations/analysis/use-create-analysis";
-import { toast } from "sonner";
 import { useActiveRole } from "@/store/active-role";
 import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
 import ErrorRedirect from "@/components/error-redirect";
 import { roleHomePath, SIGN_IN_PATH } from "@/lib/route";
 import type { Analysis } from "@/lib/analysis";
+import { toastError } from "@/lib/toast";
 
 const ANALYSIS_ELEMENT_NAME = "skin-analysis";
 const ANALYSIS_EVENT = "personal-analysis-complete";
@@ -65,7 +65,7 @@ export default function AnalysisProcessPage() {
 
   const { mutate: createAnalysis } = useCreateAnalysis({
     onError: () => {
-      toast.error("분석 결과 저장에 실패했습니다.", { position: "top-center" });
+      toastError("분석 결과 저장에 실패했습니다.");
     },
   });
 

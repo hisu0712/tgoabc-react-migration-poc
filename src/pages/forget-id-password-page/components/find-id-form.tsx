@@ -12,18 +12,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { useFindId } from "@/hooks/mutations/auth/use-find-id";
 import { SIGN_IN_PATH } from "@/lib/route";
+import { toastError } from "@/lib/toast";
 import { findIdSchema, type FindIdFormValues } from "@/schemas/auth.schema";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { toast } from "sonner";
 
 export default function FindIdForm() {
   const openAlertModal = useOpenAlertModal();
   const navigate = useNavigate();
-  
+
   const findIdForm = useForm<FindIdFormValues>({
     resolver: zodResolver(findIdSchema),
     defaultValues: { name: "", phone: "" },
@@ -38,13 +38,14 @@ export default function FindIdForm() {
       }),
     onError: async (error) => {
       if (error instanceof FunctionsHttpError) {
-        const errorBody = await error.context.json();
-        toast.error(errorBody.error, { position: "top-center" });
-      } else {
-        toast.error("알 수 없는 오류가 발생했습니다.", {
-          position: "top-center",
-        });
+        const body = await error.context.json().catch(() => null);
+        toastError(
+          body.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        );
+        findIdForm.reset();
+        return;
       }
+      toastError("알 수 없는 오류가 발생했습니다.");
       findIdForm.reset();
     },
   });

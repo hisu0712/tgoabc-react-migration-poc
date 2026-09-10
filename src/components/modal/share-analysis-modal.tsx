@@ -10,7 +10,7 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import useEnableAnalysisShare from "@/hooks/mutations/analysis/use-enable-analysis-share";
-import { toast } from "sonner";
+import { toastError } from "@/lib/toast";
 
 export default function ShareAnalysisModal() {
   const shareAnalysisModal = useShareAnalysisModal();
@@ -18,9 +18,7 @@ export default function ShareAnalysisModal() {
 
   const { mutate: enableAnalysisShare } = useEnableAnalysisShare({
     onError: () => {
-      toast.error("공유 링크 생성에 실패했어요. 잠시 후 다시 시도해 주세요.", {
-        position: "top-center",
-      });
+      toastError("공유 링크 생성에 실패했어요. 잠시 후 다시 시도해 주세요.");
       shareAnalysisModal.actions.close();
     },
   });

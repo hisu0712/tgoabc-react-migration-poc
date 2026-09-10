@@ -1,7 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { useCompleteMemberSignUp } from "@/hooks/mutations/auth/use-complete-member-sign-up";
 import { generateErrorMessage } from "@/lib/error";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
@@ -23,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/form/password-input";
 import { useSetActiveRole } from "@/store/active-role";
 import { PhoneInput } from "@/components/form/phone-input";
+import { toastError, toastSuccess } from "@/lib/toast";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
@@ -47,20 +47,20 @@ export default function SignUpPage() {
     useSignInWithOtp({
       onSuccess: () => {
         setIsOtpSent(true);
-        toast.success("인증번호를 발송했습니다.", { position: "top-center" });
+        toastSuccess("인증번호를 발송했습니다.");
       },
       onError: (error) => {
-        toast.error(generateErrorMessage(error), { position: "top-center" });
+        toastError(generateErrorMessage(error));
       },
     });
 
   const { mutate: verifyOtp, isPending: isVerifyOtpPending } = useVerifyOtp({
     onSuccess: () => {
       setIsVerifyOtp(true);
-      toast.success("인증이 완료되었습니다.", { position: "top-center" });
+      toastSuccess("인증이 완료되었습니다.");
     },
     onError: (error) => {
-      toast.error(generateErrorMessage(error), { position: "top-center" });
+      toastError(generateErrorMessage(error));
     },
   });
 
@@ -72,9 +72,7 @@ export default function SignUpPage() {
       },
       onError: (error) => {
         const message = generateErrorMessage(error);
-        toast.error(message, {
-          position: "top-center",
-        });
+        toastError(message);
       },
     });
 
@@ -100,7 +98,7 @@ export default function SignUpPage() {
 
   const onSubmit = (values: SignUpFormValues) => {
     if (!isVerifyOtp) {
-      toast.error("이메일 인증을 완료해주세요.", { position: "top-center" });
+      toastError("이메일 인증을 완료해주세요.");
       return;
     }
 

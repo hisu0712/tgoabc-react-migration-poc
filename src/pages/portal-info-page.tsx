@@ -9,13 +9,13 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 import { useMemo } from "react";
-import { toast } from "sonner";
 import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
 import DeleteUserButton from "@/components/delete-user-button";
 import { CUSTOMER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
+import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
 
 export function PortalInfoPage() {
   const session = useSession();
@@ -29,10 +29,10 @@ export function PortalInfoPage() {
   const { mutate: updateCustomer, isPending: isUpdateCustomerPending } =
     useUpdateCustomer({
       onSuccess: () => {
-        toast.success("정보가 수정되었습니다.", { position: "top-center" });
+        toastSuccess("정보가 수정되었습니다.");
       },
       onError: () => {
-        toast.error("정보 수정에 실패했습니다.", { position: "top-center" });
+        toastError("정보 수정에 실패했습니다.");
       },
     });
 
@@ -61,7 +61,7 @@ export function PortalInfoPage() {
 
   const onSubmit = (values: CustomerFormValues) => {
     if (!isDirty) {
-      toast.info("변경된 내용이 없습니다.", { position: "top-center" });
+      toastNoChange();
       return;
     }
 

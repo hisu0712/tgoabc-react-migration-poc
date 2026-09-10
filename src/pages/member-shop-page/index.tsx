@@ -8,7 +8,6 @@ import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import defaultShopImage from "@/assets/default-shop.png";
 import { Label } from "@/components/ui/label";
 import BottomButton from "@/components/layout/bottom-button";
@@ -20,6 +19,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import ShopFormFields from "./components/shop-form-fields";
+import {
+  toastError,
+  toastInfo,
+  toastNoChange,
+  toastSuccess,
+} from "@/lib/toast";
 
 export default function MemberShopPage() {
   const session = useSession();
@@ -36,10 +41,10 @@ export default function MemberShopPage() {
 
   const { mutate: updateShop, isPending: isUpdateShopPending } = useUpdateShop({
     onSuccess: () => {
-      toast.success("정보가 수정되었습니다.", { position: "top-center" });
+      toastSuccess("정보가 수정되었습니다.");
     },
     onError: () => {
-      toast.error("정보 수정에 실패했습니다.", { position: "top-center" });
+      toastError("정보 수정에 실패했습니다.");
     },
   });
 
@@ -75,7 +80,7 @@ export default function MemberShopPage() {
   const onSubmit = (values: ShopFormValues) => {
     if (!isDirty && !shopImage && !isShopImageRemoved) {
       // 이미지 변경 감지 해야함
-      toast.info("변경된 내용이 없습니다.", { position: "top-center" });
+      toastNoChange();
       return;
     }
     updateShop({

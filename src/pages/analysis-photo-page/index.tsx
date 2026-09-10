@@ -4,7 +4,6 @@ import HeaderNav from "@/components/layout/header-nav";
 import defaultImage from "/face.png";
 import { Button } from "@/components/ui/button";
 import type { Image } from "@/types";
-import { toast } from "sonner";
 import { useUploadImage } from "@/hooks/mutations/image/use-upload-image";
 import { useSession } from "@/store/session";
 import { useNavigate, useSearchParams } from "react-router";
@@ -12,6 +11,7 @@ import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 import { useActiveRole } from "@/store/active-role";
 import { useRedirectToHome } from "@/hooks/use-redirect-to-home";
+import { toastError, toastInfo } from "@/lib/toast";
 
 export default function AnalysisPhotoPage() {
   const session = useSession();
@@ -29,9 +29,7 @@ export default function AnalysisPhotoPage() {
   const { mutate: uploadImage, isPending: isUploadImagePending } =
     useUploadImage({
       onError: () => {
-        toast.error("이미지 업로드에 실패했습니다.", {
-          position: "top-center",
-        });
+        toastError("이미지 업로드에 실패했습니다.");
       },
     });
 
@@ -64,9 +62,7 @@ export default function AnalysisPhotoPage() {
 
   const handleSubmit = () => {
     if (!faceImage) {
-      toast.info("업로드된 이미지가 없습니다. 이미지를 업로드해 주세요.", {
-        position: "top-center",
-      });
+      toastInfo("업로드된 이미지가 없습니다. 이미지를 업로드해 주세요.");
       return;
     }
 
