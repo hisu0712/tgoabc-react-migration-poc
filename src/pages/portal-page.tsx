@@ -19,6 +19,7 @@ import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 import { Skeleton } from "@/components/ui/skeleton";
 import ListSkeleton from "@/components/list-skeleton";
 import { toastComingSoon } from "@/lib/toast";
+import AnalysisMenuCard from "@/components/analysis/analysis-menu-card";
 
 export default function PortalPage() {
   const session = useSession();
@@ -69,29 +70,7 @@ export default function PortalPage() {
       </div>
 
       <div className="mb-7 grid grid-cols-[3fr_2fr] gap-2">
-        <LinkCard
-          to={"/analysis/photo"}
-          variant={"feature2"}
-          className="pr-0 pb-0"
-        >
-          <div>
-            <div className="mb-2 text-xl font-semibold tracking-tight">
-              퍼스널컬러 분석
-            </div>
-            <div className="text-sm font-light opacity-80">
-              나에게 어울리는 컬러를
-              <br />
-              한눈에 확인
-            </div>
-          </div>
-          <div className="">
-            <img
-              className="ml-auto h-33"
-              src={memuPersonal}
-              alt="퍼스널컬러 분석 이미지"
-            />
-          </div>
-        </LinkCard>
+        <AnalysisMenuCard to={"/analysis/photo"} />
 
         <div className="grid grid-rows-2 gap-2">
           <LinkCard
