@@ -1,12 +1,12 @@
 import { Card } from "@/components/card";
 import { GuideLabel } from "./guide-label";
+import { PERSONAL_TYPE_LABEL, type Analysis } from "@/lib/analysis";
 import {
   getChromaAdjective,
   getHueAdjective,
   getLightnessAdjective,
   type AnalysisPreset,
-} from "../constants";
-import { PERSONAL_TYPE_LABEL, type Analysis } from "@/lib/analysis";
+} from "@/components/analysis-result/constants";
 
 export default function SkinToneSection({
   analysis,

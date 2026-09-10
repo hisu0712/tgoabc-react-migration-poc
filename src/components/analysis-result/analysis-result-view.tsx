@@ -6,7 +6,7 @@ import TypeIntroSection from "./type-intro-section";
 import BodyColorSection from "./body-color-section";
 import SkinToneSection from "./skin-tone-section";
 import type { Analysis } from "@/lib/analysis";
-import { ANALYSIS_PRESET } from "./constants";
+import { ANALYSIS_PRESET } from "@/components/analysis-result/constants";
 import FoundationSection from "./foundation-section";
 
 export default function AnalysisResultView({
@@ -15,7 +15,7 @@ export default function AnalysisResultView({
   headerHideBack,
   headerRightSlot,
   footer,
-  fallback: Fallback,
+  fallback,
 }: {
   analysis: Analysis;
   resultImageUrl: string;
@@ -30,7 +30,7 @@ export default function AnalysisResultView({
   });
   const analysisPreset = ANALYSIS_PRESET[analysis.personalType]; // 퍼스널컬러 타입에 맞는 결과 가져오기
 
-  if (!analysisPreset) return <>{Fallback}</>;
+  if (!analysisPreset) return <>{fallback}</>;
 
   return (
     <div
