@@ -101,7 +101,7 @@ export default function AnalysisPhotoPage() {
 
   return (
     <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9]">
-      <HeaderNav className="mb-0!" />
+      <HeaderNav className="mb-0! bg-transparent! backdrop-blur-none!" />
 
       <div className="flex flex-1 flex-col items-center">
         <div className="mb-4 h-7 text-xl font-semibold">

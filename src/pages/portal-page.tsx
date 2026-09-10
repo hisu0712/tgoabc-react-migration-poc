@@ -6,7 +6,6 @@ import {
   StoreIcon,
 } from "lucide-react";
 import { Link } from "react-router";
-import memuPersonal from "@/assets/menu_personal.png";
 import HeaderHomeNav from "@/components/layout/header-home-nav";
 import { useSession } from "@/store/session";
 import { useShopsData } from "@/hooks/queries/shop/use-shops-data";
