@@ -85,6 +85,7 @@ export function PortalInfoPage() {
             isLoading={isFetchCustomerLoading}
             disabled={isUpdateCustomerPending}
             emailReadOnly={true}
+            hasDesignerField={false}
           />
         </form>
       </Form>
