@@ -35,6 +35,7 @@ import AnalysisSharedPage from "./pages/analysis-shared-page";
 import DashboardPage from "./pages/dashboard-page";
 import AnalysisListPage from "./pages/analysis-list-page";
 import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./constants/nav";
+import AnalysisPreviewPage from "./pages/analysis-preview-page";
 
 export default function RootRoute() {
   return (
@@ -98,9 +99,8 @@ export default function RootRoute() {
 
       {/* UserOnlyLayout */}
       <Route element={<UserOnlyLayout />}>
-        {/* /analysis/photo?customerId=123 */}
         <Route path="/analysis/photo" element={<AnalysisPhotoPage />} />{" "}
-        {/* /analysis/:analysisId/prcess?customerId=123&imageUrl=123 */}
+        <Route path="/analysis/preview" element={<AnalysisPreviewPage />} />
         <Route
           path="/analysis/:analysisId/process"
           element={<AnalysisProcessPage />}
