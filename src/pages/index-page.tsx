@@ -23,6 +23,7 @@ import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
 import useAnalysisCount from "@/hooks/queries/analysis/use-analysis-count-data";
 import useRecentAnalyses from "@/hooks/queries/analysis/use-recent-analyses-data";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toastComingSoon } from "@/lib/toast";
 
 export default function IndexPage() {
   const session = useSession();
@@ -119,7 +120,7 @@ export default function IndexPage() {
       </LinkCard>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
-        <Card className="pr-0 pb-0">
+        <Card onClick={toastComingSoon} className="pr-0 pb-0">
           <div>
             <div className="text-primary mb-1 text-xl leading-tight font-semibold tracking-tight">
               <div>두피 분석</div>
@@ -163,7 +164,10 @@ export default function IndexPage() {
             어떤 작업을 시작할까요?
           </p>
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <div
+          onClick={toastComingSoon}
+          className="flex flex-col items-center gap-1"
+        >
           <div className="bg-muted rounded-3xl p-1">
             <img
               className="size-13"
@@ -173,7 +177,10 @@ export default function IndexPage() {
           </div>
           <span className="text-sm">스캐너</span>
         </div>
-        <div className="flex flex-col items-center gap-1">
+        <div
+          onClick={toastComingSoon}
+          className="flex flex-col items-center gap-1"
+        >
           <div className="bg-muted rounded-3xl p-1">
             <img
               className="size-13"
@@ -193,7 +200,10 @@ export default function IndexPage() {
           </div>
           <span className="text-sm">디자이너</span>
         </Link>
-        <div className="flex flex-col items-center gap-1">
+        <div
+          onClick={toastComingSoon}
+          className="flex flex-col items-center gap-1"
+        >
           <div className="bg-muted rounded-3xl p-1">
             <img
               className="size-13"

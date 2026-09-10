@@ -29,11 +29,15 @@ export default function CustomerFormFields({
   disabled,
   designers,
   emailReadOnly,
+  designerId,
+  hasDesignerField = true,
 }: {
   isLoading?: boolean;
   disabled?: boolean;
   designers?: DesignerEntity[];
   emailReadOnly?: boolean;
+  designerId?: number;
+  hasDesignerField?: boolean;
 }) {
   const { control } = useFormContext<CustomerFormValues>();
 
@@ -152,38 +156,47 @@ export default function CustomerFormFields({
         )}
       />
 
-      <FormField
-        control={control}
-        name="designerId"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>담당 디자이너</FormLabel>
-            <FormControl>
-              {isLoading ? (
-                <FieldSkeleton />
-              ) : (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger className="w-full">
-                    <div className="flex items-center gap-2">
-                      <ScissorsIcon className="size-4" strokeWidth={1.5} />
-                      <SelectValue placeholder="디자이너 없음" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="none">디자이너 없음</SelectItem>
-                    {designers?.map((designer) => (
-                      <SelectItem key={designer.id} value={String(designer.id)}>
-                        {designer.name} 디자이너
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {hasDesignerField && (
+        <FormField
+          control={control}
+          name="designerId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>담당 디자이너</FormLabel>
+              <FormControl>
+                {isLoading ? (
+                  <FieldSkeleton />
+                ) : (
+                  <Select
+                    defaultValue={String(designerId)}
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  >
+                    <SelectTrigger className="w-full">
+                      <div className="flex items-center gap-2">
+                        <ScissorsIcon className="size-4" strokeWidth={1.5} />
+                        <SelectValue placeholder="디자이너 없음" />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="none">디자이너 없음</SelectItem>
+                      {designers?.map((designer) => (
+                        <SelectItem
+                          key={designer.id}
+                          value={String(designer.id)}
+                        >
+                          {designer.name} 디자이너
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
     </>
   );
 }

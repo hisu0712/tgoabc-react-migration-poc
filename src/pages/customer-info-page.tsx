@@ -127,6 +127,7 @@ export default function CustomerInfoPage() {
             isLoading={isLoading}
             disabled={isFormDisabled}
             designers={designers}
+            designerId={customer?.designer_id ?? undefined}
           />
         </form>
       </Form>
