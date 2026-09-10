@@ -29,11 +29,13 @@ export default function CustomerFormFields({
   disabled,
   designers,
   emailReadOnly,
+  designerId,
 }: {
   isLoading?: boolean;
   disabled?: boolean;
   designers?: DesignerEntity[];
   emailReadOnly?: boolean;
+  designerId?: number;
 }) {
   const { control } = useFormContext<CustomerFormValues>();
 
@@ -162,7 +164,11 @@ export default function CustomerFormFields({
               {isLoading ? (
                 <FieldSkeleton />
               ) : (
-                <Select value={field.value} onValueChange={field.onChange}>
+                <Select
+                  defaultValue={String(designerId)}
+                  value={field.value}
+                  onValueChange={field.onChange}
+                >
                   <SelectTrigger className="w-full">
                     <div className="flex items-center gap-2">
                       <ScissorsIcon className="size-4" strokeWidth={1.5} />
