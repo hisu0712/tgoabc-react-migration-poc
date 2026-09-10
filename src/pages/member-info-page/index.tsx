@@ -1,20 +1,8 @@
 import BottomButton from "@/components/layout/bottom-button";
 import DeleteUserButton from "@/components/delete-user-button";
 import ErrorRedirect from "@/components/error-redirect";
-import GlobalLoader from "@/components/global-loader";
 import HeaderNav from "@/components/layout/header-nav";
-import { PhoneInput } from "@/components/form/phone-input";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Form } from "@/components/ui/form";
 import { useUpdateMember } from "@/hooks/mutations/member/use-update-member";
 import { useMemberData } from "@/hooks/queries/member/use-member-data";
 import { MEMBER_HOME_PATH } from "@/lib/route";
@@ -23,14 +11,11 @@ import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
-
-const MASKED_PASSWORD = "••••••••";
+import MemberFormFields from "./components/member-form-fields";
 
 export default function MemberInfoPage() {
   const session = useSession();
-  const navigate = useNavigate();
 
   const {
     data: member,
@@ -67,9 +52,6 @@ export default function MemberInfoPage() {
     formState: { isDirty },
   } = form; // formState은 구독 안 된 속성은 아예 내부적으로 값 추적/계산 자체를 스킵
 
-  if (isFetchMemberLoading) return <GlobalLoader />;
-  if (isFetchMemberError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
-
   const onSubmit = (values: MemberFormValues) => {
     if (!isDirty) {
       toast.info("변경된 내용이 없습니다.", { position: "top-center" });
@@ -77,6 +59,8 @@ export default function MemberInfoPage() {
     }
     updateMember({ memberId: session!.user.id, ...values });
   };
+
+  if (isFetchMemberError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
     <>
@@ -88,58 +72,11 @@ export default function MemberInfoPage() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid gap-3"
         >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel required>이름</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isUpdateMemberPending}
-                    placeholder="이름 입력"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          <MemberFormFields
+            member={member}
+            isLoading={isFetchMemberLoading}
+            disabled={isUpdateMemberPending}
           />
-
-          <div className="grid gap-1">
-            <Label>이메일</Label>
-            <Input readOnly value={member?.email} />
-          </div>
-
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel required>휴대전화</FormLabel>
-                <FormControl>
-                  <PhoneInput disabled={isUpdateMemberPending} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="grid gap-1">
-            <Label>비밀번호</Label>
-            <div className="relative">
-              <Input readOnly type="password" value={MASKED_PASSWORD} />
-              <Button
-                disabled={isUpdateMemberPending}
-                type="button"
-                variant={"link"}
-                className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer"
-                onClick={() => navigate("/reset-password")}
-              >
-                변경하기
-              </Button>
-            </div>
-          </div>
         </form>
       </Form>
 

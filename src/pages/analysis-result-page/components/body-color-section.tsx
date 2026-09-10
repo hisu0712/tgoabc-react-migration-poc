@@ -1,6 +1,7 @@
 import { DropletIcon, EyeIcon, WavesIcon } from "lucide-react";
 import { GuideLabel } from "./guide-label";
 import type { Analysis } from "@/lib/analysis";
+import Image from "@/components/image";
 
 export default function BodyColorSection({
   analysis,
@@ -33,13 +34,12 @@ export default function BodyColorSection({
 
       <div className="mb-4 flex flex-col gap-4 md:flex-row">
         <div className="relative w-full overflow-hidden rounded-xl outline-3 outline-white">
-          <div className="aspect-[5/6] w-full">
-            <img
-              src={resultImageUrl}
-              alt="분석 결과 이미지"
-              className="h-full w-full object-cover"
-            />
-          </div>
+          <Image
+            src={resultImageUrl}
+            alt="분석 결과 이미지"
+            wrapperClassName="aspect-[5/6] w-full"
+            className="object-cover"
+          />
 
           <div className="absolute right-0 bottom-0 left-0 flex justify-between bg-white/80 px-4 py-3">
             <span className="text-sm font-bold">피부톤 추출 영역</span>

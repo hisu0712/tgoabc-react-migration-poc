@@ -22,17 +22,18 @@ import HeaderHomeNav from "@/components/layout/header-home-nav";
 import useCustomerCount from "@/hooks/queries/customer/use-customer-count-data";
 import useAnalysisCount from "@/hooks/queries/analysis/use-analysis-count-data";
 import useRecentAnalyses from "@/hooks/queries/analysis/use-recent-analyses-data";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function IndexPage() {
   const session = useSession();
   const navigate = useNavigate();
   const openAlertModal = useOpenAlertModal();
 
-  const { data: customerCount, isLoading: isFetchCustomerCountFetching } =
+  const { data: customerCount, isLoading: isFetchCustomerCountLoading } =
     useCustomerCount({
       memberId: session!.user.id,
     });
-  const { data: analysisCount, isLoading: isFetchAnalysisCountFetching } =
+  const { data: analysisCount, isLoading: isFetchAnalysisCountLoading } =
     useAnalysisCount({
       memberId: session!.user.id,
     });
@@ -57,34 +58,52 @@ export default function IndexPage() {
       <div className="mb-5 flex items-center justify-between">
         <div className="flex flex-col">
           <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
-          <Link
-            to={"/members/info"}
-            className="text-primary mb-1 flex items-center text-2xl font-bold"
-          >
-            {isFetchShopLoading ? "-" : shop?.name} 님
-            <ChevronRightIcon className="size-7" strokeWidth={1.5} />
-          </Link>
+          <div className="mb-1">
+            {isFetchShopLoading ? (
+              <Skeleton className="h-8 w-25" />
+            ) : (
+              <Link
+                to={"/members/info"}
+                className="text-primary flex items-center text-2xl font-bold"
+              >
+                {shop?.name ? `${shop.name} 님` : "안녕하세요"}
+                <ChevronRightIcon className="size-7" strokeWidth={1.5} />
+              </Link>
+            )}
+          </div>
           <div className="text-muted-foreground flex items-end gap-1">
-            <BarChart2Icon className="size-4" />
-            <p className="text-sm leading-none">
-              고객 {isFetchCustomerCountFetching ? "-" : customerCount}명 ·
-              분석수 {isFetchAnalysisCountFetching ? "-" : analysisCount}건
-            </p>
+            {isFetchCustomerCountLoading || isFetchAnalysisCountLoading ? (
+              <Skeleton className="h-4 w-35" />
+            ) : (
+              <>
+                <BarChart2Icon className="size-4" />
+                <p className="text-sm leading-none">
+                  고객 {customerCount ?? "-"}명 · 분석수 {analysisCount ?? "-"}건
+                </p>
+              </>
+            )}
           </div>
         </div>
-        <div onClick={handleShopEditClick} className="relative size-18 cursor-pointer">
-          <img
-            className="h-full w-full overflow-hidden rounded-full object-cover"
-            src={shop?.logo_url || defaultShop}
-            alt={shop?.name}
-          />
-          <span className="bg-card absolute right-0 bottom-0 h-[25%] w-[25%] rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)]">
-            <PlusIcon
-              className="text-primary absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2"
-              strokeWidth={2.3}
+        {isFetchShopLoading ? (
+          <Skeleton className="size-18 rounded-full" />
+        ) : (
+          <div
+            onClick={handleShopEditClick}
+            className="relative size-18 cursor-pointer"
+          >
+            <img
+              className="h-full w-full overflow-hidden rounded-full object-cover"
+              src={shop?.logo_url || defaultShop}
+              alt={shop?.name}
             />
-          </span>
-        </div>
+            <span className="bg-card absolute right-0 bottom-0 h-[25%] w-[25%] rounded-full shadow-[0_0_10px_rgba(0,0,0,0.1)]">
+              <PlusIcon
+                className="text-primary absolute top-1/2 left-1/2 h-[90%] w-[90%] -translate-x-1/2 -translate-y-1/2"
+                strokeWidth={2.3}
+              />
+            </span>
+          </div>
+        )}
       </div>
 
       <LinkCard
@@ -186,10 +205,18 @@ export default function IndexPage() {
         </div>
       </div>
 
-      {analyses && analyses.length > 0 ? (
+      {isFetchAnalysesLoading ? (
+        <>
+          <Skeleton className="mb-2 h-7 w-28" />
+          <div className="flex gap-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Skeleton key={i} className="h-12 w-28 rounded-xl" />
+            ))}
+          </div>
+        </>
+      ) : analyses && analyses.length > 0 ? (
         <>
           <div className="mb-2 text-lg font-semibold">최근 분석 목록</div>
-
           <Carousel>
             <CarouselContent>
               {analyses.map((a) => (

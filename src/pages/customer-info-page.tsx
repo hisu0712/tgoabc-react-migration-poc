@@ -15,7 +15,6 @@ import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-custome
 import { useSession } from "@/store/session";
 import CustomerFormFields from "@/components/customer-form-fields";
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";
-import Loader from "@/components/loader";
 import useCustomerWithDesignerData from "@/hooks/queries/customer/use-customer-with-designer-data";
 import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-update-customer-with-designer";
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,7 @@ export default function CustomerInfoPage() {
   const {
     data: customer,
     isLoading: isFetchCustomerLoading,
-    error: isFetchCustomerError,
+    isError: isFetchCustomerError,
   } = useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
 
   const { mutate: updateCustomer, isPending: isUpdateCustomerPending } =
@@ -111,6 +110,9 @@ export default function CustomerInfoPage() {
     });
   };
 
+  const isLoading = isFetchCustomerLoading || isFetchDesignersLoading;
+  const isFormDisabled = isUpdateCustomerPending || isUnlinkCustomerPending;
+
   return (
     <>
       <HeaderNav title="고객 정보" />
@@ -121,20 +123,17 @@ export default function CustomerInfoPage() {
           id="update-customer-form"
           className="grid gap-3"
         >
-          {isFetchCustomerLoading || isFetchDesignersLoading ? (
-            <Loader />
-          ) : (
-            <CustomerFormFields
-              disabled={isUpdateCustomerPending}
-              designers={designers}
-            />
-          )}
+          <CustomerFormFields
+            isLoading={isLoading}
+            disabled={isFormDisabled}
+            designers={designers}
+          />
         </form>
       </Form>
 
       <div className="mt-5 flex items-center justify-center">
         <Button
-          disabled={isUnlinkCustomerPending}
+          disabled={isFormDisabled}
           type="button"
           onClick={handleDeleteCustomer}
           variant={"link"}
@@ -144,10 +143,7 @@ export default function CustomerInfoPage() {
         </Button>
       </div>
 
-      <BottomButton
-        loading={isUpdateCustomerPending}
-        form="update-customer-form"
-      >
+      <BottomButton loading={isFormDisabled} form="update-customer-form">
         저장
       </BottomButton>
     </>

@@ -1,17 +1,9 @@
-import GlobalLoader from "@/components/global-loader";
 import { Input } from "@/components/ui/input";
 import { useUpdateShop } from "@/hooks/mutations/shop/use-update-shop";
 import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { shopSchema, type ShopFormValues } from "@/schemas/shop.schema";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useSession } from "@/store/session";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useMemo, useState, type ChangeEvent } from "react";
@@ -24,20 +16,23 @@ import HeaderNav from "@/components/layout/header-nav";
 import FormHint from "@/components/form/form-hint";
 import type { Image } from "@/types";
 import { XIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useKakaoPostcodePopup } from "react-daum-postcode";
+import { Skeleton } from "@/components/ui/skeleton";
+import ErrorRedirect from "@/components/error-redirect";
+import { MEMBER_HOME_PATH } from "@/lib/route";
+import ShopFormFields from "./components/shop-form-fields";
 
 export default function MemberShopPage() {
   const session = useSession();
   const openAlertModal = useOpenAlertModal();
-  const openPostCode = useKakaoPostcodePopup();
 
   const [shopImage, setShopImage] = useState<Image | null>(null);
   const [isShopImageRemoved, setIsShopImageRemoved] = useState(false);
 
-  const { data: shop, isLoading: isFetchShopLoading } = useShopData(
-    session?.user.id,
-  );
+  const {
+    data: shop,
+    isLoading: isFetchShopLoading,
+    isError: isFetchShopError,
+  } = useShopData(session?.user.id);
 
   const { mutate: updateShop, isPending: isUpdateShopPending } = useUpdateShop({
     onSuccess: () => {
@@ -76,8 +71,6 @@ export default function MemberShopPage() {
   const {
     formState: { isDirty },
   } = form;
-
-  if (isFetchShopLoading) return <GlobalLoader />;
 
   const onSubmit = (values: ShopFormValues) => {
     if (!isDirty && !shopImage && !isShopImageRemoved) {
@@ -122,14 +115,7 @@ export default function MemberShopPage() {
     });
   };
 
-  const handleAddressSearch = () => {
-    openPostCode({
-      onComplete: (data) => {
-        form.setValue("address", data.roadAddress, { shouldDirty: true });
-        form.setFocus("address_detail");
-      },
-    });
-  };
+  if (isFetchShopError) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
 
   return (
     <>
@@ -146,93 +132,10 @@ export default function MemberShopPage() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid gap-3"
         >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel required>매장명</FormLabel>
-                <FormControl>
-                  <Input
-                    disabled={isUpdateShopPending}
-                    placeholder="매장명을 입력해주세요"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          <ShopFormFields
+            isLoading={isFetchShopLoading}
+            disabled={isUpdateShopPending}
           />
-
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>매장 전화번호</FormLabel>
-                <FormHint>고객앱에서 전화 문의 시 사용돼요.</FormHint>
-                <FormControl>
-                  <Input
-                    disabled={isUpdateShopPending}
-                    placeholder="전화번호를 -없이 입력해주세요"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <div className="flex flex-col gap-0.5">
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>매장 주소</FormLabel>
-                  <FormHint>고객앱에서 매장 위치 안내에 사용돼요.</FormHint>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        disabled={isUpdateShopPending}
-                        onClick={handleAddressSearch}
-                        placeholder="주소 검색을 눌러주세요"
-                        readOnly
-                        className="read-only:bg-background! read-only:text-foreground! cursor-pointer"
-                        {...field}
-                      />
-                      <Button
-                        disabled={isUpdateShopPending}
-                        type="button"
-                        onClick={handleAddressSearch}
-                        variant={"link"}
-                        className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer"
-                      >
-                        주소 검색
-                      </Button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address_detail"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isUpdateShopPending}
-                      placeholder="상세주소를 입력해주세요"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
 
           <div className="grid gap-2">
             <Label>매장 로고</Label>
@@ -253,16 +156,20 @@ export default function MemberShopPage() {
                   accept="image/*"
                   className="hidden"
                 />
-                <img
-                  className="aspect-square h-[90%] rounded-full object-cover"
-                  src={
-                    shopImage?.previewUrl ??
-                    (isShopImageRemoved
-                      ? defaultShopImage
-                      : (shop?.logo_url ?? defaultShopImage))
-                  }
-                  alt="매장 이미지"
-                />
+                {isFetchShopLoading ? (
+                  <Skeleton className="aspect-square h-[90%] rounded-full" />
+                ) : (
+                  <img
+                    className="aspect-square h-[90%] rounded-full object-cover"
+                    src={
+                      shopImage?.previewUrl ??
+                      (isShopImageRemoved
+                        ? defaultShopImage
+                        : (shop?.logo_url ?? defaultShopImage))
+                    }
+                    alt="매장 이미지"
+                  />
+                )}
               </label>
               {shopImage || (shop?.logo_url && !isShopImageRemoved) ? (
                 <button

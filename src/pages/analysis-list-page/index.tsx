@@ -1,6 +1,5 @@
 import EmptyContent from "@/components/empty-content";
 import HeaderNav from "@/components/layout/header-nav";
-import Loader from "@/components/loader";
 import { useSession } from "@/store/session";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 import {
@@ -19,23 +18,29 @@ import useAnalysisCount from "@/hooks/queries/analysis/use-analysis-count-data";
 import ErrorRedirect from "@/components/error-redirect";
 import { CUSTOMER_HOME_PATH } from "@/lib/route";
 import AnalysisCard from "./components/analysis-card";
+import ListSkeleton from "@/components/list-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AnalysisListPage() {
   const session = useSession();
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ rootMargin: "0px 0px -80px 0px" });
 
   const [personalType, setPersonalType] = useState<PersonalType | "all">("all");
 
-  const { data: customer } = useCustomerData(session!.user.id);
-  const { data: analysisCount } = useAnalysisCount({
-    customerId: session!.user.id,
-    personalType: personalType === "all" ? undefined : personalType,
-  });
+  const { data: customer, isLoading: isFetchCustomerLoading } = useCustomerData(
+    session!.user.id,
+  );
+  const { data: analysisCount, isLoading: isAnalysisCountLoading } =
+    useAnalysisCount({
+      customerId: session!.user.id,
+      personalType: personalType === "all" ? undefined : personalType,
+    });
 
   const {
     data: analyses,
-    isError,
+    isError: isFetchAnalysesError,
     isPending,
+    hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
   } = useInfiniteAnalyses({
@@ -44,23 +49,33 @@ export default function AnalysisListPage() {
   });
 
   useEffect(() => {
-    if (inView) fetchNextPage();
-  }, [inView]);
+    if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage();
+  }, [inView, hasNextPage, isFetchingNextPage]);
 
-  if (isError) return <ErrorRedirect to={CUSTOMER_HOME_PATH} />;
+  if (isFetchAnalysesError) return <ErrorRedirect to={CUSTOMER_HOME_PATH} />;
 
   return (
     <>
       <HeaderNav title="기록리스트" />
 
-      <div className="mb-4 text-xl font-semibold">
-        {customer?.name} 님의 분석 기록
+      <div className="mb-4">
+        {isFetchCustomerLoading ? (
+          <Skeleton className="h-7 w-30" />
+        ) : (
+          <div className="text-xl font-semibold">
+            {customer?.name ? `${customer.name} 님의 ` : ""}분석 기록
+          </div>
+        )}
       </div>
 
       <div className="mb-2 flex items-center justify-between">
-        <div className="text-muted-foreground text-sm">
-          전체 {analysisCount ?? 0}건
-        </div>
+        {isAnalysisCountLoading ? (
+          <Skeleton className="h-5 w-13" />
+        ) : (
+          <div className="text-muted-foreground text-sm">
+            전체 {analysisCount ?? "-"}건
+          </div>
+        )}
 
         <Select
           value={personalType}
@@ -82,7 +97,7 @@ export default function AnalysisListPage() {
 
       <div className="flex flex-col gap-2">
         {isPending ? (
-          <Loader />
+          <ListSkeleton className="h-19" />
         ) : analyses?.pages[0].length ? (
           analyses.pages.map((page) =>
             page.map((a) => (
@@ -98,7 +113,7 @@ export default function AnalysisListPage() {
           <EmptyContent content="아직 분석된 기록이 없습니다." />
         )}
 
-        {isFetchingNextPage && <Loader />}
+        {isFetchingNextPage && <ListSkeleton count={2} className="h-19" />}
         <div ref={ref}></div>
       </div>
     </>

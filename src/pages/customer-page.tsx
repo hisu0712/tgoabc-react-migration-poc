@@ -14,15 +14,20 @@ import useCustomerWithDesignerData from "@/hooks/queries/customer/use-customer-w
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CustomerDetailPage() {
   const session = useSession();
   const { customerId } = useParams();
 
-  const { data: customer, isError: isFetchCustomerError } =
-    useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
+  const {
+    data: customer,
+    isLoading: isFetchCustomerLoading,
+    isError: isFetchCustomerError,
+  } = useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
 
-  const { data: designers } = useDesignersData(session!.user.id);
+  const { data: designers, isLoading: isFetchDesignersLoading } =
+    useDesignersData(session!.user.id);
   const designer = designers?.find((d) => d.id === customer?.designer_id);
 
   if (!customerId) return <ErrorRedirect to={MEMBER_HOME_PATH} />;
@@ -34,24 +39,30 @@ export default function CustomerDetailPage() {
 
       <div className="mb-5 flex items-end justify-between">
         <div className="text-2xl font-semibold">
-          <Link
-            to={`/customers/${customerId}/info`}
-            className="text-primary flex items-center"
-          >
-            {customer?.name}
-            <ChevronRightIcon className="size-7" strokeWidth={1.3} />
-          </Link>
+          {isFetchCustomerLoading ? (
+            <Skeleton className="h-8 w-25" />
+          ) : (
+            <Link
+              to={`/customers/${customerId}/info`}
+              className="text-primary flex items-center"
+            >
+              {customer?.name ? customer.name : "안녕하세요"}
+              <ChevronRightIcon className="size-7" strokeWidth={1.3} />
+            </Link>
+          )}
           <span>고객님, 환영합니다!</span>
         </div>
 
-        <div className="bg-muted flex items-center gap-1 rounded-md p-2">
-          <ScissorsIcon className="size-4" />
-          <span>
-            {customer?.designer_id
-              ? `${designer?.name} 디자이너`
-              : "디자이너 없음"}
-          </span>
-        </div>
+        {isFetchDesignersLoading ? (
+          <Skeleton className="h-9 w-28" />
+        ) : (
+          <div className="bg-muted flex items-center gap-1 rounded-md p-2">
+            <ScissorsIcon className="size-4" />
+            <span>
+              {designer?.name ? `${designer.name} 디자이너` : "디자이너 없음"}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
