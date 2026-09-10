@@ -18,6 +18,7 @@ import type { ShopEntity } from "@/types";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 import { Skeleton } from "@/components/ui/skeleton";
 import ListSkeleton from "@/components/list-skeleton";
+import { toastComingSoon } from "@/lib/toast";
 
 export default function PortalPage() {
   const session = useSession();
@@ -105,7 +106,10 @@ export default function PortalPage() {
               퍼스널컬러 기록
             </span>
           </LinkCard>
-          <Card className="bg-feature-1/10 flex flex-col items-center justify-center gap-2 shadow-none">
+          <Card
+            onClick={toastComingSoon}
+            className="bg-feature-1/10 flex flex-col items-center justify-center gap-2 shadow-none"
+          >
             <FileTextIcon
               className="text-feature-1 size-6 fill-white"
               strokeWidth={1.3}
@@ -145,7 +149,10 @@ export default function PortalPage() {
 
       <div className="mb-2 text-lg font-semibold">서비스 바로가기</div>
       <div className="grid grid-cols-2 gap-2">
-        <Card className="flex flex-col justify-between gap-5">
+        <Card
+          onClick={toastComingSoon}
+          className="flex flex-col justify-between gap-5"
+        >
           <div className="flex items-center gap-1.5">
             <MessageCircleIcon
               className="text-feature-1 fill-feature-1 size-6"
@@ -159,7 +166,10 @@ export default function PortalPage() {
           </div>
         </Card>
 
-        <Card className="flex flex-col justify-between gap-5">
+        <Card
+          onClick={toastComingSoon}
+          className="flex flex-col justify-between gap-5"
+        >
           <div className="flex items-center gap-1.5">
             <StoreIcon
               className="text-feature-2 fill-feature-2/8 size-6"

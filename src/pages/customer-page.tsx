@@ -15,6 +15,7 @@ import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toastComingSoon } from "@/lib/toast";
 
 export default function CustomerDetailPage() {
   const session = useSession();
@@ -66,7 +67,11 @@ export default function CustomerDetailPage() {
       </div>
 
       <div className="mb-5 grid grid-cols-2 gap-3">
-        <Card variant={"feature1"} className="pr-0 pb-0">
+        <Card
+          onClick={toastComingSoon}
+          variant={"feature1"}
+          className="pr-0 pb-0"
+        >
           <div>
             <div className="mb-2 text-xl font-semibold tracking-tight">
               <div>두피 분석</div>
@@ -109,7 +114,10 @@ export default function CustomerDetailPage() {
           </div>
         </LinkCard>
 
-        <Card className="flex flex-col justify-between gap-9">
+        <Card
+          onClick={toastComingSoon}
+          className="flex flex-col justify-between gap-9"
+        >
           <div className="flex items-center gap-1.5">
             <FileTextIcon
               className="text-feature-1 fill-feature-1/10 size-6"
@@ -124,7 +132,10 @@ export default function CustomerDetailPage() {
             <ChevronRightIcon className="size-5" strokeWidth={1} />
           </div>
         </Card>
-        <Card className="flex flex-col justify-between gap-9">
+        <Card
+          onClick={toastComingSoon}
+          className="flex flex-col justify-between gap-9"
+        >
           <div className="flex items-center gap-1.5">
             <SquarePenIcon
               className="text-feature-2 fill-feature-2/10 size-6"
