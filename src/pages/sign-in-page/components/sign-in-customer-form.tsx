@@ -90,67 +90,67 @@ export default function SignInCustomerForm() {
   };
 
   return (
-      <Form {...customerForm}>
-        <form
-          id="customer-sign-in-form"
-          className="mb-2 flex flex-col gap-1"
-          onSubmit={customerForm.handleSubmit(onCustomerSubmit)}
-        >
-          <FormField
-            control={customerForm.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <div className="relative">
-                  <FormControl>
-                    <Input
-                      className="pr-5"
-                      placeholder="이메일 입력"
-                      {...field}
-                    />
-                  </FormControl>
-                  <Button
-                    disabled={isSignInWithOtpPending}
-                    type="button"
-                    variant={"link"}
-                    className="-transform-y-1/2 absolute top-0 right-0 h-full"
-                    onClick={onSignInWithOtp}
-                  >
-                    인증요청
-                  </Button>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* 임시 주석 */}
-          {/* {isOtpSent && ( */}
-          <FormItem>
-            <FormControl>
-              <Input
-                value={otp}
-                onChange={
-                  (e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6)) // \D: 숫자가 아닌 문자, g: 전역
-                }
-                inputMode="numeric"
-                maxLength={6}
-                disabled={isCompleteCustomerSignInPending}
-                placeholder="인증번호 6자리 입력"
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-          {/* )} */}
-        </form>
+    <Form {...customerForm}>
+      <form
+        id="customer-sign-in-form"
+        className="mb-2 flex flex-col gap-1"
+        onSubmit={customerForm.handleSubmit(onCustomerSubmit)}
+      >
+        <FormField
+          control={customerForm.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <div className="relative">
+                <FormControl>
+                  <Input
+                    className="pr-5"
+                    placeholder="이메일 입력"
+                    {...field}
+                  />
+                </FormControl>
+                <Button
+                  disabled={isSignInWithOtpPending}
+                  type="button"
+                  variant={"link"}
+                  className="-transform-y-1/2 absolute top-0 right-0 h-full"
+                  onClick={onSignInWithOtp}
+                >
+                  인증요청
+                </Button>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* 임시 주석 */}
+        {/* {isOtpSent && ( */}
+        <FormItem>
+          <FormControl>
+            <Input
+              value={otp}
+              onChange={
+                (e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6)) // \D: 숫자가 아닌 문자, g: 전역
+              }
+              inputMode="numeric"
+              maxLength={6}
+              disabled={isCompleteCustomerSignInPending}
+              placeholder="인증번호 6자리 입력"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+        {/* )} */}
+      </form>
 
-        <Button
-          disabled={isCompleteCustomerSignInPending}
-          form="customer-sign-in-form"
-          className="h-auto py-2.5 text-base cursor-pointer"
-          type="submit"
-        >
-          로그인
-        </Button>
-      </Form>
+      <Button
+        disabled={isCompleteCustomerSignInPending}
+        form="customer-sign-in-form"
+        className="h-auto cursor-pointer py-2.5 text-base"
+        type="submit"
+      >
+        로그인
+      </Button>
+    </Form>
   );
 }
