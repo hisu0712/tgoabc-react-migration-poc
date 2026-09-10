@@ -1,15 +1,4 @@
-import HeaderNav from "@/components/layout/header-nav";
 import { useLocation, useParams } from "react-router";
-import { Layout } from "@/components/layout/global-layout";
-import { Share2Icon, UserPlusIcon } from "lucide-react";
-import BottomNav from "@/components/layout/bottom-nav";
-import { ANALYSIS_PRESET } from "./constants";
-import { useInView } from "react-intersection-observer";
-import { cn } from "@/lib/utils";
-import TypeIntroSection from "./components/type-intro-section";
-import SkinToneSection from "./components/skin-tone-section";
-import FoundationSection from "./components/foundation-section";
-import BodyColorSection from "./components/body-color-section";
 import useAnalysisData from "@/hooks/queries/analysis/use-analysis-data";
 import GlobalLoader from "@/components/global-loader";
 import { useActiveRole } from "@/store/active-role";
@@ -18,6 +7,9 @@ import ErrorRedirect from "@/components/error-redirect";
 import { useOpenLinkCustomerModal } from "@/store/modals/link-customer-modal";
 import { useOpenShareAnalysisModal } from "@/store/modals/share-analysis-modal";
 import type { Analysis } from "@/lib/analysis";
+import AnalysisResultView from "./components/analysis-result-view";
+import { Share2Icon, UserPlusIcon } from "lucide-react";
+import BottomNav from "@/components/layout/bottom-nav";
 import { MEMBER_NAV_ITEMS } from "@/constants/nav";
 
 type LocationState = {
@@ -37,10 +29,6 @@ export default function AnalysisResultPage() {
   const location = useLocation();
   const openLinkCustomerModal = useOpenLinkCustomerModal();
   const openShareAnalysisModal = useOpenShareAnalysisModal();
-  const { ref, inView } = useInView({
-    initialInView: true,
-    rootMargin: "-100px 0px 0px 0px",
-  });
 
   const {
     analysis: stateAnalysis,
@@ -86,72 +74,43 @@ export default function AnalysisResultPage() {
       />
     );
 
-  // 퍼스널컬러 타입에 맞는 결과 가져오기
-  const analysisPreset = ANALYSIS_PRESET[analysis.personalType];
-
-  if (!analysisPreset) {
-    return (
-      <ErrorRedirect
-        to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
-        message="분석 결과를 불러오지 못했습니다."
-      />
-    );
-  }
-
   return (
-    <div
-      style={{
-        background: `linear-gradient(to bottom, ${analysisPreset.palette.bc1}, ${analysisPreset.palette.bc2})`,
-      }}
-    >
-      <HeaderNav
-        className={cn(
-          "layout transition-colors duration-300",
-          inView
-            ? "bg-transparent text-white backdrop-blur-none"
-            : "text-black",
-        )}
-        rightSlot={
-          resultCase.type === "MEMBER_SIMPLE" ||
-          resultCase.type === "MEMBER_CUSTOMER" ? (
+    <AnalysisResultView
+      analysis={analysis}
+      resultImageUrl={resultImageUrl}
+      fallback={
+        <ErrorRedirect
+          to={activeRole ? roleHomePath(activeRole) : SIGN_IN_PATH}
+          message="분석 결과를 불러오지 못했습니다."
+        />
+      }
+      headerRightSlot={
+        resultCase.type === "MEMBER_SIMPLE" ||
+        resultCase.type === "MEMBER_CUSTOMER" ? (
+          <button
+            type="button"
+            onClick={() => openShareAnalysisModal(analysisId)}
+            className="cursor-pointer"
+          >
+            <Share2Icon className="size-6" strokeWidth={1.8} />
+          </button>
+        ) : undefined
+      }
+      footer={
+        <>
+          <BottomNav navItems={MEMBER_NAV_ITEMS} />
+          {resultCase.type === "MEMBER_SIMPLE" && (
             <button
               type="button"
-              onClick={() => openShareAnalysisModal(analysisId)}
-              className="cursor-pointer"
+              onClick={() => openLinkCustomerModal(analysisId)}
+              className="text-primary bg-background fixed right-6 bottom-24 z-20 flex size-15 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full shadow-lg"
             >
-              <Share2Icon className="size-6" strokeWidth={1.8} />
+              <UserPlusIcon className="ml-0.5 size-6" strokeWidth={1.8} />
+              <span className="text-xs font-medium">추가</span>
             </button>
-          ) : undefined
-        }
-      />
-
-      <TypeIntroSection
-        personalType={analysis.personalType}
-        analysisPreset={analysisPreset}
-      />
-
-      <div ref={ref} aria-hidden className="h-px"></div>
-
-      <Layout className="-mt-0.5 bg-[#FFFAF6] pt-12 pb-30">
-        <BodyColorSection analysis={analysis} resultImageUrl={resultImageUrl} />
-
-        <SkinToneSection analysis={analysis} analysisPreset={analysisPreset} />
-
-        <FoundationSection skin={analysis.skin} />
-      </Layout>
-
-      <BottomNav navItems={MEMBER_NAV_ITEMS} />
-
-      {resultCase.type === "MEMBER_SIMPLE" && (
-        <button
-          type="button"
-          onClick={() => openLinkCustomerModal(analysisId)}
-          className="text-primary bg-background fixed right-6 bottom-24 z-20 flex size-15 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full shadow-lg"
-        >
-          <UserPlusIcon className="ml-0.5 size-6" strokeWidth={1.8} />
-          <span className="text-xs font-medium">추가</span>
-        </button>
-      )}
-    </div>
+          )}
+        </>
+      }
+    />
   );
 }
