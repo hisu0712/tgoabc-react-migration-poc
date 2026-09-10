@@ -1,6 +1,5 @@
-import { Card, LinkCard } from "@/components/card";
+import { Card } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
-import memuPersonal from "@/assets/menu_personal.png";
 import { Link, useParams } from "react-router";
 import {
   ChevronRightIcon,
@@ -16,6 +15,7 @@ import ErrorRedirect from "@/components/error-redirect";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toastComingSoon } from "@/lib/toast";
+import AnalysisMenuCard from "@/components/analysis/analysis-menu-card";
 
 export default function CustomerDetailPage() {
   const session = useSession();
@@ -90,29 +90,7 @@ export default function CustomerDetailPage() {
             />
           </div>
         </Card>
-        <LinkCard
-          to={`/analysis/photo?customerId=${customerId}`}
-          variant={"feature2"}
-          className="pr-0 pb-0"
-        >
-          <div>
-            <div className="mb-2 text-xl font-semibold tracking-tight">
-              <div>퍼스널 컬러 분석</div>
-            </div>
-            <div className="text-sm font-light opacity-80">
-              나에게 어울리는 컬러를
-              <br />
-              한눈에 확인
-            </div>
-          </div>
-          <div className="">
-            <img
-              className="ml-auto h-33"
-              src={memuPersonal}
-              alt="퍼스널컬러 분석 이미지"
-            />
-          </div>
-        </LinkCard>
+        <AnalysisMenuCard to={`/analysis/photo?customerId=${customerId}`} />
 
         <Card
           onClick={toastComingSoon}

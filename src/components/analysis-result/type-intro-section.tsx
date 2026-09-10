@@ -2,7 +2,7 @@ import { Card } from "@/components/card";
 import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
-import type { AnalysisPreset } from "../constants";
+import type { AnalysisPreset } from "@/components/analysis-result/constants";
 import { PERSONAL_TYPE_LABEL, type PersonalType } from "@/lib/analysis";
 
 export default function TypeIntroSection({
