@@ -60,6 +60,19 @@ export async function updatePassword(password: string) {
   return data;
 }
 
+export async function changePassword({
+  email,
+  currentPassword,
+  newPassword,
+}: {
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+}) {
+  await signInWithPassword({ email, password: currentPassword });
+  await updatePassword(newPassword);
+}
+
 export async function signInWithOtp({
   email,
   shouldCreateUser,

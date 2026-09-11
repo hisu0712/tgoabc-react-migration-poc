@@ -88,7 +88,7 @@ export default function MemberFormFields({
               type="button"
               variant={"link"}
               className="absolute top-1/2 right-0 h-full -translate-y-1/2 cursor-pointer"
-              onClick={() => navigate("/reset-password")}
+              onClick={() => navigate("/members/password")}
             >
               변경하기
             </Button>

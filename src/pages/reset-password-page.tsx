@@ -1,14 +1,6 @@
 import BottomButton from "@/components/layout/bottom-button";
 import HeaderNav from "@/components/layout/header-nav";
-import { PasswordInput } from "@/components/form/password-input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import { useUpdatePassword } from "@/hooks/mutations/auth/use-update-password";
 import { generateErrorMessage } from "@/lib/error";
 import { MEMBER_HOME_PATH } from "@/lib/route";
@@ -20,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { toastError, toastSuccess } from "@/lib/toast";
+import PasswordFields from "@/components/fields/password-fields";
 
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
@@ -39,16 +32,16 @@ export default function ResetPasswordPage() {
 
   const form = useForm<ResetPasswordFormValues>({
     resolver: zodResolver(resetPasswordSchema),
-    defaultValues: { password: "", repassword: "" },
+    defaultValues: { newPassword: "", rePassword: "" },
   });
 
   const onResetPasswordSubmit = (values: ResetPasswordFormValues) => {
-    updatePassword(values.password);
+    updatePassword(values.newPassword);
   };
 
   return (
     <>
-      <HeaderNav title="비밀번호 변경" />
+      <HeaderNav title="비밀번호 재설정" />
 
       <Form {...form}>
         <form
@@ -56,44 +49,7 @@ export default function ResetPasswordPage() {
           onSubmit={form.handleSubmit(onResetPasswordSubmit)}
           className="grid gap-3"
         >
-          {/* 여기에 회원 정보의 비밀번호 변경 페이지에서 넘어왔다면 기존 비밀번호 입력란 만들어서 auth와 확인 필요 */}
-          {/* signInWithPassword로 재인증 */}
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel required>신규 비밀번호</FormLabel>
-                <FormControl>
-                  <PasswordInput
-                    disabled={isUpdatePasswordPending}
-                    placeholder="새로운 비밀번호 입력"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="repassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel required>비밀번호 확인</FormLabel>
-                <FormControl>
-                  <PasswordInput
-                    disabled={isUpdatePasswordPending}
-                    placeholder="비밀번호 재입력"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <PasswordFields disabled={isUpdatePasswordPending} />
         </form>
       </Form>
 
@@ -102,7 +58,7 @@ export default function ResetPasswordPage() {
         disabled={isUpdatePasswordPending}
         type="submit"
       >
-        변경하기
+        적용하기
       </BottomButton>
     </>
   );
