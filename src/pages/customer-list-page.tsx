@@ -136,8 +136,8 @@ export default function CustomerListPage() {
           <EmptyContent content="아직 등록된 고객이 없습니다." />
         )}
 
-        {isFetchingNextPage && <ListSkeleton count={2} />}
-        <div ref={ref}></div>
+        {isFetchingNextPage && <ListSkeleton count={3} />}
+        {!isPending && <div ref={ref}></div>}
       </div>
     </>
   );

@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # 지정한 회원(member) 이메일에 테스트 고객 N명을 프로젝트의 실제 등록 로직 그대로
-# 추가하는 스크립트. src/api/customer.ts의 createCustomer()와 동일한 순서:
-#   1) create-customer-auth 엣지 함수 호출 (auth 유저 생성, 로직 재구현 X)
-#   2) 반환된 id로 customer 테이블 insert
-#   3) customer insert 시 DB 트리거가 member_customer_mapping을 자동 생성
-#      (트리거는 auth.uid()를 member_id로 쓰기 때문에, 서비스 롤이 아니라
-#       "회원 본인 세션"으로 insert해야 함 -> magiclink로 비밀번호 없이 발급)
+# 추가하는 스크립트. src/api/customer.ts의 createCustomer()와 동일하게
+# create-customer-auth 엣지 함수 호출 한 번으로 끝남 (auth 유저 생성 +
+# customer insert + member_customer_mapping insert까지 함수 안에서 처리).
+# 함수가 Authorization 헤더의 토큰 주인을 member_id로 쓰기 때문에, 서비스 롤이
+# 아니라 "회원 본인 세션"으로 호출해야 함 -> magiclink로 비밀번호 없이 발급.
 #
 # 사용 전: 터미널에 서비스 롤 키를 환경변수로 설정해야 함 (커밋/채팅에 붙여넣지 말 것)
 #   export SUPABASE_SERVICE_ROLE_KEY="여기에_붙여넣기"
@@ -82,12 +81,6 @@ fi
 
 echo "회원 세션 발급 완료"
 
-MEMBER_HEADERS=(
-  -H "apikey: $SUPABASE_ANON_KEY"
-  -H "Authorization: Bearer $MEMBER_ACCESS_TOKEN"
-  -H "Content-Type: application/json"
-)
-
 GENDERS=("M" "F")
 TIMESTAMP=$(date +%s)
 
@@ -101,55 +94,24 @@ for i in $(seq 1 "$COUNT"); do
   echo "$i) create-customer-auth 엣지 함수 호출: $EMAIL"
 
   # customer.ts의 createCustomer()가 하는 것과 동일하게, 배포된 엣지 함수를 그대로 호출
-  printf '{"email":"%s"}' "$EMAIL" > "$TMPDIR_LOCAL/auth-req.json"
+  # (customer insert + member_customer_mapping insert까지 함수 안에서 처리됨)
+  printf '{"email":"%s","name":"%s","birthDate":"%s","gender":"%s"}' \
+    "$EMAIL" "$NAME" "$BIRTH_DATE" "$GENDER" > "$TMPDIR_LOCAL/auth-req.json"
 
   AUTH_RESPONSE=$(curl -sS -X POST "$SUPABASE_URL/functions/v1/create-customer-auth" \
     -H "apikey: $SUPABASE_ANON_KEY" \
-    -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+    -H "Authorization: Bearer $MEMBER_ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
     --data-binary "@$TMPDIR_LOCAL/auth-req.json")
 
-  CUSTOMER_ID=$(echo "$AUTH_RESPONSE" | grep -o '"userId":"[^"]*"' | head -1 | cut -d'"' -f4)
+  CUSTOMER_ID=$(echo "$AUTH_RESPONSE" | grep -o '"customerId":"[^"]*"' | head -1 | cut -d'"' -f4)
 
   if [ -z "$CUSTOMER_ID" ]; then
     echo "  create-customer-auth 실패: $AUTH_RESPONSE" >&2
     continue
   fi
 
-  echo "  customer(auth) id: $CUSTOMER_ID"
-
-  # customer 테이블 insert (회원 본인 세션으로 요청 -> DB 트리거가 매핑 자동 생성)
-  printf '{"id":"%s","name":"%s","email":"%s","gender":"%s","birth_date":"%s"}' \
-    "$CUSTOMER_ID" "$NAME" "$EMAIL" "$GENDER" "$BIRTH_DATE" > "$TMPDIR_LOCAL/customer.json"
-
-  CUSTOMER_RESPONSE=$(curl -sS -X POST "$SUPABASE_URL/rest/v1/customer" \
-    "${MEMBER_HEADERS[@]}" \
-    -H "Prefer: return=representation" \
-    --data-binary "@$TMPDIR_LOCAL/customer.json")
-
-  if ! echo "$CUSTOMER_RESPONSE" | grep -q '"id"'; then
-    echo "  customer insert 실패: $CUSTOMER_RESPONSE" >&2
-    continue
-  fi
-
-  # 트리거가 매핑을 못 만들었을 때만 서비스 롤로 수동 fallback
-  MAPPING_CHECK=$(curl -sS -G "$SUPABASE_URL/rest/v1/member_customer_mapping" \
-    "${ADMIN_HEADERS[@]}" \
-    --data-urlencode "select=id" \
-    --data-urlencode "member_id=eq.$MEMBER_ID" \
-    --data-urlencode "customer_id=eq.$CUSTOMER_ID")
-
-  if ! echo "$MAPPING_CHECK" | grep -q '"id"'; then
-    printf '{"member_id":"%s","customer_id":"%s"}' "$MEMBER_ID" "$CUSTOMER_ID" \
-      > "$TMPDIR_LOCAL/mapping.json"
-
-    curl -sS -X POST "$SUPABASE_URL/rest/v1/member_customer_mapping" \
-      "${ADMIN_HEADERS[@]}" \
-      -H "Prefer: return=representation" \
-      --data-binary "@$TMPDIR_LOCAL/mapping.json" > /dev/null
-  fi
-
-  echo "  -> customer 생성 + 매핑 완료: $NAME ($EMAIL)"
+  echo "  -> customer 생성 + 매핑 완료: $NAME ($EMAIL, id: $CUSTOMER_ID)"
 done
 
 echo "완료. $MEMBER_EMAIL 에게 고객 $COUNT 명 추가함 (create-customer-auth 엣지 함수 그대로 사용)."

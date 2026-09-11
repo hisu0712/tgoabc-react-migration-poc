@@ -15,7 +15,7 @@ export default function BottomNav({ navItems }: { navItems: NavItem[] }) {
       <nav className="bg-card rounded-t-[21px] shadow-[0px_0px_10px_rgba(0,0,0,0.15)]">
         <ul className="flex">
           {navItems.map(({ to, label, icon: Icon, disabled }) => (
-            <li key={to} className="w-1/4 pb-1">
+            <li key={label} className="w-1/4 pb-1">
               <NavLink
                 onClick={disabled ? toastComingSoon : undefined}
                 to={to}

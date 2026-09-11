@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import loginMemberImage from "@/assets/login_member.svg";
 import loginCustomerImage from "@/assets/login_customer.svg";
-import logoBlue from "@/assets/logo_blue.png";
-import logoWhite from "@/assets/logo_white.png";
 import SignInMemberForm from "./components/sign-in-member-form";
 import SignInCustomerForm from "./components/sign-in-customer-form";
 import { Button } from "@/components/ui/button";
@@ -27,7 +25,6 @@ export default function SignInPage() {
             "static bg-transparent backdrop-blur-none",
             authType === "member" ? "text-white" : "text-primary",
           )}
-          logoSrc={authType === "member" ? logoWhite : logoBlue}
         />
         <div className="relative py-10">
           <p
@@ -74,7 +71,7 @@ export default function SignInPage() {
           >
             <SignInMemberForm />
 
-            <div className="mb-7">
+            <div className="mb-5">
               <p className="text-muted-foreground mb-1 text-sm">
                 회원이 아니신가요?
               </p>
