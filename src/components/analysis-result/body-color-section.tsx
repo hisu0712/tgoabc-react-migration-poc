@@ -32,7 +32,7 @@ export default function BodyColorSection({
     <>
       <p className="mb-4 text-xl font-bold">나의 신체색 분석 결과</p>
 
-      <div className="mb-4 flex flex-col gap-4 md:flex-row">
+      <div className="mb-4 flex flex-col gap-4">
         <div className="relative w-full overflow-hidden rounded-xl outline-3 outline-white">
           <Image
             src={resultImageUrl}
@@ -49,18 +49,18 @@ export default function BodyColorSection({
           </div>
         </div>
 
-        <div className="flex md:w-[60%] md:justify-center">
-          <ul className="flex w-full gap-2 md:w-[75%] md:flex-col md:justify-evenly">
+        <div className="flex">
+          <ul className="flex w-full gap-2">
             {bodyColors.map(({ name, icon: Icon, hex }) => (
               <li
                 key={name}
-                className="flex flex-1 flex-col overflow-hidden rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.1)] md:flex-none"
+                className="flex flex-1 flex-col overflow-hidden rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.1)]"
               >
-                <span className="flex items-center justify-center gap-1 bg-card py-2">
+                <span className="bg-card flex items-center justify-center gap-1 py-2">
                   <Icon strokeWidth={1.5} className="size-5" />
                   <span className="text-sm font-medium">{name}</span>
                 </span>
-                <div style={{ backgroundColor: hex }} className="py-4 md:py-6">
+                <div style={{ backgroundColor: hex }} className="py-4">
                   <div className="text-center font-medium text-white">
                     {hex}
                   </div>
@@ -72,10 +72,8 @@ export default function BodyColorSection({
       </div>
       <div className="mb-7">
         <GuideLabel className="w-full rounded-md py-2">
-          <p className="md:inline">
-            신체색은 타고난 피부색, 모발색, 눈동자색을 말하며,{" "}
-          </p>
-          <p className="md:inline">퍼스널 컬러 진단의 기준이 됩니다.</p>
+          <p>신체색은 타고난 피부색, 모발색, 눈동자색을 말하며, </p>
+          <p>퍼스널 컬러 진단의 기준이 됩니다.</p>
         </GuideLabel>
       </div>
     </>

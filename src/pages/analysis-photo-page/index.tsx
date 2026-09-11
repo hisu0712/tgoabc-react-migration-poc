@@ -100,7 +100,7 @@ export default function AnalysisPhotoPage() {
   };
 
   return (
-    <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] dark:to-card">
+    <Layout className="from-background dark:to-card bg-linear-to-b to-[#ffe9e9]">
       <HeaderNav className="mb-0! bg-transparent! backdrop-blur-none!" />
 
       <div className="flex flex-1 flex-col items-center">
@@ -111,7 +111,7 @@ export default function AnalysisPhotoPage() {
         </div>
 
         <div
-          className="relative mb-10 aspect-[1/1.15] h-[55vh] max-h-[70vh] max-w-[90vw]"
+          className="relative mb-10 aspect-[1/1.15] h-[55vh] max-h-[70vh]"
           onClick={() => count === 0 && fileInputRef.current?.click()}
         >
           <div className="flex h-full w-full justify-center">

@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/global-layout";
 
 export default function AnalysisPhotoIntro() {
   return (
-    <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] dark:to-card">
+    <Layout className="from-background dark:to-card bg-linear-to-b to-[#ffe9e9]">
       <div className="flex flex-1 flex-col gap-[10vh] pt-[10vh]">
         <div className="text-center">
           <div className="mb-3 text-2xl font-bold" data-username="티고뷰티샵">

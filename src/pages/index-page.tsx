@@ -9,7 +9,6 @@ import icoHomeDesigner from "@/assets/memberhome_designer.png";
 import icoHomeMsg from "@/assets/memberhome_msg.png";
 import icoHomeScanner from "@/assets/memberhome_scanner.png";
 import icoHomeUse from "@/assets/memberhome_use.png";
-import icoThunder from "@/assets/thunder.png";
 import { Card, CustomerCard, LinkCard } from "@/components/card";
 import memuScalp from "@/assets/menu_scalp.png";
 import memuPersonal from "@/assets/menu_personal.png";
@@ -79,7 +78,8 @@ export default function IndexPage() {
               <>
                 <BarChart2Icon className="size-4" />
                 <p className="text-sm leading-none">
-                  고객 {customerCount ?? "-"}명 · 분석수 {analysisCount ?? "-"}건
+                  고객 {customerCount ?? "-"}명 · 분석수 {analysisCount ?? "-"}
+                  건
                 </p>
               </>
             )}
@@ -154,16 +154,7 @@ export default function IndexPage() {
         </LinkCard>
       </div>
 
-      <div className="mb-5 grid grid-cols-4 justify-between md:grid-cols-5">
-        <div className="hidden whitespace-nowrap md:block">
-          <div className="flex items-center text-lg font-semibold">
-            스마트 퀵 메뉴
-            <img className="size-5" src={icoThunder} alt="천둥 아이콘" />
-          </div>
-          <p className="text-muted-foreground text-sm">
-            어떤 작업을 시작할까요?
-          </p>
-        </div>
+      <div className="mb-5 grid grid-cols-4 justify-between">
         <div
           onClick={toastComingSoon}
           className="flex flex-col items-center gap-1"

@@ -64,7 +64,7 @@ export default function FoundationSection({
         <div className="bg-muted-foreground/50 h-full w-px"></div>
         <div className="flex flex-col items-center justify-center">
           <div
-            className="mb-2 flex aspect-square w-[10vw] items-center justify-center rounded-2xl"
+            className="mb-2 flex aspect-square w-[45%] items-center justify-center rounded-xl"
             style={{
               backgroundColor: undertone.hex,
             }}

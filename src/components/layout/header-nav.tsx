@@ -33,7 +33,7 @@ export default function HeaderNav({
   return (
     <header
       className={cn(
-        "bg-background/50 sticky top-0 z-10 mb-5 pt-8 backdrop-blur-md",
+        "bg-background/50 sticky top-0 z-10 mb-5 pt-5 backdrop-blur-md",
         className,
       )}
     >

@@ -36,7 +36,7 @@ export default function SignUpCompletePage() {
 
         <div className="flex items-center justify-center">
           <img
-            className="w-full md:w-[70%]"
+            className="w-full"
             src={surveyOutro}
             alt="축하하는 우끼 캐릭터 이미지"
           />
