@@ -1,5 +1,4 @@
 import HeaderNav from "@/components/layout/header-nav";
-import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 import { useInView } from "react-intersection-observer";
 import TypeIntroSection from "./type-intro-section";
@@ -40,7 +39,7 @@ export default function AnalysisResultView({
     >
       <HeaderNav
         className={cn(
-          "layout transition-colors duration-300",
+          "layout-px transition-colors duration-300",
           inView
             ? "bg-transparent text-white backdrop-blur-none"
             : "text-black",
@@ -56,16 +55,16 @@ export default function AnalysisResultView({
 
       <div ref={ref} aria-hidden className="h-px"></div>
 
-      <Layout
+      <div
         className={cn(
-          "dark:bg-secondary -mt-0.5 bg-[#FFFAF6] pt-12",
+          "layout-px dark:bg-secondary -mt-0.5 bg-[#FFFAF6] pt-12",
           footer ? "pb-30" : "pb-20",
         )}
       >
         <BodyColorSection analysis={analysis} resultImageUrl={resultImageUrl} />
         <SkinToneSection analysis={analysis} analysisPreset={analysisPreset} />
         <FoundationSection skin={analysis.skin} />
-      </Layout>
+      </div>
 
       {footer}
     </div>

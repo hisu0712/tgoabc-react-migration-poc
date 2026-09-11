@@ -7,7 +7,7 @@ export default function GlobalLayoutWithBottomNav({
   navItems: NavItem[];
 }) {
   return (
-    <div className="min-h-[100vh] pr-7 pl-7">
+    <div className="global-layout">
       <Outlet />
       <div aria-hidden className="h-28 w-full"></div>
       <BottomNav navItems={navItems} />
