@@ -12,7 +12,7 @@ import { useMemo } from "react";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useUnlinkCustomer } from "@/hooks/mutations/customer/use-unlink-customer";
 import { useSession } from "@/store/session";
-import CustomerFormFields from "@/components/customer-form-fields";
+import CustomerFormFields from "@/components/fields/customer-form-fields";
 import useDesignersData from "@/hooks/queries/designer/use-designers-data";
 import useCustomerWithDesignerData from "@/hooks/queries/customer/use-customer-with-designer-data";
 import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-update-customer-with-designer";

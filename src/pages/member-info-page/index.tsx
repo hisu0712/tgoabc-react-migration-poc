@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import MemberFormFields from "./components/member-form-fields";
-import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
+import { toastError, toastNoChange, toastSuccess } from "@/lib/toast";
 
 export default function MemberInfoPage() {
   const session = useSession();

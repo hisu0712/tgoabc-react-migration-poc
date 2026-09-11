@@ -36,6 +36,7 @@ import DashboardPage from "./pages/dashboard-page";
 import AnalysisListPage from "./pages/analysis-list-page";
 import { CUSTOMER_NAV_ITEMS, MEMBER_NAV_ITEMS } from "./constants/nav";
 import AnalysisPreviewPage from "./pages/analysis-preview-page";
+import MemberPasswordPage from "./pages/member-password-page";
 
 export default function RootRoute() {
   return (
@@ -59,6 +60,7 @@ export default function RootRoute() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
 
           <Route path="/members/info" element={<MemberInfoPage />} />
+          <Route path="/members/password" element={<MemberPasswordPage />} />
           <Route path="/members/shop" element={<MemberShopPage />} />
 
           <Route path="/customers/new" element={<CustomerNewPage />} />

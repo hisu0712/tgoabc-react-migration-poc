@@ -2,7 +2,6 @@ import { z } from "zod";
 import {
   emailField,
   nameField,
-  otpField,
   passwordField,
   phoneField,
   shopNameField,
@@ -53,15 +52,29 @@ export type FindPasswordFormValues = z.infer<typeof findPasswordSchema>;
 // reset-password
 export const resetPasswordSchema = z
   .object({
-    password: passwordField,
-    repassword: passwordField,
+    newPassword: passwordField,
+    rePassword: passwordField,
   })
-  .refine((data) => data.password === data.repassword, {
+  .refine((data) => data.newPassword === data.rePassword, {
     message: "신규 비밀번호와 일치하지 않습니다.",
-    path: ["repassword"],
+    path: ["rePassword"],
   });
 
 export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
+
+// change-password
+export const changePasswordSchema = z
+  .object({
+    currentPassword: passwordField,
+    newPassword: passwordField,
+    rePassword: passwordField,
+  })
+  .refine((data) => data.newPassword === data.rePassword, {
+    message: "신규 비밀번호와 일치하지 않습니다.",
+    path: ["rePassword"],
+  });
+
+export type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
 
 // customer-sign-in
 export const customerSignInSchema = z.object({
