@@ -84,7 +84,7 @@ export default function AnalysisListPage() {
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
-          <SelectContent position="popper">
+          <SelectContent position="popper" align="end" className="-mr-2">
             <SelectItem value="all">전체</SelectItem>
             {Object.entries(PERSONAL_TYPE_LABEL).map(([value, label]) => (
               <SelectItem key={value} value={value}>
