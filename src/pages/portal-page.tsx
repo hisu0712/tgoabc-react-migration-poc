@@ -11,7 +11,7 @@ import { useSession } from "@/store/session";
 import { useShopsData } from "@/hooks/queries/shop/use-shops-data";
 import { Button } from "@/components/ui/button";
 import defaultShop from "@/assets/default-shop.png";
-import defaultUser from "@/assets/customer_profile__joa.png";
+import defaultUser from "@/assets/customer_profile__ippu.png";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import type { ShopEntity } from "@/types";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";
@@ -100,29 +100,37 @@ export default function PortalPage() {
       </div>
 
       <div className="mb-6">
-        <div className="mb-2 flex items-center gap-2">
-          <div className="text-lg font-semibold">내 매장 예약하기</div>
-          <span className="text-muted-foreground text-sm">전화예약</span>
-        </div>
         {isFetchShopsLoading ? (
-          <ListSkeleton count={1} className="h-18" />
-        ) : (
-          <div className="flex flex-col gap-2">
-            {shops?.map((shop) => (
-              <Card key={shop.id} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <img
-                    className="size-10 rounded-full object-cover"
-                    src={shop.logo_url ?? defaultShop}
-                    alt=""
-                  />
-                  <span>{shop.name}</span>
-                </div>
-                <Button onClick={() => handleButtonClick(shop)}>예약</Button>
-              </Card>
-            ))}
-          </div>
-        )}
+          <>
+            <Skeleton className="mb-2 h-7 w-28" />
+            <ListSkeleton count={1} className="h-18" />
+          </>
+        ) : shops && shops.length > 0 ? (
+          <>
+            <div className="mb-2 flex items-center gap-2">
+              <div className="text-lg font-semibold">내 매장 예약하기</div>
+              <span className="text-muted-foreground text-sm">전화예약</span>
+            </div>
+            <div className="flex flex-col gap-2">
+              {shops?.map((shop) => (
+                <Card
+                  key={shop.id}
+                  className="flex items-center justify-between"
+                >
+                  <div className="flex items-center gap-2">
+                    <img
+                      className="size-10 rounded-full object-cover"
+                      src={shop.logo_url ?? defaultShop}
+                      alt=""
+                    />
+                    <span>{shop.name}</span>
+                  </div>
+                  <Button onClick={() => handleButtonClick(shop)}>예약</Button>
+                </Card>
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
 
       <div className="mb-2 text-lg font-semibold">서비스 바로가기</div>
