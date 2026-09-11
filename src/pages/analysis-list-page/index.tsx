@@ -113,8 +113,8 @@ export default function AnalysisListPage() {
           <EmptyContent content="아직 분석된 기록이 없습니다." />
         )}
 
-        {isFetchingNextPage && <ListSkeleton count={2} className="h-19" />}
-        <div ref={ref}></div>
+        {isFetchingNextPage && <ListSkeleton count={3} className="h-19" />}
+        {!isPending && <div ref={ref}></div>}
       </div>
     </>
   );
