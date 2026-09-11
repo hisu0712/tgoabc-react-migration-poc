@@ -22,8 +22,12 @@ function AlertDialogPortal({
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Portal>) {
   return (
-    <AlertDialogPrimitive.Portal data-slot="alert-dialog-portal" {...props} />
-  )
+    <AlertDialogPrimitive.Portal
+      data-slot="alert-dialog-portal"
+      container={document.getElementById("modal-root")} //  Radix Portal 기본 타겟은 document.body라 #modal-root 명시 필요
+      {...props}
+    />
+  );
 }
 
 function AlertDialogOverlay({
