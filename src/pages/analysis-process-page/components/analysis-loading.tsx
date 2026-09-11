@@ -4,7 +4,7 @@ import { Layout } from "@/components/layout/global-layout";
 
 export default function AnalysisLoading() {
   return (
-    <Layout className="from-background dark:to-card min-h-[100vh] bg-linear-to-b to-[#ffe9e9] px-7">
+    <Layout className="from-background dark:to-card bg-linear-to-b to-[#ffe9e9]">
       <div className="flex flex-1 flex-col gap-[10vh] pt-[10vh]">
         <div>
           <div
@@ -20,7 +20,7 @@ export default function AnalysisLoading() {
         </div>
 
         <div className="flex justify-center">
-          <div className="relative aspect-square h-[35vh] max-w-[70vw] justify-center md:h-[40vh]">
+          <div className="relative aspect-square h-[35vh] max-w-[70vw] justify-center">
             <img
               src={loadingImage}
               alt="촬영하는 캐릭터 이미지"

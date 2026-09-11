@@ -17,6 +17,7 @@ export default function ModalProvider({ children }: { children: ReactNode }) {
           <SelectCustomerModal />
           <ShareAnalysisModal />
         </>,
+        // Dialog/AlertDialog는 자체 Portal에 container="#modal-root"를 명시해서 들어옴
         document.getElementById("modal-root")!,
       )}
       {children}

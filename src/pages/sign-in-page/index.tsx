@@ -15,7 +15,7 @@ export default function SignInPage() {
   const [authType, setAuthType] = useState<"member" | "customer">("member");
 
   return (
-    <div className="flex min-h-[100vh] flex-col">
+    <div className="screen-h flex flex-col">
       <div
         className={cn(
           "pr-7 pl-7",

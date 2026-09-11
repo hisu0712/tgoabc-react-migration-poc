@@ -11,7 +11,7 @@ export default function ExpiredError() {
         <span>앗! 받으셨던</span>
         <span>분석 결과가 만료되었어요</span>
       </p>
-      <div className="w-[60%] md:w-[30%]">
+      <div className="w-[60%]">
         <img src={ExpiredLinkImage} alt="" />
       </div>
       <div>

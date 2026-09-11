@@ -1,5 +1,4 @@
 import { Card } from "@/components/card";
-import { Layout } from "@/components/layout/global-layout";
 import { cn } from "@/lib/utils";
 import { ArrowRightIcon } from "lucide-react";
 import type { AnalysisPreset } from "@/components/analysis-result/constants";
@@ -28,10 +27,10 @@ export default function TypeIntroSection({
         background: `linear-gradient(to bottom, ${palette.bc1}, ${palette.bc2})`,
       }}
     >
-      <Layout className="relative pb-8 md:px-10">
+      <div className="layout-px relative pb-8">
         <div className="relative flex flex-col gap-1 pt-5 pb-17 text-white">
           <img
-            className="md: absolute -right-1 bottom-0 block h-[calc(100%+20px)] md:hidden"
+            className="absolute -right-1 bottom-0 block h-[calc(100%+20px)]"
             src={image}
             alt={`${PERSONAL_TYPE_LABEL[personalType]} 타입 이미지`}
           />
@@ -49,17 +48,12 @@ export default function TypeIntroSection({
         </div>
 
         <img
-          className="absolute -right-1 bottom-0 hidden h-full md:block"
+          className="absolute -right-1 bottom-0 hidden h-full"
           src={image}
           alt={`${PERSONAL_TYPE_LABEL[personalType]} 타입 이미지`}
         />
 
-        <Card
-          className={cn(
-            "relative z-[2] bg-white/20 p-5 md:w-max",
-            cardClassName,
-          )}
-        >
+        <Card className={cn("relative z-[2] bg-white/20 p-5", cardClassName)}>
           <ul className="mb-2 flex gap-2">
             {tags.map((tag) => (
               <li
@@ -73,7 +67,7 @@ export default function TypeIntroSection({
           </ul>
           <div
             className={cn(
-              "leading-snug font-medium text-foreground/80",
+              "text-foreground/80 leading-snug font-medium",
               descriptionClassName,
             )}
           >
@@ -82,7 +76,7 @@ export default function TypeIntroSection({
             ))}
           </div>
         </Card>
-      </Layout>
+      </div>
     </div>
   );
 }
