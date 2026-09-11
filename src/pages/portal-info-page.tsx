@@ -11,7 +11,7 @@ import useCustomerData from "@/hooks/queries/customer/use-customer-data";
 import { useMemo } from "react";
 import { useUpdateCustomer } from "@/hooks/mutations/customer/use-update-customer";
 import { useSession } from "@/store/session";
-import CustomerFormFields from "@/components/customer-form-fields";
+import CustomerFormFields from "@/components/fields/customer-form-fields";
 import DeleteUserButton from "@/components/delete-user-button";
 import { CUSTOMER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";

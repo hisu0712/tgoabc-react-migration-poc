@@ -1,5 +1,5 @@
 import BottomButton from "@/components/layout/bottom-button";
-import CustomerFormFields from "@/components/customer-form-fields";
+import CustomerFormFields from "@/components/fields/customer-form-fields";
 import HeaderNav from "@/components/layout/header-nav";
 import { Form } from "@/components/ui/form";
 import useLinkAnalysisToCustomer from "@/hooks/mutations/analysis/use-link-analysis-to-customer";

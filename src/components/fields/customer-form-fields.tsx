@@ -22,7 +22,7 @@ import type { CustomerFormValues } from "@/schemas/customer.schema";
 import type { DesignerEntity } from "@/types";
 import { ScissorsIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
-import { FieldSkeleton } from "./form/field-skeleton";
+import { FieldSkeleton } from "../form/field-skeleton";
 
 export default function CustomerFormFields({
   isLoading,
