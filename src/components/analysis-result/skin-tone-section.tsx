@@ -57,7 +57,7 @@ export default function SkinToneSection({
       <GuideLabel className="mb-2 rounded-2xl py-1 font-semibold">
         스킨톤 상세
       </GuideLabel>
-      <p className="mb-11 leading-snug font-medium break-keep text-[#565656]">
+      <p className="mb-11 leading-snug font-medium break-keep text-foreground/80">
         {PERSONAL_TYPE_LABEL[analysis.personalType]}에서 나타나는{" "}
         {getHueAdjective(analysis.axis.hue.value)} 기운이 느껴지며,{" "}
         {getLightnessAdjective(analysis.axis.lightness.value)} 밝기와{" "}

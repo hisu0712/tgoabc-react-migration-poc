@@ -73,7 +73,7 @@ export default function TypeIntroSection({
           </ul>
           <div
             className={cn(
-              "leading-snug font-medium text-[#565656]",
+              "leading-snug font-medium text-foreground/80",
               descriptionClassName,
             )}
           >

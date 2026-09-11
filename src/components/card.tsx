@@ -8,9 +8,9 @@ const cardVariants = cva("rounded-xl p-4 shadow-[0_0_10px_rgba(0,0,0,0.1)]", {
   variants: {
     variant: {
       default: "bg-card",
-      feature1: "bg-feature-1 text-card",
-      feature2: "bg-feature-2 text-card",
-      gradient: "text-card bg-linear-to-br from-feature-1 to-feature-2 ",
+      feature1: "bg-feature-1 text-white",
+      feature2: "bg-feature-2 text-white",
+      gradient: "text-white bg-linear-to-br from-feature-1 to-feature-2 ",
     },
   },
   defaultVariants: { variant: "default" },
