@@ -56,7 +56,7 @@ export default function BodyColorSection({
                 key={name}
                 className="flex flex-1 flex-col overflow-hidden rounded-2xl shadow-[0_0_10px_rgba(0,0,0,0.1)] md:flex-none"
               >
-                <span className="flex items-center justify-center gap-1 bg-white py-2">
+                <span className="flex items-center justify-center gap-1 bg-card py-2">
                   <Icon strokeWidth={1.5} className="size-5" />
                   <span className="text-sm font-medium">{name}</span>
                 </span>

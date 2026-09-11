@@ -12,7 +12,9 @@ const Toaster = ({ ...props }: ToasterProps) => {
       className="toaster group"
       toastOptions={{ classNames: { toast: "!p-3" } }}
       icons={{
-        info: <InfoIcon className="fill-muted-foreground size-5 text-white" />,
+        info: (
+          <InfoIcon className="fill-muted-foreground text-popover size-5" />
+        ),
       }}
       style={
         {
@@ -24,7 +26,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 
           "--info-bg": "var(--popover)",
           "--info-text": "var(--muted-foreground)",
-          "--info-border": "var(--muted)",
+          "--info-border": "var(--popover)",
 
           "--success-bg": "color-mix(in oklab, var(--primary) 80%, white)",
           "--success-text": "var(--primary-foreground)",

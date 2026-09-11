@@ -5,9 +5,9 @@ import { useInView } from "react-intersection-observer";
 import TypeIntroSection from "./type-intro-section";
 import BodyColorSection from "./body-color-section";
 import SkinToneSection from "./skin-tone-section";
-import type { Analysis } from "@/lib/analysis";
-import { ANALYSIS_PRESET } from "@/components/analysis-result/constants";
 import FoundationSection from "./foundation-section";
+import { ANALYSIS_PRESET } from "@/components/analysis-result/constants";
+import type { Analysis } from "@/lib/analysis";
 
 export default function AnalysisResultView({
   analysis,
@@ -57,7 +57,10 @@ export default function AnalysisResultView({
       <div ref={ref} aria-hidden className="h-px"></div>
 
       <Layout
-        className={cn("-mt-0.5 bg-[#FFFAF6] pt-12", footer ? "pb-30" : "pb-20")}
+        className={cn(
+          "dark:bg-secondary -mt-0.5 bg-[#FFFAF6] pt-12",
+          footer ? "pb-30" : "pb-20",
+        )}
       >
         <BodyColorSection analysis={analysis} resultImageUrl={resultImageUrl} />
         <SkinToneSection analysis={analysis} analysisPreset={analysisPreset} />

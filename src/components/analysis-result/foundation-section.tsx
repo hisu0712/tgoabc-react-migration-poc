@@ -31,7 +31,7 @@ export default function FoundationSection({
       <div className="mb-2 text-xl font-semibold">
         {bestSkinCode}호 {undertone.name} {bestSkin.groupLabel}
       </div>
-      <p className="leading-snug font-medium break-keep text-[#565656]">
+      <p className="leading-snug font-medium break-keep text-foreground/80">
         내 톤에는 {bestSkinCode}호 {bestSkin.groupLabel}가 가장 잘 어울려요.
         밝기는 {skinCodes[0]}~{skinCodes[skinCodes.length - 1]}
         호까지 추천하며, {undertone.name} 톤이 가장 자연스러워요.

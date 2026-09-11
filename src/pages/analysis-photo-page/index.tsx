@@ -100,7 +100,7 @@ export default function AnalysisPhotoPage() {
   };
 
   return (
-    <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9]">
+    <Layout className="from-background min-h-[100vh] bg-linear-to-b to-[#ffe9e9] dark:to-card">
       <HeaderNav className="mb-0! bg-transparent! backdrop-blur-none!" />
 
       <div className="flex flex-1 flex-col items-center">
