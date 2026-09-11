@@ -96,7 +96,7 @@ export default function CustomerListPage() {
             <ScissorsIcon className="size-4" strokeWidth={1.5} />
             <SelectValue />
           </SelectTrigger>
-          <SelectContent position="popper">
+          <SelectContent position="popper" align="end" className="-mr-2">
             <SelectItem value="all">전체</SelectItem>
             {designers?.map((designer) => (
               <SelectItem key={designer.id} value={String(designer.id)}>

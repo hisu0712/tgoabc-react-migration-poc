@@ -24,7 +24,7 @@ export default function ThemeButton() {
       <DropdownMenuTrigger>
         <SunIcon className="size-7 cursor-pointer" strokeWidth={1.5} />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mr-3">
+      <DropdownMenuContent align="end" className="-mr-2">
         {THEMES.map((theme) => (
           <DropdownMenuItem
             key={theme}
