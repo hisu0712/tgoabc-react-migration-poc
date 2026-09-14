@@ -83,10 +83,12 @@ export async function fetchAnalysisCount({
   memberId,
   customerId,
   personalType,
+  since,
 }: {
   memberId?: string;
   customerId?: string;
   personalType?: string;
+  since?: string;
 }) {
   let query = supabase.from("analysis").select("*", {
     count: "exact",
@@ -101,6 +103,9 @@ export async function fetchAnalysisCount({
   }
   if (personalType) {
     query = query.eq("result->>personalType", personalType);
+  }
+  if (since) {
+    query = query.gte("created_at", since);
   }
 
   const { count, error } = await query;

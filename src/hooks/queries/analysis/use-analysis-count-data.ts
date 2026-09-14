@@ -6,14 +6,22 @@ export default function useAnalysisCount({
   memberId,
   customerId,
   personalType,
+  since,
 }: {
   memberId?: string;
   customerId?: string;
   personalType?: string;
+  since?: string;
 }) {
   return useQuery({
-    queryKey: QUERY_KEYS.analysis.count(memberId, customerId, personalType),
-    queryFn: () => fetchAnalysisCount({ memberId, customerId, personalType }),
+    queryKey: QUERY_KEYS.analysis.count(
+      memberId,
+      customerId,
+      personalType,
+      since,
+    ),
+    queryFn: () =>
+      fetchAnalysisCount({ memberId, customerId, personalType, since }),
     enabled: !!(customerId || memberId),
     placeholderData: keepPreviousData,
   });

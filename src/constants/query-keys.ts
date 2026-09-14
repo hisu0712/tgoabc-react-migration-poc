@@ -41,12 +41,11 @@ export const QUERY_KEYS = {
       personalType,
     ],
     memberList: (memberId: string) => ["analysis", "memberList", memberId],
-    count: (memberId?: string, customerId?: string, personalType?: string) => [
-      "analysis",
-      "count",
-      memberId,
-      customerId,
-      personalType,
-    ],
+    count: (
+      memberId?: string,
+      customerId?: string,
+      personalType?: string,
+      since?: string,
+    ) => ["analysis", "count", memberId, customerId, personalType, since],
   },
 };
