@@ -23,18 +23,18 @@ import CumulativeStatChart from "./cumulative-stat-chart";
 export default function PeriodStatsChart() {
   const [selectOption, setSelectOption] = useState<"month" | "day">("month");
 
-  const chartData = [
-    { month: "3월", newCustomer: 0, revisit: 0 },
-    { month: "4월", newCustomer: 0, revisit: 0 },
-    { month: "5월", newCustomer: 1, revisit: 1 },
-    { month: "6월", newCustomer: 3, revisit: 3 },
-    { month: "7월", newCustomer: 5, revisit: 4 },
-    { month: "8월", newCustomer: 5, revisit: 2 },
-    { month: "9월", newCustomer: 7, revisit: 2 },
+  const integratedChartData = [
+    { month: "3월", newCustomer: 0, newAnalysis: 0 },
+    { month: "4월", newCustomer: 0, newAnalysis: 0 },
+    { month: "5월", newCustomer: 1, newAnalysis: 1 },
+    { month: "6월", newCustomer: 3, newAnalysis: 3 },
+    { month: "7월", newCustomer: 5, newAnalysis: 4 },
+    { month: "8월", newCustomer: 5, newAnalysis: 2 },
+    { month: "9월", newCustomer: 7, newAnalysis: 2 },
   ];
-  const chartConfig = {
+  const integratedChartConfig = {
     newCustomer: { label: "신규고객", color: "var(--chart-1)" },
-    revisit: { label: "재방문", color: "var(--chart-2)" },
+    newAnalysis: { label: "신규분석", color: "var(--chart-2)" },
   } satisfies ChartConfig;
 
   const customerChartData = [
@@ -47,7 +47,7 @@ export default function PeriodStatsChart() {
     { month: "9월", cumulativeCustomer: 5 },
   ];
   const customerChartConfig = {
-    cumulativeCustomer: { label: "누적 고객", color: "var(--chart-1)" },
+    cumulativeCustomer: { label: "고객수", color: "var(--chart-1)" },
   } satisfies ChartConfig;
 
   const analysisChartData = [
@@ -60,7 +60,7 @@ export default function PeriodStatsChart() {
     { month: "9월", cumulativeAnalysis: 5 },
   ];
   const analysisChartConfig = {
-    cumulativeAnalysis: { label: "누적 분석", color: "var(--chart-2)" },
+    cumulativeAnalysis: { label: "분석건수", color: "var(--chart-2)" },
   } satisfies ChartConfig;
 
   return (
@@ -89,8 +89,11 @@ export default function PeriodStatsChart() {
           기간: 2026/10/1 ~ 2026/12/1
         </p>
 
-        <ChartContainer config={chartConfig} className="h-[270px] w-full">
-          <AreaChart data={chartData} margin={{ left: 0 }}>
+        <ChartContainer
+          config={integratedChartConfig}
+          className="h-[270px] w-full"
+        >
+          <AreaChart data={integratedChartData} margin={{ left: 0 }}>
             <CartesianGrid vertical={false} />
             <XAxis dataKey="month" tickLine={false} />
             <YAxis tickLine={false} />
@@ -104,11 +107,11 @@ export default function PeriodStatsChart() {
               dot
             />
             <Area
-              dataKey="revisit"
+              dataKey="newAnalysis"
               type="linear"
-              fill="var(--color-revisit)"
+              fill="var(--color-newAnalysis)"
               fillOpacity={0.4}
-              stroke="var(--color-revisit)"
+              stroke="var(--color-newAnalysis)"
               dot
             />
             <ChartLegend content={<ChartLegendContent />} />
