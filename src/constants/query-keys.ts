@@ -17,13 +17,12 @@ export const QUERY_KEYS = {
       keyword,
       designerId,
     ],
-    memberCount: (memberId: string, keyword?: string, designerId?: number) => [
-      "customer",
-      "count",
-      memberId,
-      keyword,
-      designerId,
-    ],
+    memberCount: (
+      memberId: string,
+      keyword?: string,
+      designerId?: number,
+      since?: string,
+    ) => ["customer", "count", memberId, keyword, designerId, since],
     byId: (customerId: string) => ["customer", customerId],
   },
   designer: {

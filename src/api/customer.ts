@@ -232,10 +232,12 @@ export async function fetchCustomerCountByMember({
   memberId,
   keyword,
   designerId,
+  since,
 }: {
   memberId: string;
   keyword?: string;
   designerId?: number;
+  since?: string;
 }) {
   let query = supabase
     .from("customer")
@@ -248,9 +250,11 @@ export async function fetchCustomerCountByMember({
   if (designerId) {
     query = query.eq("member_customer_mapping.designer_id", designerId);
   }
-
   if (keyword) {
     query = query.or(`name.ilike.%${keyword}%,email.ilike.%${keyword}%`);
+  }
+  if (since) {
+    query = query.gte("created_at", since); // greater than or equal 이 시점 이후 가입한 고객만 카운트
   }
 
   const { count, error } = await query;

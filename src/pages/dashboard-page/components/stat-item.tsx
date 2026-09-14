@@ -1,4 +1,5 @@
 import { Card } from "@/components/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Fragment } from "react";
 
 export type StatItem = {
@@ -6,17 +7,22 @@ export type StatItem = {
   subLabel?: string;
   value: number | string;
   unit?: string;
+  isPending: boolean;
 };
-function StatsRow({ label, subLabel, value, unit }: StatItem) {
+function StatsRow({ label, subLabel, value, unit, isPending }: StatItem) {
   return (
     <div className="flex justify-between py-1.5">
       <label className="text-sm">
         {label} {subLabel && <span className="text-sm">{subLabel}</span>}
       </label>
-      <div>
-        <span className="font-semibold">{value}</span>
-        {unit}
-      </div>
+      {isPending ? (
+        <Skeleton className="h-5 w-10" />
+      ) : (
+        <div>
+          <span className="font-semibold">{value}</span>
+          {unit}
+        </div>
+      )}
     </div>
   );
 }
