@@ -271,3 +271,17 @@ export async function fetchCustomerCountByGender(memberId: string) {
   if (error) throw error;
   return data as { gender: Gender; count: number }[];
 }
+
+export type AgeGroup = "10대" | "20대" | "30대" | "40대" | "50대 이상";
+
+export async function fetchCustomerCountByAgeGroup(memberId: string) {
+  const { data, error } = await supabase.rpc(
+    "get_customer_count_by_age_group",
+    {
+      p_member_id: memberId,
+    },
+  );
+
+  if (error) throw error;
+  return data as { age_group: AgeGroup; gender: Gender; count: number }[];
+}

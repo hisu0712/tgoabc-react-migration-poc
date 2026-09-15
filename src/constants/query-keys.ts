@@ -29,6 +29,11 @@ export const QUERY_KEYS = {
       "countByGender",
       memberId,
     ],
+    countByAgeGroup: (memberId: string) => [
+      "customer",
+      "countByAgeGroup",
+      memberId,
+    ],
   },
   designer: {
     all: ["designer"],

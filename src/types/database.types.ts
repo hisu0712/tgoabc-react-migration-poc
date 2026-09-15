@@ -237,6 +237,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_customer_count_by_age_group: {
+        Args: { p_member_id: string }
+        Returns: {
+          age_group: string
+          count: number
+          gender: string
+        }[]
+      }
       get_customer_count_by_gender: {
         Args: { p_member_id: string }
         Returns: {

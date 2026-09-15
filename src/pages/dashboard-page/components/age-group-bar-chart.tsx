@@ -1,4 +1,5 @@
-import { Card } from "@/components/card";
+import type { AgeGroup } from "@/api/customer";
+import ErrorRedirect from "@/components/error-redirect";
 import {
   ChartContainer,
   ChartLegend,
@@ -7,23 +8,48 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { Skeleton } from "@/components/ui/skeleton";
+import useCustomerCountByAgeGroup from "@/hooks/queries/customer/use-customer-count-by-age-group-data";
+import { MEMBER_HOME_PATH } from "@/lib/route";
+import { useSession } from "@/store/session";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
-const chartData = [
-  { ageGroup: "10대", male: 0, female: 0 },
-  { ageGroup: "20대", male: 210, female: 90 },
-  { ageGroup: "30대", male: 100, female: 150 },
-  { ageGroup: "40대", male: 410, female: 210 },
-  { ageGroup: "50대 이상", male: 0, female: 0 },
-];
-
-const chartConfig = {
-  male: { label: "남성", color: "var(--chart-1)" },
-  female: { label: "여성", color: "var(--chart-2)" },
-} satisfies ChartConfig;
-
 export default function AgeGroupBarChart() {
-  return (
+  const session = useSession();
+  const memberId = session!.user.id;
+
+  const { data, isPending, isError } = useCustomerCountByAgeGroup(memberId);
+
+  if (isError) {
+    return (
+      <ErrorRedirect
+        to={MEMBER_HOME_PATH}
+        message="문제가 발생했습니다. 잠시 후 다시 시도해주세요."
+      />
+    );
+  }
+
+  const AGE_GROUPS: AgeGroup[] = ["10대", "20대", "30대", "40대", "50대 이상"];
+
+  const chartData = AGE_GROUPS.map((ageGroup) => {
+    const male =
+      data?.find((row) => row.age_group === ageGroup && row.gender === "M")
+        ?.count ?? 0;
+    const female =
+      data?.find((row) => row.age_group === ageGroup && row.gender === "F")
+        ?.count ?? 0;
+
+    return { ageGroup, male, female };
+  });
+
+  const chartConfig = {
+    male: { label: "남성(명)", color: "var(--chart-1)" },
+    female: { label: "여성(명)", color: "var(--chart-2)" },
+  } satisfies ChartConfig;
+
+  return isPending ? (
+    <Skeleton className="h-[270px] w-full" />
+  ) : (
     <ChartContainer config={chartConfig} className="h-[270px] w-full">
       <BarChart data={chartData}>
         <CartesianGrid vertical={false} />
