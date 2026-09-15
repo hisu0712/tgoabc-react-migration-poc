@@ -1,5 +1,11 @@
 import { supabase } from "@/lib/supabase";
-import type { CustomerWithDesigner, Gender } from "@/types";
+import type {
+  AgeGroup,
+  CustomerWithDesigner,
+  Gender,
+  Granularity,
+  PeriodBucket,
+} from "@/types";
 
 export async function fetchCustomer(customerId: string) {
   const { data, error } = await supabase
@@ -272,8 +278,6 @@ export async function fetchCustomerCountByGender(memberId: string) {
   return data as { gender: Gender; count: number }[];
 }
 
-export type AgeGroup = "10대" | "20대" | "30대" | "40대" | "50대 이상";
-
 export async function fetchCustomerCountByAgeGroup(memberId: string) {
   const { data, error } = await supabase.rpc(
     "get_customer_count_by_age_group",
@@ -284,4 +288,23 @@ export async function fetchCustomerCountByAgeGroup(memberId: string) {
 
   if (error) throw error;
   return data as { age_group: AgeGroup; gender: Gender; count: number }[];
+}
+
+export async function fetchCustomerCountByPeriod({
+  memberId,
+  pivotDate,
+  granularity,
+}: {
+  memberId: string;
+  pivotDate: string;
+  granularity: Granularity;
+}) {
+  const { data, error } = await supabase.rpc("get_customer_count_by_period", {
+    p_member_id: memberId,
+    p_pivot_date: pivotDate,
+    p_granularity: granularity,
+  });
+
+  if (error) throw error;
+  return data as PeriodBucket[];
 }

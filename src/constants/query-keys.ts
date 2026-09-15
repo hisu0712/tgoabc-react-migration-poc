@@ -34,6 +34,11 @@ export const QUERY_KEYS = {
       "countByAgeGroup",
       memberId,
     ],
+    countByPeriod: (
+      memberId: string,
+      pivotDate: string,
+      granularity: string,
+    ) => ["customer", "countByPeriod", memberId, pivotDate, granularity],
   },
   designer: {
     all: ["designer"],
@@ -57,5 +62,10 @@ export const QUERY_KEYS = {
       personalType?: string,
       since?: string,
     ) => ["analysis", "count", memberId, customerId, personalType, since],
+    countByPeriod: (
+      memberId: string,
+      pivotDate: string,
+      granularity: string,
+    ) => ["analysis", "countByPeriod", memberId, pivotDate, granularity],
   },
 };
