@@ -1,54 +1,36 @@
-# React + TypeScript + Vite
+# TGOABC React Migration PoC
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+(한 줄 요약: JSP 레거시 웹뷰를 React로 마이그레이션하기 위한 기술 제안 PoC)
 
-Currently, two official plugins are available:
+## 배경
+(레거시 시스템에서 실제로 겪은 문제를 구체적으로. 예: 상태관리가 산발적으로 흩어져 있다, 컴포넌트 재사용이 안 된다, 빌드/배포 파이프라인이 없다, 협업 시 충돌이 잦다 — "겪은 것" 위주로 사실 기반 서술)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 제안
+(왜 이 방식/기술을 제안했는지 — 팀 역량, 생태계 성숙도, 채용 시장 등 선택 근거)
 
-## Expanding the ESLint configuration
+(목표/성공 기준: 이 마이그레이션이 성공했다고 판단할 측정 가능한 기준. 예: 빌드/배포 파이프라인 구축 여부, 컴포넌트 재사용률, 신규 기능 개발 소요 시간 단축 등)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+(대안 비교: React 외에 검토한 옵션과 기각 이유. 예: Vue/Next.js/기존 JSP+jQuery 개선 등과 비교해서 왜 React를 선택했는지)
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## PoC 범위
+(실제로 재구현한 화면/기능, 이걸로 무엇을 검증하려 했는지 — 예: 인증 흐름, 상태관리, 데이터 계층 포함해서 특정 화면을 구현하며 마이그레이션 타당성 검증)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 아키텍처 결정
+- **React Query**: 서버 상태 캐싱 및 동기화
+- **Zustand**: 클라이언트 전역 상태관리
+- **React Hook Form + Zod**: 폼 상태 및 스키마 기반 유효성 검증
+- **Supabase**: 인증 및 데이터 계층(BaaS)
+- **React Router**: 라우팅
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+(각 선택에 대한 이유를 한 줄씩. 폴더 구조 원칙도 여기에 — 예: 계층형 vs 기능형 구조를 택한 이유)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## 트레이드오프 / 고민 지점
+(기술적으로 고민했던 지점 3~4개. 예: 공유 링크 읽기는 SECURITY DEFINER RPC로 컬럼 노출 차단, 쓰기는 RLS만으로 충분해 client update — "왜 이렇게 결정했는지"가 드러나는 구체적 사례 위주)
+
+## 마이그레이션 전략
+(전면 재작성 vs 점진적(Strangler Fig) 중 어느 쪽을 제안했는지, 그 이유와 예상 일정)
+
+(리스크 및 완화: 진행 시 예상되는 리스크와 대응 방안. 예: 팀 러닝커브, 병행 운영 기간 부담, 데이터 정합성 리스크 등)
+
+## 결과 / 다음 단계
+(제안이 승인되어 진행 중인지, 검토 중인지, 거절되었다면 그 자체로 "기술 제안을 코드로 증명했다"는 포인트로 마무리 — 현재 상태를 솔직하게)
