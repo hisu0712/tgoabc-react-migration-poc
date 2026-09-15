@@ -14,6 +14,8 @@ import { MEMBER_HOME_PATH } from "@/lib/route";
 import { useSession } from "@/store/session";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
+const AGE_GROUPS: AgeGroup[] = ["10대", "20대", "30대", "40대", "50대 이상"];
+
 export default function AgeGroupBarChart() {
   const session = useSession();
   const memberId = session!.user.id;
@@ -28,8 +30,6 @@ export default function AgeGroupBarChart() {
       />
     );
   }
-
-  const AGE_GROUPS: AgeGroup[] = ["10대", "20대", "30대", "40대", "50대 이상"];
 
   const chartData = AGE_GROUPS.map((ageGroup) => {
     const male =
