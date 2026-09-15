@@ -53,8 +53,8 @@ export default function GenderDonutChart() {
 
   const chartConfig = {
     count: { label: "고객 비율" },
-    male: { label: "남성", color: "var(--chart-1)" },
-    female: { label: "여성", color: "var(--chart-2)" },
+    male: { label: "남성(%)", color: "var(--chart-1)" },
+    female: { label: "여성(%)", color: "var(--chart-2)" },
   } satisfies ChartConfig;
 
   return isPending ? (
