@@ -24,6 +24,11 @@ export const QUERY_KEYS = {
       since?: string,
     ) => ["customer", "count", memberId, keyword, designerId, since],
     byId: (customerId: string) => ["customer", customerId],
+    countByGender: (memberId: string) => [
+      "customer",
+      "countByGender",
+      memberId,
+    ],
   },
   designer: {
     all: ["designer"],

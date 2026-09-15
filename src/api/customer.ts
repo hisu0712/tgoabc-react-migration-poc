@@ -262,3 +262,12 @@ export async function fetchCustomerCountByMember({
   if (error) throw error;
   return count;
 }
+
+export async function fetchCustomerCountByGender(memberId: string) {
+  const { data, error } = await supabase.rpc("get_customer_count_by_gender", {
+    p_member_id: memberId,
+  });
+
+  if (error) throw error;
+  return data as { gender: Gender; count: number }[];
+}
