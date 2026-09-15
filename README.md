@@ -18,9 +18,9 @@
 ## 아키텍처 결정
 - **React Query**: 서버 상태 캐싱 및 동기화
 - **Zustand**: 클라이언트 전역 상태관리
-- **React Hook Form + Zod**: 폼 상태 및 스키마 기반 유효성 검증
 - **Supabase**: 인증 및 데이터 계층(BaaS)
 - **React Router**: 라우팅
+- **Tailwind CSS + shadcn/ui**: 유틸리티 기반 스타일링 + Radix 기반 컴포넌트 (
 
 (각 선택에 대한 이유를 한 줄씩. 폴더 구조 원칙도 여기에 — 예: 계층형 vs 기능형 구조를 택한 이유)
 
