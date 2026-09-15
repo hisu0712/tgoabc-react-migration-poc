@@ -1,4 +1,3 @@
-import type { AgeGroup } from "@/api/customer";
 import ErrorRedirect from "@/components/error-redirect";
 import {
   ChartContainer,
@@ -12,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import useCustomerCountByAgeGroup from "@/hooks/queries/customer/use-customer-count-by-age-group-data";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import { useSession } from "@/store/session";
+import type { AgeGroup } from "@/types";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 const AGE_GROUPS: AgeGroup[] = ["10대", "20대", "30대", "40대", "50대 이상"];
@@ -50,7 +50,7 @@ export default function AgeGroupBarChart() {
   return isPending ? (
     <Skeleton className="h-[270px] w-full" />
   ) : (
-    <ChartContainer config={chartConfig} className="h-[270px] w-full">
+    <ChartContainer config={chartConfig} className="-ml-5 h-[270px] w-full">
       <BarChart data={chartData}>
         <CartesianGrid vertical={false} />
         <XAxis dataKey="ageGroup" tickLine={false} />

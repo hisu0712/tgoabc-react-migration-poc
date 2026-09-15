@@ -60,7 +60,7 @@ export default function GenderDonutChart() {
   return isPending ? (
     <Skeleton className="h-[270px] w-full" />
   ) : (
-    <ChartContainer config={chartConfig} className="h-[270px] w-full">
+    <ChartContainer config={chartConfig} className="h-[270px] w-full -mt-3">
       <PieChart>
         <ChartTooltip content={<ChartTooltipContent />} />
         <Pie

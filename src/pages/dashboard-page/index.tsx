@@ -16,7 +16,7 @@ export default function DashboardPage() {
       <h3 className="mb-1 font-semibold">분석별 통계</h3>
       <AnalysisStatCard />
 
-      <h3 className="font-semibold">기간별 통계</h3>
+      <h3 className="mb-0.5 font-semibold">기간별 통계</h3>
       <p className="text-muted-foreground mb-1 text-sm">
         기준일을 중심으로 표시되며, 월/일 선택이 가능합니다.
       </p>
@@ -24,9 +24,9 @@ export default function DashboardPage() {
 
       <h3 className="mt-7 mb-1 font-semibold">고객 통계</h3>
       <Card>
-        <h4 className="font-semibold">성별</h4>
+        <h4 className="font-medium">성별</h4>
         <GenderDonutChart />
-        <h4 className="font-semibold">연령</h4>
+        <h4 className="my-3 font-medium">연령</h4>
         <AgeGroupBarChart />
       </Card>
     </>
