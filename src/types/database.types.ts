@@ -237,6 +237,45 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_analysis_count_by_period: {
+        Args: {
+          p_granularity: string
+          p_member_id: string
+          p_pivot_date: string
+        }
+        Returns: {
+          bucket_start: string
+          cumulative_count: number
+          new_count: number
+        }[]
+      }
+      get_customer_count_by_age_group: {
+        Args: { p_member_id: string }
+        Returns: {
+          age_group: string
+          count: number
+          gender: string
+        }[]
+      }
+      get_customer_count_by_gender: {
+        Args: { p_member_id: string }
+        Returns: {
+          count: number
+          gender: string
+        }[]
+      }
+      get_customer_count_by_period: {
+        Args: {
+          p_granularity: string
+          p_member_id: string
+          p_pivot_date: string
+        }
+        Returns: {
+          bucket_start: string
+          cumulative_count: number
+          new_count: number
+        }[]
+      }
       get_shared_analysis: {
         Args: { p_analysis_id: string }
         Returns: {

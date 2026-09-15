@@ -36,3 +36,12 @@ export type UseMutationCallback<TData = void> = {
 export type Theme = "system" | "dark" | "light";
 
 export type Image = { file: File; previewUrl: string };
+
+// dashboard
+export type Granularity = "month" | "day";
+export type AgeGroup = "10대" | "20대" | "30대" | "40대" | "50대 이상";
+export type PeriodBucket = {
+  bucket_start: string;
+  new_count: number;
+  cumulative_count: number;
+};

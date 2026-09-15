@@ -1,5 +1,11 @@
 import { supabase } from "@/lib/supabase";
-import type { CustomerWithDesigner, Gender } from "@/types";
+import type {
+  AgeGroup,
+  CustomerWithDesigner,
+  Gender,
+  Granularity,
+  PeriodBucket,
+} from "@/types";
 
 export async function fetchCustomer(customerId: string) {
   const { data, error } = await supabase
@@ -232,10 +238,12 @@ export async function fetchCustomerCountByMember({
   memberId,
   keyword,
   designerId,
+  since,
 }: {
   memberId: string;
   keyword?: string;
   designerId?: number;
+  since?: string;
 }) {
   let query = supabase
     .from("customer")
@@ -248,13 +256,55 @@ export async function fetchCustomerCountByMember({
   if (designerId) {
     query = query.eq("member_customer_mapping.designer_id", designerId);
   }
-
   if (keyword) {
     query = query.or(`name.ilike.%${keyword}%,email.ilike.%${keyword}%`);
+  }
+  if (since) {
+    query = query.gte("created_at", since); // greater than or equal 이 시점 이후 가입한 고객만 카운트
   }
 
   const { count, error } = await query;
 
   if (error) throw error;
   return count;
+}
+
+export async function fetchCustomerCountByGender(memberId: string) {
+  const { data, error } = await supabase.rpc("get_customer_count_by_gender", {
+    p_member_id: memberId,
+  });
+
+  if (error) throw error;
+  return data as { gender: Gender; count: number }[];
+}
+
+export async function fetchCustomerCountByAgeGroup(memberId: string) {
+  const { data, error } = await supabase.rpc(
+    "get_customer_count_by_age_group",
+    {
+      p_member_id: memberId,
+    },
+  );
+
+  if (error) throw error;
+  return data as { age_group: AgeGroup; gender: Gender; count: number }[];
+}
+
+export async function fetchCustomerCountByPeriod({
+  memberId,
+  pivotDate,
+  granularity,
+}: {
+  memberId: string;
+  pivotDate: string;
+  granularity: Granularity;
+}) {
+  const { data, error } = await supabase.rpc("get_customer_count_by_period", {
+    p_member_id: memberId,
+    p_pivot_date: pivotDate,
+    p_granularity: granularity,
+  });
+
+  if (error) throw error;
+  return data as PeriodBucket[];
 }

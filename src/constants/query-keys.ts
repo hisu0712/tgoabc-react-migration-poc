@@ -17,14 +17,28 @@ export const QUERY_KEYS = {
       keyword,
       designerId,
     ],
-    memberCount: (memberId: string, keyword?: string, designerId?: number) => [
-      "customer",
-      "count",
-      memberId,
-      keyword,
-      designerId,
-    ],
+    memberCount: (
+      memberId: string,
+      keyword?: string,
+      designerId?: number,
+      since?: string,
+    ) => ["customer", "count", memberId, keyword, designerId, since],
     byId: (customerId: string) => ["customer", customerId],
+    countByGender: (memberId: string) => [
+      "customer",
+      "countByGender",
+      memberId,
+    ],
+    countByAgeGroup: (memberId: string) => [
+      "customer",
+      "countByAgeGroup",
+      memberId,
+    ],
+    countByPeriod: (
+      memberId: string,
+      pivotDate: string,
+      granularity: string,
+    ) => ["customer", "countByPeriod", memberId, pivotDate, granularity],
   },
   designer: {
     all: ["designer"],
@@ -42,12 +56,16 @@ export const QUERY_KEYS = {
       personalType,
     ],
     memberList: (memberId: string) => ["analysis", "memberList", memberId],
-    count: (memberId?: string, customerId?: string, personalType?: string) => [
-      "analysis",
-      "count",
-      memberId,
-      customerId,
-      personalType,
-    ],
+    count: (
+      memberId?: string,
+      customerId?: string,
+      personalType?: string,
+      since?: string,
+    ) => ["analysis", "count", memberId, customerId, personalType, since],
+    countByPeriod: (
+      memberId: string,
+      pivotDate: string,
+      granularity: string,
+    ) => ["analysis", "countByPeriod", memberId, pivotDate, granularity],
   },
 };
