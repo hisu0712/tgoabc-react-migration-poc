@@ -20,9 +20,9 @@ JSP만의 한계가 아니라, 프론트엔드 빌드/컴포넌트 생태계가 
 
 | 문제 | Before (JSP) | After (React) |
 |---|---|---|
-| 명령형 DOM 조작 (문제 3) | `dataStr` 문자열 조립 후 `.html()` 삽입<img width="1130" height="672" alt="image" src="https://github.com/user-attachments/assets/a9df4269-f24c-4d64-9deb-4c25b79a13ae" />| `.map()` + 타입 있는 컴포넌트 반환<img width="655" height="393" alt="image" src="https://github.com/user-attachments/assets/f9a0b0f8-59cd-42bc-900a-16080856708e" />|
-| 전역 UI 부재 (문제 4) | 페이지마다 모달 `<div>` 하드코딩<img width="1026" height="567" alt="image" src="https://github.com/user-attachments/assets/42138543-702c-4766-a1da-52f83e15c9cc" />| `ModalProvider` 하나로 전역 관리<img width="628" height="328" alt="image" src="https://github.com/user-attachments/assets/2e3179a9-72c4-40a5-88fc-cd096becab1e" /> |
-| 비동기 상태 수동 관리 (문제 5) | `pageState.loading`/`hasMore` 수동 관리<img width="857" height="484" alt="image" src="https://github.com/user-attachments/assets/73cb2b76-ae65-4efd-a08c-5283d97a5921" />| `useInfiniteQuery`가 상태를 선언적으로 제공<img width="942" height="627" alt="image" src="https://github.com/user-attachments/assets/b07ef149-6dc2-472d-b3fd-207f0b712535" /> |
+| 명령형 DOM 조작 (문제 3) | `dataStr` 문자열 조립 후 `.html()` 삽입<img width="400" alt="image" src="https://github.com/user-attachments/assets/a9df4269-f24c-4d64-9deb-4c25b79a13ae" />| `.map()` + 타입 있는 컴포넌트 반환<img width="400" alt="image" src="https://github.com/user-attachments/assets/f9a0b0f8-59cd-42bc-900a-16080856708e" />|
+| 전역 UI 부재 (문제 4) | 페이지마다 모달 `<div>` 하드코딩<img width="400" alt="image" src="https://github.com/user-attachments/assets/42138543-702c-4766-a1da-52f83e15c9cc" />| `ModalProvider` 하나로 전역 관리<img width="400" alt="image" src="https://github.com/user-attachments/assets/2e3179a9-72c4-40a5-88fc-cd096becab1e" /> |
+| 비동기 상태 수동 관리 (문제 5) | `pageState.loading`/`hasMore` 수동 관리<img width="400" alt="image" src="https://github.com/user-attachments/assets/73cb2b76-ae65-4efd-a08c-5283d97a5921" />| `useInfiniteQuery`가 상태를 선언적으로 제공<img width="400" alt="image" src="https://github.com/user-attachments/assets/b07ef149-6dc2-472d-b3fd-207f0b712535" /> |
 
 ## 제안
 
@@ -46,7 +46,6 @@ JSP만의 한계가 아니라, 프론트엔드 빌드/컴포넌트 생태계가 
 
 - [ ] Playwright로 핵심 시나리오(정상 플로우 + 권한 없는 접근 차단) 자동 검증 통과
 - [ ] Vercel 배포 후 Sentry로 크리티컬 에러 없이 일정 기간 운영 확인
-- [ ] 커스텀 백엔드 서버 없이 Supabase만으로 인증·데이터·권한(RLS) 요구사항 충족 확인
       
 ## PoC 범위
 
@@ -81,12 +80,29 @@ JSP만의 한계가 아니라, 프론트엔드 빌드/컴포넌트 생태계가 
 **폴더 구조**: 기능 단위가 아닌 타입(계층) 단위로 구성 — `pages/`(화면), `hooks/queries·mutations/`(서버 상태), `store/`(클라이언트 상태), `api/`(Supabase 쿼리)로 관심사 분리.
 
 ## 트레이드오프 / 고민 지점
-(기술적으로 고민했던 지점 3~4개. 예: 공유 링크 읽기는 SECURITY DEFINER RPC로 컬럼 노출 차단, 쓰기는 RLS만으로 충분해 client update — "왜 이렇게 결정했는지"가 드러나는 구체적 사례 위주)
+### 1. 회원/고객 역할 분기 — 신원 검증(app_metadata)과 세션 모드(activeRole)의 분리
 
-## 마이그레이션 전략
-(전면 재작성 vs 점진적(Strangler Fig) 중 어느 쪽을 제안했는지, 그 이유와 예상 일정)
+한 계정이 회원과 고객 역할을 동시에 가질 수 있어(회원이 고객을 등록하거나, 고객이 회원으로 가입도 가능), 로그인 세션 존재만으로는 "지금 회원으로 들어온 건지 고객으로 들어온 건지" 구분할 수 없었다.
 
-(리스크 및 완화: 진행 시 예상되는 리스크와 대응 방안. 예: 팀 러닝커브, 병행 운영 기간 부담, 데이터 정합성 리스크 등)
+- **신원 검증**: 가입 시점에 Edge Function이 `service_role`로 JWT의 `app_metadata.roles`에 역할을 기록(`handle-role-signup`). 프론트에서 조작 불가능해 "이 계정이 실제로 그 역할 자격이 있는지"를 검증하는 신뢰 기준으로 사용.
+- **세션 모드 분기**: `roles`가 배열이라 한 계정이 여러 역할을 동시에 가질 수 있어, 로그인 직후 라우터 가드가 어디로 보낼지 `roles`만으로는 결정할 수 없었다. 로그인 성공 시점에 클라이언트 로컬 상태(`activeRole`)로 "이번 세션에서 어떤 역할로 들어왔는지"를 별도 기록해 해결.
+- **activeRole을 서버가 아닌 로컬에 둔 이유**: 서버(계정 단위)에 저장하면 여러 기기/세션이 같은 계정을 공유하므로, 한 기기의 회원 로그인이 다른 기기의 고객 로그인 상태에 영향을 줄 수 있다. 기기/세션 단위로 분리하기 위해 로컬 상태로 유지했다.
+- 로컬 상태를 그대로 신뢰하지 않고, 서버가 검증한 `roles`에 포함된 값일 때만 유효한 `activeRole`로 인정해 위변조를 차단한다.
+
+### 2. 고객 등록 — 독립 개체로서의 고객과 N:M 매핑, RLS 대신 Edge Function
+
+고객은 특정 회원에게 종속된 존재가 아니라, 여러 회원이 각자 등록(같은 이메일로 식별)할 수 있는 독립적인 개체로 설계했다. 이 때문에 "고객 등록"은 단순한 목록 추가가 아니라, 필요 시 새로운 Auth 유저를 만들고 회원-고객 관계를 별도로 연결하는 작업이 된다.
+
+- **N:M 관계**: `customer` 테이블에 `member_id`를 두지 않고, 별도의 `member_customer_mapping` 테이블로 회원-고객 관계를 연결했다. 이미 존재하는 고객(이메일로 판별)이면 매핑만 추가하고, 회원이 목록에서 고객을 "삭제"해도 매핑만 끊길 뿐 고객 자신(Auth 계정, 데이터)은 유지된다.
+- **여러 테이블에 걸친 비즈니스 로직**: 고객 존재 확인 → (신규 시) Auth 유저 생성 → `customer` insert → `member_customer_mapping` insert까지, 여러 테이블을 가로지르는 하나의 트랜잭션성 로직이라 프론트에 흩어놓지 않고 서버(Edge Function) 한 곳에서 원자적으로 처리했다.
+- **의도적으로 열지 않은 INSERT RLS**: 매핑으로 연결된 회원에게 customer insert 권한을 RLS로 줄 수도 있었지만, 그러면 회원이 고객 정보를 임의로 조작할 위험이 생긴다. 이를 막기 위해 insert는 Edge Function(service_role) 경로로만 허용했다.
 
 ## 결과 / 다음 단계
-(제안이 승인되어 진행 중인지, 검토 중인지, 거절되었다면 그 자체로 "기술 제안을 코드로 증명했다"는 포인트로 마무리 — 현재 상태를 솔직하게)
+
+개발 총괄 팀장에게 PoC를 공유해 검토받았다. 프론트엔드 생태계 도입 방향은 긍정적으로 평가받았으나, 현재 운영 중인 앱을 곧바로 마이그레이션하기엔 조직 리소스 제약이 크다는 판단이 나왔다.
+
+- 현재 앱은 원래 Java 백엔드 2명 + 퍼블리셔 2명 + 디자이너 1명 규모로 개발됐다.
+- 현재 가용 인력은 프론트엔드 1명(주니어) + 퍼블리셔 1명이고, 조직 자체도 Java 백엔드 중심이다.
+- 이 격차로 운영 중인 앱을 바로 전환하는 건 리스크가 크다고 판단해, **상대적으로 단순한 회사 홈페이지를 먼저 마이그레이션 대상으로 선정**하기로 했다.
+
+**다음 단계**: 홈페이지 마이그레이션으로 실제 운영 환경에서의 전환 경험을 먼저 쌓고, 그 결과를 바탕으로 이 앱(tgoabc)의 마이그레이션 여부와 전략(전면 재작성 vs 점진적)을 재검토한다.
