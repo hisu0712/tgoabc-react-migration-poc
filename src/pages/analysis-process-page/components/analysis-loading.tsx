@@ -20,7 +20,7 @@ export default function AnalysisLoading() {
         </div>
 
         <div className="flex justify-center">
-          <div className="relative aspect-square h-[35vh] max-w-[70vw] justify-center">
+          <div className="relative aspect-square w-[80%] justify-center">
             <img
               src={loadingImage}
               alt="촬영하는 캐릭터 이미지"
