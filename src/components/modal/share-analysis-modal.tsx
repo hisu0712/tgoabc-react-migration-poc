@@ -60,15 +60,17 @@ export default function ShareAnalysisModal() {
 
         <DialogTitle>진단 결과 공유하기</DialogTitle>
         <DialogDescription>
-          QR 코드 또는 링크로 결과를 전달할 수 있어요. 링크는 7일간 유효합니다
+          QR 코드 또는 링크로 결과를 전달할 수 있어요.
+          <br />
+          링크는 7일간 유효합니다
         </DialogDescription>
 
-        <div className="flex gap-2">
+        <div className="flex min-w-0 gap-2">
           <input
             type="text"
             readOnly
             value={shareUrl}
-            className="text-muted-foreground min-w-0 flex-1 rounded-md border px-3 text-sm"
+            className="text-muted-foreground min-w-0 flex-1 truncate rounded-md border px-3 text-sm"
           />
           <Button
             type="button"
