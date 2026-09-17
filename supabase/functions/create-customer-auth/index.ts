@@ -55,12 +55,84 @@ Deno.serve(async (req) => {
 
   const memberId = user.id;
 
-  // 2) member 테이블에서 이메일로 기존 유저 조회 (이미 회원인 사람인 경우)
   const supabaseAdmin = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
 
+  // 2) 이미 존재하는 고객인지 확인 (email 중복 확인)
+  const { data: existingCustomer, error: findCustomerError } = await supabaseAdmin
+    .from("customer")
+    .select("id")
+    .eq("email", email)
+    .maybeSingle();
+
+  if (findCustomerError) {
+    console.error("customer 조회 실패:", findCustomerError);
+    return new Response(
+      JSON.stringify({ error: "고객 정보 조회 중 오류가 발생했습니다." }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  // 3) 이미 존재하는 고객이면 매핑만 확인/추가하고 종료 (customer insert 스킵)
+  if (existingCustomer) {
+    const customerId = existingCustomer.id;
+
+    const { data: existingMapping, error: findMappingError } = await supabaseAdmin
+      .from("member_customer_mapping")
+      .select("id")
+      .eq("customer_id", customerId)
+      .eq("member_id", memberId)
+      .maybeSingle();
+
+    if (findMappingError) {
+      console.error("mapping 조회 실패:", findMappingError);
+      return new Response(
+        JSON.stringify({ error: "고객 매핑 조회 중 오류가 발생했습니다." }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (existingMapping) {
+      return new Response(
+        JSON.stringify({ customerId, isAlreadyExists: true }),
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      );
+    }
+
+    const { error: insertMappingError } = await supabaseAdmin
+      .from("member_customer_mapping")
+      .insert({
+        member_id: memberId,
+        customer_id: customerId,
+        designer_id: designerId ?? null,
+      });
+
+    if (insertMappingError) {
+      console.error("mapping insert 실패:", insertMappingError);
+      return new Response(
+        JSON.stringify({ error: "고객 매핑 중 오류가 발생했습니다." }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    return new Response(
+      JSON.stringify({ customerId, isAlreadyExists: false }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
+  }
+
+  // 4) member 테이블에서 이메일로 기존 유저 조회 (이미 회원인 사람인 경우)
   const { data: existingMember, error: memberError } = await supabaseAdmin // 여기서 조회하려는 이메일은 호출한 회원 본인의 이메일이 아니라 새로 등록하려는 고객의 이메일 (RLS 정책 우회)
     .from("member")
     .select("id")
@@ -84,7 +156,7 @@ Deno.serve(async (req) => {
   if (existingMember) {
     customerId = existingMember.id;
   } else {
-    // 3) 관리자 권한으로 신규 Auth 고객 생성
+    // 5) 관리자 권한으로 신규 Auth 고객 생성
     const { data: newUser, error: createUserError } =
       await supabaseAdmin.auth.admin.createUser({
         email,
@@ -106,7 +178,7 @@ Deno.serve(async (req) => {
     isNewAuthUser = true;
   }
 
-  // 4) customer 테이블 insert
+  // 6) customer 테이블 insert
   const { error: insertCustomerError } = await supabaseAdmin
     .from("customer")
     .insert({
@@ -133,7 +205,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  // 5) member_customer_mapping insert
+  // 7) member_customer_mapping insert
   const { error: insertMappingError } = await supabaseAdmin
     .from("member_customer_mapping")
     .insert({
@@ -153,7 +225,7 @@ Deno.serve(async (req) => {
     );
   }
 
-  return new Response(JSON.stringify({ customerId }), {
+  return new Response(JSON.stringify({ customerId, isAlreadyExists: false }), {
     status: 200,
     headers: { ...corsHeaders, "Content-Type": "application/json" },
   });

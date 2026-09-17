@@ -72,13 +72,14 @@ export default function CustomerNewPage() {
         });
       },
       onError: (error) => {
-        toastError(error.message || "고객 등록에 실패했습니다.");
+        toastError(
+          error.message || "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        );
       },
     });
 
   const onSubmit = (values: CustomerFormValues) => {
     createCustomer({
-      memberId: session!.user.id,
       ...values,
       designerId:
         values.designerId === "none" ? null : Number(values.designerId),

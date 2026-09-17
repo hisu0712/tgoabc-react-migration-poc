@@ -1,4 +1,8 @@
-import { AuthError, PostgrestError } from "@supabase/supabase-js";
+import {
+  AuthError,
+  FunctionsHttpError,
+  PostgrestError,
+} from "@supabase/supabase-js";
 
 const AUTH_ERROR_MESSAGE_MAP: Record<string, string> = {
   email_exists: "이미 사용 중인 이메일입니다.",
@@ -42,4 +46,12 @@ export function isPostgrestError(error: unknown): error is PostgrestError {
     "message" in error &&
     "details" in error
   );
+}
+
+export async function unwrapEdgeFunctionError(error: unknown) {
+  if (error instanceof FunctionsHttpError) {
+    const body = await error.context.json().catch(() => null);
+    return body?.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.";
+  }
+  return generateErrorMessage(error);
 }

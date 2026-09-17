@@ -1,3 +1,4 @@
+import { unwrapEdgeFunctionError } from "@/lib/error";
 import { supabase } from "@/lib/supabase";
 import type {
   AgeGroup,
@@ -38,66 +39,26 @@ export async function fetchCustomerWithDesigner({
 }
 
 export async function createCustomer({
-  memberId,
   name,
   email,
   birthDate,
   gender,
   designerId,
 }: {
-  memberId: string;
   name: string;
   email: string;
   birthDate: string;
   gender: Gender;
   designerId: number | null;
 }): Promise<{ customerId: string; isAlreadyExists: boolean }> {
-  // 1. 이미 존재하는 고객인지 확인 (email 중복 확인)
-  const { data: existingCustomer, error: findCustomerError } = await supabase
-    .from("customer")
-    .select("id")
-    .eq("email", email)
-    .maybeSingle();
-
-  if (findCustomerError) throw findCustomerError;
-
-  if (existingCustomer) {
-    // *이미 있는 고객이면, 이 회원과의 mapping 중복 체크
-    const { data: existingMapping, error: findMappingError } = await supabase
-      .from("member_customer_mapping")
-      .select("id")
-      .eq("customer_id", existingCustomer.id)
-      .eq("member_id", memberId)
-      .maybeSingle();
-
-    if (findMappingError) throw findMappingError;
-
-    if (existingMapping) {
-      return { customerId: existingCustomer.id, isAlreadyExists: true };
-    }
-
-    // *고객은 있지만 이 회원과의 매핑이 없는 경우 (-> mapping만 추가)
-    const { error: insertMappingError } = await supabase
-      .from("member_customer_mapping")
-      .insert({
-        member_id: memberId,
-        customer_id: existingCustomer.id,
-        designer_id: designerId,
-      });
-
-    if (insertMappingError) throw insertMappingError;
-
-    return { customerId: existingCustomer.id, isAlreadyExists: false };
-  }
-
-  // 2. 신규 고객: auth 생성 + customer insert + mapping insert
   const { data: result, error: createError } = await supabase.functions.invoke<{
     customerId: string;
+    isAlreadyExists: boolean;
   }>("create-customer-auth", {
     body: { email, name, birthDate, gender, designerId },
   });
 
-  if (createError) throw createError;
+  if (createError) throw new Error(await unwrapEdgeFunctionError(createError));
 
   return { customerId: result!.customerId, isAlreadyExists: false };
 }
