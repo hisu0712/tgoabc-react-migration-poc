@@ -6,7 +6,7 @@ export default function ExpiredError() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-background fixed inset-0 flex flex-col items-center justify-center gap-10 px-6 text-center">
+    <div className="global-layout fixed inset-0 flex flex-col items-center justify-center gap-10 text-center">
       <p className="flex flex-col text-xl font-bold">
         <span>앗! 받으셨던</span>
         <span>분석 결과가 만료되었어요</span>

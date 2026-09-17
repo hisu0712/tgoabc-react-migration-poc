@@ -194,6 +194,7 @@ export default function MemberShopPage() {
         disabled={isUpdateShopPending}
         form="shop-form"
         type="submit"
+        loading={isUpdateShopPending}
       >
         저장
       </BottomButton>

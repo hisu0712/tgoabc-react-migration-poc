@@ -111,7 +111,7 @@ export default function AnalysisPhotoPage() {
         </div>
 
         <div
-          className="relative mb-10 aspect-[1/1.15] h-[55vh] max-h-[70vh]"
+          className="relative mb-10 h-[55vh] max-h-[70vh] w-full"
           onClick={() => count === 0 && fileInputRef.current?.click()}
         >
           <div className="flex h-full w-full justify-center">
@@ -119,7 +119,7 @@ export default function AnalysisPhotoPage() {
               src={faceImage?.previewUrl || defaultImage}
               alt="촬영된 얼굴 이미지"
               className={cn(
-                "rounded-[50%] object-cover",
+                "h-full w-full rounded-[50%] object-cover",
                 faceImage && "outline-primary outline-4",
               )}
             />

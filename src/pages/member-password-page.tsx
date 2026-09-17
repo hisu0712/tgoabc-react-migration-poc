@@ -88,6 +88,7 @@ export default function MemberPasswordPage() {
         form="change-password-form"
         disabled={isChangePasswordPending}
         type="submit"
+        loading={isChangePasswordPending}
       >
         변경하기
       </BottomButton>

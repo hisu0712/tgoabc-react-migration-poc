@@ -132,10 +132,10 @@
 }
 
 @utility global-layout {
-  @apply min-h-[100dvh] px-6 md:min-h-full;
+  @apply min-h-[100dvh] px-4 md:min-h-full;
 }
 @utility layout-px {
-  @apply px-6;
+  @apply px-4;
 }
 @utility screen-h {
   @apply min-h-[100dvh] md:min-h-full;

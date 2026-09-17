@@ -15,7 +15,7 @@ import CustomerFormFields from "@/components/fields/customer-form-fields";
 import DeleteUserButton from "@/components/delete-user-button";
 import { CUSTOMER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
-import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
+import { toastError, toastNoChange, toastSuccess } from "@/lib/toast";
 
 export function PortalInfoPage() {
   const session = useSession();
@@ -95,6 +95,7 @@ export function PortalInfoPage() {
       <BottomButton
         disabled={isUpdateCustomerPending}
         form="update-customer-form"
+        loading={isUpdateCustomerPending}
       >
         저장
       </BottomButton>

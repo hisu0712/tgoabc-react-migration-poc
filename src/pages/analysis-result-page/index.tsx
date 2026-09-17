@@ -103,7 +103,7 @@ export default function AnalysisResultPage() {
             <button
               type="button"
               onClick={() => openLinkCustomerModal(analysisId)}
-              className="text-primary bg-background fixed right-6 bottom-24 z-20 flex size-15 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full shadow-lg"
+              className="text-primary bg-background fixed right-4 bottom-18 z-20 flex size-15 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-full shadow-lg"
             >
               <UserPlusIcon className="ml-0.5 size-6" strokeWidth={1.8} />
               <span className="text-xs font-medium">추가</span>

@@ -10,5 +10,5 @@ export default function GlobalLayout() {
 }
 
 export function Layout({ className, children }: React.ComponentProps<"div">) {
-  return <div className={cn("screen-h px-6", className)}>{children}</div>;
+  return <div className={cn("screen-h px-4", className)}>{children}</div>;
 }

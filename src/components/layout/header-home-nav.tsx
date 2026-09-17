@@ -11,7 +11,7 @@ export default function HeaderHomeNav({ className }: { className?: string }) {
       )}
     >
       <div className="flex h-17 items-center justify-between">
-        <Logo className="w-37" />
+        <Logo className="w-33" />
         <div className="flex items-center gap-2.5">
           <ThemeButton />
         </div>
