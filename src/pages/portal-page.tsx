@@ -46,7 +46,7 @@ export default function PortalPage() {
 
       <div className="mb-4 flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
+          <p className="mb-0.5 font-medium">오늘의 분석을 시작해보세요</p>
           {isFetchCustomerLoading ? (
             <Skeleton className="h-8 w-28" />
           ) : (
