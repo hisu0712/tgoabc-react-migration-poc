@@ -104,14 +104,14 @@ export default function AnalysisPhotoPage() {
       <HeaderNav className="mb-0! bg-transparent! backdrop-blur-none!" />
 
       <div className="flex flex-1 flex-col items-center">
-        <div className="mb-4 h-7 text-xl font-semibold">
+        <div className="mb-3 h-7 text-lg font-semibold">
           {count > 0 && <span>3초 뒤 촬영이 시작돼요</span>}
           {/* <span>가이드 영역에 얼굴을 맞춰주세요</span> */}
           {/* <span>더 가까이 촬영해 주세요</span> */}
         </div>
 
         <div
-          className="relative mb-10 h-[55vh] max-h-[70vh] w-full"
+          className="relative mb-8 h-[55vh] max-h-[70vh] w-full"
           onClick={() => count === 0 && fileInputRef.current?.click()}
         >
           <div className="flex h-full w-full justify-center">
@@ -140,7 +140,7 @@ export default function AnalysisPhotoPage() {
             </span>
           )}
         </div>
-        <div className="text-lg font-medium">
+        <div className="font-medium">
           얼굴의 방향이 <span className="text-destructive">정면</span>을 향하게
           찍어주세요
         </div>

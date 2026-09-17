@@ -24,7 +24,7 @@ export default function AnalysisLoading() {
             <img
               src={loadingImage}
               alt="촬영하는 캐릭터 이미지"
-              className="absolute left-1/2 block h-full w-full -translate-x-1/2 object-contain"
+              className="absolute left-1/2 block w-[98%] h-[98%] -translate-x-1/2 object-contain"
             />
             <svg
               viewBox="0 0 120 120"
