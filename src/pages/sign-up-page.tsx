@@ -64,7 +64,7 @@ export default function SignUpPage() {
     },
   });
 
-  const { mutate: completeMemberSignUp, isPending: isCompleteMemberSignUp } =
+  const { mutate: memberSignUp, isPending: isMemberSignUpPending } =
     useCompleteMemberSignUp({
       onSuccess: () => {
         setActiveRole("member");
@@ -102,7 +102,7 @@ export default function SignUpPage() {
       return;
     }
 
-    completeMemberSignUp({
+    memberSignUp({
       name: values.name,
       phone: values.phone,
       shopName: values.shopName,
@@ -133,7 +133,7 @@ export default function SignUpPage() {
                 <FormLabel required>이름</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isCompleteMemberSignUp}
+                    disabled={isMemberSignUpPending}
                     placeholder="이름 입력"
                     {...field}
                   />
@@ -156,16 +156,14 @@ export default function SignUpPage() {
                         disabled={
                           isVerifyOtp ||
                           isSignInWithOtpPending ||
-                          isCompleteMemberSignUp
+                          isMemberSignUpPending
                         }
                         placeholder="example@abc.com"
                         {...field}
                       />
                     </FormControl>
                     <Button
-                      disabled={
-                        isSignInWithOtpPending || isCompleteMemberSignUp
-                      }
+                      disabled={isSignInWithOtpPending || isMemberSignUpPending}
                       type="button"
                       variant={"link"}
                       className="-transform-y-1/2 absolute top-0 right-0 h-full"
@@ -188,12 +186,12 @@ export default function SignUpPage() {
                     onChange={(e) => setOtp(e.target.value)}
                     inputMode="numeric"
                     maxLength={6}
-                    disabled={isVerifyOtpPending || isCompleteMemberSignUp}
+                    disabled={isVerifyOtpPending || isMemberSignUpPending}
                     placeholder="인증번호 6자리 입력"
                   />
                 </FormControl>
                 <Button
-                  disabled={isVerifyOtpPending || isCompleteMemberSignUp}
+                  disabled={isVerifyOtpPending || isMemberSignUpPending}
                   type="button"
                   variant={"link"}
                   className="-transform-y-1/2 absolute top-0 right-0"
@@ -214,7 +212,7 @@ export default function SignUpPage() {
               <FormItem>
                 <FormLabel required>휴대전화</FormLabel>
                 <FormControl>
-                  <PhoneInput disabled={isCompleteMemberSignUp} {...field} />
+                  <PhoneInput disabled={isMemberSignUpPending} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -230,7 +228,7 @@ export default function SignUpPage() {
                   <FormLabel required>비밀번호</FormLabel>
                   <FormControl>
                     <PasswordInput
-                      disabled={isCompleteMemberSignUp}
+                      disabled={isMemberSignUpPending}
                       placeholder="비밀번호 입력"
                       {...field}
                     />
@@ -246,7 +244,7 @@ export default function SignUpPage() {
                 <FormItem>
                   <FormControl>
                     <PasswordInput
-                      disabled={isCompleteMemberSignUp}
+                      disabled={isMemberSignUpPending}
                       placeholder="비밀번호 재입력"
                       {...field}
                     />
@@ -265,7 +263,7 @@ export default function SignUpPage() {
                 <FormLabel required>매장명</FormLabel>
                 <FormControl>
                   <Input
-                    disabled={isCompleteMemberSignUp}
+                    disabled={isMemberSignUpPending}
                     placeholder="매장명 입력"
                     {...field}
                   />
@@ -278,9 +276,10 @@ export default function SignUpPage() {
       </Form>
 
       <BottomButton
-        disabled={isCompleteMemberSignUp}
+        disabled={isMemberSignUpPending}
         form="sign-up-form"
         type="submit"
+        loading={isMemberSignUpPending}
       >
         다음
       </BottomButton>

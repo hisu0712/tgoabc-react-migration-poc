@@ -86,6 +86,7 @@ export default function MemberInfoPage() {
         disabled={isUpdateMemberPending}
         form="member-info-form"
         type="submit"
+        loading={isUpdateMemberPending}
       >
         수정
       </BottomButton>

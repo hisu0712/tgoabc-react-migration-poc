@@ -110,6 +110,7 @@ export default function CustomerNewPage() {
       <BottomButton
         disabled={isCreateCustomerPending}
         form="create-customer-form"
+        loading={isCreateCustomerPending}
       >
         저장
       </BottomButton>

@@ -57,6 +57,7 @@ export default function ResetPasswordPage() {
         form="reset-password-form"
         disabled={isUpdatePasswordPending}
         type="submit"
+        loading={isUpdatePasswordPending}
       >
         적용하기
       </BottomButton>
