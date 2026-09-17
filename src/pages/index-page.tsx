@@ -57,7 +57,9 @@ export default function IndexPage() {
 
       <div className="mb-5 flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="mb-0.5 text-sm font-medium">오늘의 분석을 시작해보세요</p>
+          <p className="mb-0.5 text-sm font-medium">
+            오늘의 분석을 시작해보세요
+          </p>
           <div className="mb-1">
             {isFetchShopLoading ? (
               <Skeleton className="h-8 w-25" />
@@ -114,7 +116,7 @@ export default function IndexPage() {
       >
         <img src={icoAddCustomer} className="size-9" />
         <div>
-          <div className="leading-tight font-medium">고객 추가하기</div>
+          <div className="leading-tight font-semibold">고객 추가하기</div>
           <div className="text-sm opacity-80">빠른 고객 정보 입력 후 등록!</div>
         </div>
       </LinkCard>
@@ -122,13 +124,13 @@ export default function IndexPage() {
       <div className="mb-5 grid grid-cols-2 gap-3">
         <Card onClick={toastComingSoon} className="pr-0 pb-0">
           <div>
-            <div className="text-primary mb-1 text-xl leading-tight font-semibold tracking-tight">
+            <div className="text-primary mb-1 text-xl leading-tight font-semibold tracking-tighter">
               <div>두피 분석</div>
               <div>바로가기</div>
             </div>
-            <div className="text-muted-foreground">바로 시작하기</div>
+            <div className="text-muted-foreground text-sm">바로 시작하기</div>
           </div>
-          <div className="">
+          <div>
             <img
               className="ml-auto h-33"
               src={memuScalp}
@@ -138,11 +140,13 @@ export default function IndexPage() {
         </Card>
         <LinkCard to={"/analysis/photo"} className="pr-0 pb-0">
           <div>
-            <div className="text-feature-2 mb-1 text-xl leading-tight font-semibold tracking-tight">
+            <div className="text-feature-2 mb-1 text-xl leading-tight font-semibold tracking-tighter">
               <div>퍼스널 컬러</div>
               <div>바로가기</div>
             </div>
-            <div className="text-muted-foreground">나의 퍼스널 컬러는?</div>
+            <div className="text-muted-foreground text-sm">
+              나의 퍼스널 컬러는?
+            </div>
           </div>
           <div className="">
             <img
@@ -166,7 +170,7 @@ export default function IndexPage() {
               alt="스캐너 메뉴 이미지"
             />
           </div>
-          <span className="text-xs font-medium">스캐너</span>
+          <span className="text-sm font-medium">스캐너</span>
         </div>
         <div
           onClick={toastComingSoon}
@@ -179,7 +183,7 @@ export default function IndexPage() {
               alt="메시지 메뉴 이미지"
             />
           </div>
-          <span className="text-xs font-medium">메시지</span>
+          <span className="text-sm font-medium">메시지</span>
         </div>
         <Link to={"/designers"} className="flex flex-col items-center gap-1">
           <div className="bg-muted rounded-3xl p-1">
@@ -189,7 +193,7 @@ export default function IndexPage() {
               alt="디자이너 메뉴 이미지"
             />
           </div>
-          <span className="text-xs font-medium">디자이너</span>
+          <span className="text-sm font-medium">디자이너</span>
         </Link>
         <div
           onClick={toastComingSoon}
@@ -202,7 +206,7 @@ export default function IndexPage() {
               alt="앱 사용법 메뉴 이미지"
             />
           </div>
-          <span className="text-xs font-medium">앱 사용법</span>
+          <span className="text-sm font-medium">앱 사용법</span>
         </div>
       </div>
 
