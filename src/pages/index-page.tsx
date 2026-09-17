@@ -57,7 +57,7 @@ export default function IndexPage() {
 
       <div className="mb-5 flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="mb-0.5">오늘의 분석을 시작해보세요</p>
+          <p className="mb-1 text-sm font-medium">오늘의 분석을 시작해보세요</p>
           <div className="mb-1">
             {isFetchShopLoading ? (
               <Skeleton className="h-8 w-25" />
@@ -90,7 +90,7 @@ export default function IndexPage() {
         ) : (
           <div
             onClick={handleShopEditClick}
-            className="relative size-18 cursor-pointer"
+            className="relative size-19 cursor-pointer"
           >
             <img
               className="h-full w-full overflow-hidden rounded-full object-cover"
@@ -166,7 +166,7 @@ export default function IndexPage() {
               alt="스캐너 메뉴 이미지"
             />
           </div>
-          <span className="text-sm">스캐너</span>
+          <span className="text-xs font-medium">스캐너</span>
         </div>
         <div
           onClick={toastComingSoon}
@@ -179,7 +179,7 @@ export default function IndexPage() {
               alt="메시지 메뉴 이미지"
             />
           </div>
-          <span className="text-sm">메시지</span>
+          <span className="text-xs font-medium">메시지</span>
         </div>
         <Link to={"/designers"} className="flex flex-col items-center gap-1">
           <div className="bg-muted rounded-3xl p-1">
@@ -189,7 +189,7 @@ export default function IndexPage() {
               alt="디자이너 메뉴 이미지"
             />
           </div>
-          <span className="text-sm">디자이너</span>
+          <span className="text-xs font-medium">디자이너</span>
         </Link>
         <div
           onClick={toastComingSoon}
@@ -202,7 +202,7 @@ export default function IndexPage() {
               alt="앱 사용법 메뉴 이미지"
             />
           </div>
-          <span className="text-sm">앱 사용법</span>
+          <span className="text-xs font-medium">앱 사용법</span>
         </div>
       </div>
 
