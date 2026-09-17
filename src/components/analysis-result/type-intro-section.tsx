@@ -47,12 +47,6 @@ export default function TypeIntroSection({
           </button>
         </div>
 
-        <img
-          className="absolute -right-1 bottom-0 hidden h-full"
-          src={image}
-          alt={`${PERSONAL_TYPE_LABEL[personalType]} 타입 이미지`}
-        />
-
         <Card className={cn("relative z-[2] bg-white/20 p-5", cardClassName)}>
           <ul className="mb-2 flex gap-2">
             {tags.map((tag) => (
