@@ -57,7 +57,7 @@ export default function IndexPage() {
 
       <div className="mb-5 flex items-center justify-between">
         <div className="flex flex-col">
-          <p className="mb-1 text-sm font-medium">오늘의 분석을 시작해보세요</p>
+          <p className="mb-0.5 text-sm font-medium">오늘의 분석을 시작해보세요</p>
           <div className="mb-1">
             {isFetchShopLoading ? (
               <Skeleton className="h-8 w-25" />
@@ -66,7 +66,7 @@ export default function IndexPage() {
                 to={"/members/info"}
                 className="text-primary flex items-center text-2xl font-bold"
               >
-                {shop?.name ? `${shop.name} 님` : "안녕하세요"}
+                {shop?.name ? `${shop.name}` : "안녕하세요"}
                 <ChevronRightIcon className="size-7" strokeWidth={1.5} />
               </Link>
             )}
