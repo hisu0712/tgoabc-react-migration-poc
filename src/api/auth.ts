@@ -1,3 +1,4 @@
+import { unwrapEdgeFunctionError } from "@/lib/error";
 import { supabase } from "@/lib/supabase";
 import type { UserType } from "@/types";
 
@@ -14,7 +15,7 @@ export async function signOut() {
 export async function deleteUser() {
   const { error } = await supabase.functions.invoke("delete-user");
 
-  if (error) throw error;
+  if (error) throw new Error(await unwrapEdgeFunctionError(error));
 }
 
 export async function signInWithPassword({
@@ -38,7 +39,7 @@ export async function findId({ name, phone }: { name: string; phone: string }) {
     body: { name, phone },
   });
 
-  if (error) throw error;
+  if (error) throw new Error(await unwrapEdgeFunctionError(error));
   return data;
 }
 
@@ -116,8 +117,7 @@ export async function completeCustomerSignIn({
     { body: { entryPoint: "customer" } },
   );
 
-  if (signupError) throw signupError;
-
+  if (signupError) throw new Error(await unwrapEdgeFunctionError(signupError));
   await supabase.auth.refreshSession(); // app_metadata 세션 반영
 }
 

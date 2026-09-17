@@ -17,8 +17,8 @@ export default function DeleteUserButton() {
       toastSuccess("회원 탈퇴가 완료되었습니다.");
       navigate(SIGN_IN_PATH, { replace: true });
     },
-    onError: () => {
-      toastError("회원 탈퇴 중 오류가 발생했습니다.");
+    onError: (error) => {
+      toastError(error.message || "회원 탈퇴 중 오류가 발생했습니다.");
     },
   });
 

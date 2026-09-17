@@ -13,7 +13,6 @@ import {
   customerSignInSchema,
 } from "@/schemas/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionsHttpError } from "@supabase/supabase-js";
 import { useCompleteCustomerSignIn } from "@/hooks/mutations/auth/use-complete-customer-sign-in";
 import { useSignInWithOtp } from "@/hooks/mutations/auth/use-sign-in-with-otp";
 import { generateErrorMessage } from "@/lib/error";
@@ -48,15 +47,10 @@ export default function SignInCustomerForm() {
     isPending: isCompleteCustomerSignInPending,
   } = useCompleteCustomerSignIn({
     onSuccess: () => setActiveRole("customer"),
-    onError: async (error) => {
-      if (error instanceof FunctionsHttpError) {
-        const body = await error.context.json().catch(() => null); // 파싱 실패 -> null
-        toastError(
-          body?.error ?? "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
-        );
-        return;
-      }
-      toastError(generateErrorMessage(error));
+    onError: (error) => {
+      toastError(
+        error.message || "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+      );
     },
   });
 
