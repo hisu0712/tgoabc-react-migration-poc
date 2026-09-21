@@ -2,11 +2,15 @@ import { signInWithOtp } from "@/api/auth";
 import type { UseMutationCallback } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
-export function useSignInWithOtp(callbacks?: UseMutationCallback) {
+type SignInWithOtpResponse = Awaited<ReturnType<typeof signInWithOtp>>;
+
+export function useSignInWithOtp(
+  callbacks?: UseMutationCallback<SignInWithOtpResponse>,
+) {
   return useMutation({
     mutationFn: signInWithOtp,
-    onSuccess: () => {
-      if (callbacks?.onSuccess) callbacks.onSuccess();
+    onSuccess: (data) => {
+      if (callbacks?.onSuccess) callbacks.onSuccess(data);
     },
     onError: (error) => {
       if (callbacks?.onError) callbacks.onError(error);
