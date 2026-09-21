@@ -33,12 +33,16 @@ export default function SignInCustomerForm() {
 
   const { mutate: signInWithOtp, isPending: isSignInWithOtpPending } =
     useSignInWithOtp({
-      onSuccess: () => {
+      onSuccess: (otp) => {
         setIsOtpSent(true);
-        toastSuccess("인증번호를 발송했습니다.");
+        toastSuccess(
+          otp ? `(POC) 인증번호: ${otp}` : "인증번호를 발송했습니다.",
+        );
       },
       onError: (error) => {
-        toastError(generateErrorMessage(error));
+        toastError(
+          error.message || "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        );
       },
     });
 
@@ -117,24 +121,23 @@ export default function SignInCustomerForm() {
             </FormItem>
           )}
         />
-        {/* 임시 주석 */}
-        {/* {isOtpSent && ( */}
-        <FormItem>
-          <FormControl>
-            <Input
-              value={otp}
-              onChange={
-                (e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6)) // \D: 숫자가 아닌 문자, g: 전역
-              }
-              inputMode="numeric"
-              maxLength={6}
-              disabled={isCompleteCustomerSignInPending}
-              placeholder="인증번호 6자리 입력"
-            />
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-        {/* )} */}
+        {isOtpSent && (
+          <FormItem>
+            <FormControl>
+              <Input
+                value={otp}
+                onChange={
+                  (e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6)) // \D: 숫자가 아닌 문자, g: 전역
+                }
+                inputMode="numeric"
+                maxLength={6}
+                disabled={isCompleteCustomerSignInPending}
+                placeholder="인증번호 6자리 입력"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
       </form>
 
       <Button

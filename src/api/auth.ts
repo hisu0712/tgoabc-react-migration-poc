@@ -86,6 +86,16 @@ export async function signInWithOtp({
     options: { shouldCreateUser }, // 회원: 유저 생성 가능, 고객: 이미 존재하는 고객 유저만 가능
   });
 
+  if (import.meta.env.VITE_POC_MODE === "true") {
+    const { data, error: otpError } = await supabase.functions.invoke(
+      "poc-get-otp",
+      { body: { email } },
+    );
+
+    if (otpError) throw new Error(await unwrapEdgeFunctionError(otpError));
+    return data.otp as string;
+  }
+
   if (error) throw error;
 }
 

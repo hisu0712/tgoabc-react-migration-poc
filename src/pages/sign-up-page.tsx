@@ -45,12 +45,16 @@ export default function SignUpPage() {
 
   const { mutate: signInWithOtp, isPending: isSignInWithOtpPending } =
     useSignInWithOtp({
-      onSuccess: () => {
+      onSuccess: (otp) => {
         setIsOtpSent(true);
-        toastSuccess("인증번호를 발송했습니다.");
+        toastSuccess(
+          otp ? `(POC) 인증번호: ${otp}` : "인증번호를 발송했습니다.",
+        );
       },
       onError: (error) => {
-        toastError(generateErrorMessage(error));
+        toastError(
+          error.message || "문제가 발생했습니다. 잠시 후 다시 시도해주세요.",
+        );
       },
     });
 
@@ -176,33 +180,32 @@ export default function SignUpPage() {
                 </FormItem>
               )}
             />
-            {/* 임시 주석 */}
-            {/* {isOtpSent && ( */}
-            <FormItem>
-              <div className="relative">
-                <FormControl>
-                  <Input
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    inputMode="numeric"
-                    maxLength={6}
+            {isOtpSent && (
+              <FormItem>
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      inputMode="numeric"
+                      maxLength={6}
+                      disabled={isVerifyOtpPending || isMemberSignUpPending}
+                      placeholder="인증번호 6자리 입력"
+                    />
+                  </FormControl>
+                  <Button
                     disabled={isVerifyOtpPending || isMemberSignUpPending}
-                    placeholder="인증번호 6자리 입력"
-                  />
-                </FormControl>
-                <Button
-                  disabled={isVerifyOtpPending || isMemberSignUpPending}
-                  type="button"
-                  variant={"link"}
-                  className="-transform-y-1/2 absolute top-0 right-0"
-                  onClick={onVerifyOtp}
-                >
-                  확인
-                </Button>
-              </div>
-              <FormMessage />
-            </FormItem>
-            {/* )} */}
+                    type="button"
+                    variant={"link"}
+                    className="-transform-y-1/2 absolute top-0 right-0"
+                    onClick={onVerifyOtp}
+                  >
+                    확인
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
           </div>
 
           <FormField
