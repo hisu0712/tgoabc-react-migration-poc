@@ -16,6 +16,7 @@
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-popover": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
+    "@sentry/react": "^10.75.1",
     "@supabase/supabase-js": "^2.111.0",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.83.0",
@@ -48,6 +49,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@sentry/vite-plugin": "^5.4.0",
     "@types/node": "^24.0.15",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
