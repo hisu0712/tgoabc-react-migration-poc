@@ -1,5 +1,5 @@
 import { Card } from "@/components/card";
-import memuScalp from "@/assets/menu_scalp.png";
+import memuScalp from "@/assets/menu_scalp.webp";
 import { Link, useParams } from "react-router";
 import {
   ChevronRightIcon,

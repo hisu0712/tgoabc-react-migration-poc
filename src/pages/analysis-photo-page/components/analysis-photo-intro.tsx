@@ -1,4 +1,4 @@
-import loadingImage from "@/assets/loading_ippu.gif";
+import captureAnimation from "@/assets/capture-animation.webp";
 import AnalysisPrivacyNotice from "@/components/analysis/analysis-privacy-notice";
 import { Layout } from "@/components/layout/global-layout";
 
@@ -19,7 +19,7 @@ export default function AnalysisPhotoIntro() {
         <div className="flex items-center justify-center">
           <img
             className="h-[35vh]"
-            src={loadingImage}
+            src={captureAnimation}
             alt="촬영하는 캐릭터 이미지"
           />
         </div>

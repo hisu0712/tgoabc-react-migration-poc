@@ -11,7 +11,7 @@ import { useSession } from "@/store/session";
 import { useShopsData } from "@/hooks/queries/shop/use-shops-data";
 import { Button } from "@/components/ui/button";
 import defaultShop from "@/assets/default-shop.png";
-import defaultUser from "@/assets/customer_profile__ippu.png";
+import defaultUser from "@/assets/customer_profile__ippu.webp";
 import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import type { ShopEntity } from "@/types";
 import useCustomerData from "@/hooks/queries/customer/use-customer-data";

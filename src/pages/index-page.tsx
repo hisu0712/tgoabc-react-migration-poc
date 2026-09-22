@@ -3,15 +3,15 @@ import { useOpenAlertModal } from "@/store/modals/alert-modal";
 import { useSession } from "@/store/session";
 import { BarChart2Icon, ChevronRightIcon, PlusIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router";
-import defaultShop from "@/assets/customer_profile__joa.png";
-import icoAddCustomer from "@/assets/ico_addCustomer.svg";
+import defaultShop from "@/assets/customer_profile__joa.webp";
+import icoAddCustomer from "@/assets/ico_addCustomer.webp";
 import icoHomeDesigner from "@/assets/memberhome_designer.png";
 import icoHomeMsg from "@/assets/memberhome_msg.png";
 import icoHomeScanner from "@/assets/memberhome_scanner.png";
 import icoHomeUse from "@/assets/memberhome_use.png";
 import { Card, CustomerCard, LinkCard } from "@/components/card";
-import memuScalp from "@/assets/menu_scalp.png";
-import memuPersonal from "@/assets/menu_personal.png";
+import memuScalp from "@/assets/menu_scalp.webp";
+import memuPersonal from "@/assets/menu_personal.webp";
 import {
   Carousel,
   CarouselContent,
