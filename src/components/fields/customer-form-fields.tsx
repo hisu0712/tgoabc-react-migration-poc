@@ -71,11 +71,11 @@ export default function CustomerFormFields({
         render={({ field }) => (
           <FormItem>
             <FormLabel required={!emailReadOnly}>이메일</FormLabel>
-            {!emailReadOnly && (
-              <FormHint>
-                고객 정보 식별을 위해 이메일을 정확히 입력해주세요.
-              </FormHint>
-            )}
+            <FormHint>
+              {emailReadOnly
+                ? "인증이 완료된 이메일은 변경할 수 없어요."
+                : "고객 정보 식별을 위해 이메일을 정확히 입력해주세요."}
+            </FormHint>
             <FormControl>
               {isLoading ? (
                 <FieldSkeleton />

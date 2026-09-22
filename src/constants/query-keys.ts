@@ -39,6 +39,11 @@ export const QUERY_KEYS = {
       pivotDate: string,
       granularity: string,
     ) => ["customer", "countByPeriod", memberId, pivotDate, granularity],
+    confirmedAt: (customerId: string) => [
+      "customer",
+      "confirmedAt",
+      customerId,
+    ],
   },
   designer: {
     all: ["designer"],

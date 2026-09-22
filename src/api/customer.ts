@@ -269,3 +269,12 @@ export async function fetchCustomerCountByPeriod({
   if (error) throw error;
   return data as PeriodBucket[];
 }
+
+export async function fetchCustomerConfirmedAt(customerId: string) {
+  const { data, error } = await supabase.rpc("get_customer_confirmed_at", {
+    p_customer_id: customerId,
+  });
+
+  if (error) throw error;
+  return data as string | null;
+}

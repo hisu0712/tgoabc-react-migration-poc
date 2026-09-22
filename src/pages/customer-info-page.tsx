@@ -19,7 +19,8 @@ import { useUpdateCustomerWithDesigner } from "@/hooks/mutations/customer/use-up
 import { Button } from "@/components/ui/button";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
-import { toastError, toastInfo, toastNoChange, toastSuccess } from "@/lib/toast";
+import { toastError, toastNoChange, toastSuccess } from "@/lib/toast";
+import useCustomerConfirmedAt from "@/hooks/queries/customer/use-customer-confirmed-at";
 
 export default function CustomerInfoPage() {
   const session = useSession();
@@ -35,6 +36,9 @@ export default function CustomerInfoPage() {
     isLoading: isFetchCustomerLoading,
     isError: isFetchCustomerError,
   } = useCustomerWithDesignerData({ customerId, memberId: session!.user.id });
+
+  const { data: confirmedAt, isLoading: isFetchConfirmedAtLoading } =
+    useCustomerConfirmedAt(customerId);
 
   const { mutate: updateCustomer, isPending: isUpdateCustomerPending } =
     useUpdateCustomerWithDesigner({
@@ -110,8 +114,12 @@ export default function CustomerInfoPage() {
     });
   };
 
-  const isLoading = isFetchCustomerLoading || isFetchDesignersLoading;
+  const isLoading =
+    isFetchCustomerLoading ||
+    isFetchDesignersLoading ||
+    isFetchConfirmedAtLoading;
   const isFormDisabled = isUpdateCustomerPending || isUnlinkCustomerPending;
+  const isEmailConfirmed = !!confirmedAt;
 
   return (
     <>
@@ -128,6 +136,7 @@ export default function CustomerInfoPage() {
             disabled={isFormDisabled}
             designers={designers}
             designerId={customer?.designer_id ?? undefined}
+            emailReadOnly={isEmailConfirmed}
           />
         </form>
       </Form>
