@@ -1,4 +1,4 @@
-import ExpiredLinkImage from "@/assets/expired_link_joa.png";
+import ExpiredLinkImage from "@/assets/expired_link_joa.webp";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router";
 

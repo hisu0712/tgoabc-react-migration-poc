@@ -1,7 +1,7 @@
 import { FileTextIcon } from "lucide-react";
 import { Link } from "react-router";
 import { LinkCard } from "../card";
-import memuPersonal from "@/assets/menu_personal.png";
+import memuPersonal from "@/assets/menu_personal.webp";
 
 export default function AnalysisMenuCard({ to }: { to: string }) {
   return (

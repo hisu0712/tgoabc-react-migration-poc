@@ -1,12 +1,12 @@
 import type { PersonalType, Undertone } from "@/lib/analysis";
-import typeImageSpringBright from "@/assets/personal-springBright.png";
-import typeImageSpringLight from "@/assets/personal-springLight.png";
-import typeImageSummerLight from "@/assets/personal-summerLight.png";
-import typeImageSummerMute from "@/assets/personal-summerMute.png";
-import typeImageAutumnMute from "@/assets/personal-autumnMute.png";
-import typeImageAutumnDark from "@/assets/personal-autumnDark.png";
-import typeImageWinterBright from "@/assets/personal-winterBright.png";
-import typeImageWinterDark from "@/assets/personal-winterDark.png";
+import typeImageSpringBright from "@/assets/personal-springBright.webp";
+import typeImageSpringLight from "@/assets/personal-springLight.webp";
+import typeImageSummerLight from "@/assets/personal-summerLight.webp";
+import typeImageSummerMute from "@/assets/personal-summerMute.webp";
+import typeImageAutumnMute from "@/assets/personal-autumnMute.webp";
+import typeImageAutumnDark from "@/assets/personal-autumnDark.webp";
+import typeImageWinterBright from "@/assets/personal-winterBright.webp";
+import typeImageWinterDark from "@/assets/personal-winterDark.webp";
 
 export const UNDERTONE = {
   neutral: {

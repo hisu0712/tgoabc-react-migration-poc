@@ -1,4 +1,4 @@
-import loadingImage from "@/assets/loading_jaemi.gif";
+import loadingAnimation from "@/assets/loading-animation.webp";
 import AnalysisPrivacyNotice from "@/components/analysis/analysis-privacy-notice";
 import { Layout } from "@/components/layout/global-layout";
 
@@ -22,9 +22,9 @@ export default function AnalysisLoading() {
         <div className="flex justify-center">
           <div className="relative aspect-square w-[80%] justify-center">
             <img
-              src={loadingImage}
+              src={loadingAnimation}
               alt="촬영하는 캐릭터 이미지"
-              className="absolute left-1/2 block w-[98%] h-[98%] -translate-x-1/2 object-contain"
+              className="absolute left-1/2 block h-[98%] w-[98%] -translate-x-1/2 object-contain"
             />
             <svg
               viewBox="0 0 120 120"

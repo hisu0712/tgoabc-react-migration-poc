@@ -3,7 +3,7 @@ import GlobalLoader from "@/components/global-loader";
 import { useShopData } from "@/hooks/queries/shop/use-shop-data";
 import { useSession } from "@/store/session";
 import { useNavigate } from "react-router";
-import surveyOutro from "@/assets/survey_outro.gif";
+import completeAnimation from "@/assets/complete-animation.webp";
 import { MEMBER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
 
@@ -37,7 +37,7 @@ export default function SignUpCompletePage() {
         <div className="flex items-center justify-center">
           <img
             className="w-full"
-            src={surveyOutro}
+            src={completeAnimation}
             alt="축하하는 우끼 캐릭터 이미지"
           />
         </div>
