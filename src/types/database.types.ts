@@ -249,6 +249,10 @@ export type Database = {
           new_count: number
         }[]
       }
+      get_customer_confirmed_at: {
+        Args: { p_customer_id: string }
+        Returns: string
+      }
       get_customer_count_by_age_group: {
         Args: { p_member_id: string }
         Returns: {
