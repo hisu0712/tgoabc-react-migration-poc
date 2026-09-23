@@ -35,10 +35,9 @@ Deno.serve(async (req) => {
 
   // 1) 호출자(회원) 검증
   const supabaseUser = createClient(
-    // Supabase 클라이언트를 서버 권한으로 생성하는 코드
     Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-    { global: { headers: { Authorization: authHeader } } }, // 호출 시에 사용자의 토큰 심어줌
+    Deno.env.get("SUPABASE_ANON_KEY")!,
+    { global: { headers: { Authorization: authHeader } } },
   );
 
   const {

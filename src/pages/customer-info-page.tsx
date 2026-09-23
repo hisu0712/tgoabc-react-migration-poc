@@ -21,11 +21,14 @@ import { MEMBER_HOME_PATH } from "@/lib/route";
 import ErrorRedirect from "@/components/error-redirect";
 import { toastError, toastNoChange, toastSuccess } from "@/lib/toast";
 import useCustomerConfirmedAt from "@/hooks/queries/customer/use-customer-confirmed-at";
+import { isPostgrestError } from "@/lib/error";
+import { useOpenEmailConflictModal } from "@/store/modals/email-conflict-modal";
 
 export default function CustomerInfoPage() {
   const session = useSession();
   const { customerId } = useParams();
   const openAlertModal = useOpenAlertModal();
+  const openEmailConflictModal = useOpenEmailConflictModal();
   const navigate = useNavigate();
 
   const { data: designers, isLoading: isFetchDesignersLoading } =
@@ -45,7 +48,14 @@ export default function CustomerInfoPage() {
       onSuccess: () => {
         toastSuccess("정보가 수정되었습니다.");
       },
-      onError: () => {
+      onError: (error) => {
+        if (isPostgrestError(error) && error.code === "23505") {
+          openEmailConflictModal({
+            customerId: customerId!,
+            newEmail: form.getValues("email"),
+          });
+          return;
+        }
         toastError("정보 수정에 실패했습니다.");
       },
     });

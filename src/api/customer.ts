@@ -66,22 +66,18 @@ export async function createCustomer({
 export async function updateCustomer({
   customerId,
   name,
-  email,
   birthDate,
   gender,
 }: {
   customerId: string;
   name?: string;
-  email?: string;
   birthDate?: string;
   gender?: Gender;
 }) {
-  // 만약 업데이트하는 이메일이 중복이라면?
   const { data, error } = await supabase
     .from("customer")
     .update({
       name,
-      email,
       birth_date: birthDate,
       gender,
     })
@@ -138,6 +134,40 @@ export async function updateCustomerWithDesigner({
   if (updateMappingError) throw updateMappingError;
 
   return { ...customer, designer_id: mapping.designer_id };
+}
+
+export async function requestCustomerEmailChange({
+  customerId,
+  newEmail,
+}: {
+  customerId: string;
+  newEmail: string;
+}) {
+  const { data, error } = await supabase.functions.invoke<{
+    conflictCustomerId: string;
+    otp?: string;
+  }>("request-customer-email-change", { body: { customerId, newEmail } });
+
+  if (error) throw new Error(await unwrapEdgeFunctionError(error));
+
+  return data!;
+}
+
+export async function confirmCustomerEmailChange({
+  customerId,
+  newEmail,
+  otp,
+}: {
+  customerId: string;
+  newEmail: string;
+  otp: string;
+}) {
+  const { data, error } = await supabase.functions.invoke<{
+    conflictCustomerId: string;
+  }>("confirm-customer-email-change", { body: { customerId, newEmail, otp } });
+
+  if (error) throw new Error(await unwrapEdgeFunctionError(error));
+  return data!;
 }
 
 export async function unlinkCustomer({
