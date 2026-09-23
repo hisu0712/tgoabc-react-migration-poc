@@ -82,10 +82,12 @@ fi
 echo "회원 세션 발급 완료"
 
 GENDERS=("M" "F")
+SURNAMES=("김" "이" "박" "최" "정" "강" "조" "윤" "장" "임")
+GIVEN_NAMES=("서연" "민준" "지우" "하윤" "도윤" "시우" "지안" "은우" "수아" "예준")
 TIMESTAMP=$(date +%s)
 
 for i in $(seq 1 "$COUNT"); do
-  NAME="홍길동$i"
+  NAME="${SURNAMES[$((RANDOM % ${#SURNAMES[@]}))]}${GIVEN_NAMES[$((RANDOM % ${#GIVEN_NAMES[@]}))]}"
   GENDER="${GENDERS[$((i % 2))]}"
   DAY=$(printf '%02d' "$((i % 28 + 1))")
   BIRTH_DATE="1990-01-$DAY"
