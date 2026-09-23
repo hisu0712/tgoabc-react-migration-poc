@@ -1,4 +1,4 @@
-// 이슈 #14 - Resend 도메인 인증 후 이 함수 삭제
+// POC_MODE: Resend 도메인 인증 전이라 실제 메일 대신 OTP를 직접 반환 (이슈 #14 해결 후 제거)
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

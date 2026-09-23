@@ -86,6 +86,7 @@ export async function signInWithOtp({
     options: { shouldCreateUser }, // 회원: 유저 생성 가능, 고객: 이미 존재하는 고객 유저만 가능
   });
 
+  // POC_MODE: Resend 도메인 인증 전이라 실제 메일 대신 OTP를 직접 반환 (이슈 #14 해결 후 제거)
   if (import.meta.env.VITE_POC_MODE === "true") {
     const { data, error: otpError } = await supabase.functions.invoke(
       "poc-get-otp",
