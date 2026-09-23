@@ -66,22 +66,18 @@ export async function createCustomer({
 export async function updateCustomer({
   customerId,
   name,
-  email,
   birthDate,
   gender,
 }: {
   customerId: string;
   name?: string;
-  email?: string;
   birthDate?: string;
   gender?: Gender;
 }) {
-  // 만약 업데이트하는 이메일이 중복이라면?
   const { data, error } = await supabase
     .from("customer")
     .update({
       name,
-      email,
       birth_date: birthDate,
       gender,
     })
