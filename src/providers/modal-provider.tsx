@@ -1,5 +1,6 @@
 import AlertModal from "@/components/modal/alert-modal";
 import DesignerEditorModal from "@/components/modal/designer-editor-modal";
+import EmailConflictModal from "@/components/modal/email-conflict-modal";
 import LinkCustomerModal from "@/components/modal/link-customer-modal";
 import SelectCustomerModal from "@/components/modal/select-customer-modal";
 import ShareAnalysisModal from "@/components/modal/share-analysis-modal";
@@ -16,6 +17,7 @@ export default function ModalProvider({ children }: { children: ReactNode }) {
           <LinkCustomerModal />
           <SelectCustomerModal />
           <ShareAnalysisModal />
+          <EmailConflictModal />
         </>,
         // Dialog/AlertDialog는 자체 Portal에 container="#modal-root"를 명시해서 들어옴
         document.getElementById("modal-root")!,

@@ -140,6 +140,40 @@ export async function updateCustomerWithDesigner({
   return { ...customer, designer_id: mapping.designer_id };
 }
 
+export async function requestCustomerEmailChange({
+  customerId,
+  newEmail,
+}: {
+  customerId: string;
+  newEmail: string;
+}) {
+  const { data, error } = await supabase.functions.invoke<{
+    conflictCustomerId: string;
+    otp?: string;
+  }>("request-customer-email-change", { body: { customerId, newEmail } });
+
+  if (error) throw new Error(await unwrapEdgeFunctionError(error));
+
+  return data!;
+}
+
+export async function confirmCustomerEmailChange({
+  customerId,
+  newEmail,
+  otp,
+}: {
+  customerId: string;
+  newEmail: string;
+  otp: string;
+}) {
+  const { data, error } = await supabase.functions.invoke<{
+    conflictCustomerId: string;
+  }>("confirm-customer-email-change", { body: { customerId, newEmail, otp } });
+
+  if (error) throw new Error(await unwrapEdgeFunctionError(error));
+  return data!;
+}
+
 export async function unlinkCustomer({
   memberId,
   customerId,
