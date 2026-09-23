@@ -68,6 +68,20 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 - 본인 분석 기록 조회
 - 고객이 직접 분석 진행 가능
 
+#### 데모로 확인하기
+
+아래 계정으로 로그인하면 대시보드 등 데이터가 필요한 화면도 바로 확인할 수 있다.
+
+| 역할 | 이메일 | 로그인 방법 |
+|---|---|---|
+| 회원 | demo@example.com | 비밀번호: 123456 |
+| 고객 | demo@example.com | 이메일 인증 코드 로그인 (비밀번호 없음) |
+
+| 회원 앱 | 고객 앱 |
+|---|---|
+| 홈<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/92bc233c-d6f5-44ee-b153-f3b7b165d257" />| 홈<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/30287aa0-5838-4197-90ba-2ecd565364cf" />|
+| 대시보드<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/91206f7d-a502-44fb-934d-bba7bba1dbd5" />| 분석 기록<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/5f5cf62c-973c-4f57-82b7-a7a3bf720894" />|
+
 ## 아키텍처 결정
 정적 파일은 Vercel이, 데이터는 Supabase가 처리하며, 커스텀 백엔드 서버 없이 React가 두 계층을 직접 조합한다.
 
@@ -76,6 +90,7 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 - **React Router**: 라우팅
 - **Tailwind CSS + shadcn/ui**: 유틸리티 기반 스타일링 + Radix 기반 접근성 있는 컴포넌트
 - **Supabase**: 인증 및 데이터 계층(BaaS)
+- **Sentry**: 프로덕션 에러 모니터링
 
 **배포**: 현재 Vercel에 배포. 사내 서버 배포는 실사용 여부 결정 시 별도 검토.
 
