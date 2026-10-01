@@ -8,7 +8,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "type-gen": "npx supabase gen types typescript --project-id \"xexodjsipilbscjnwfqx\" --schema public > src/types/database.types.ts"
+    "type-gen": "npx supabase gen types typescript --project-id \"xexodjsipilbscjnwfqx\" --schema public > src/types/database.types.ts",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
@@ -49,6 +51,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@playwright/test": "^1.63.0",
     "@sentry/vite-plugin": "^5.4.0",
     "@types/node": "^24.0.15",
     "@types/react": "^19.1.2",
