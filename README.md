@@ -70,6 +70,7 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 
 #### 데모로 확인하기
 
+배포 주소: https://tgoabc-react-migration-poc.vercel.app/   
 아래 계정으로 로그인하면 대시보드 등 데이터가 필요한 화면도 바로 확인할 수 있다.
 
 | 역할 | 이메일 | 로그인 방법 |
