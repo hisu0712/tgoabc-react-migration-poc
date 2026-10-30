@@ -1,6 +1,9 @@
 # TGOABC React Migration PoC
 
-JSP 레거시 웹뷰를 React로 마이그레이션하기 위해 단독으로 설계·구현한 기술 제안 PoC.
+JSP 레거시 웹뷰를 React로 마이그레이션하기 위해 단독으로 설계·구현한 기술 제안 PoC. (2026.08 ~ 09)
+
+**Demo** https://tgoabc-react-migration-poc.vercel.app/ · 데모 계정은 [데모로 확인하기](#데모로-확인하기) 참고  
+**Stack** React 19 · TypeScript · Vite · TanStack Query · Zustand · React Router · React Hook Form + Zod · Tailwind CSS + shadcn/ui · Supabase · Sentry · Playwright · Vercel
 
 ## 배경
 JSP 기반 레거시 웹뷰는 프론트엔드 빌드/컴포넌트 생태계 없이 서버가 마크업을 직접 그려주는 구조로, 아래 문제가 반복적으로 발생했다.
@@ -16,7 +19,7 @@ JSP 기반 레거시 웹뷰는 프론트엔드 빌드/컴포넌트 생태계 없
 
 JSP만의 한계가 아니라, 프론트엔드 빌드/컴포넌트 생태계가 없는 서버사이드 렌더링 구조 전반에서 공통적으로 나타나는 문제다.
 
-#### Before / After 코드 비교
+### Before / After 코드 비교
 
 | 문제 | Before (JSP) | After (React) |
 |---|---|---|
@@ -31,18 +34,18 @@ JSP만의 한계가 아니라, 프론트엔드 빌드/컴포넌트 생태계가 
 | 문제 | 해결 방식 |
 |---|---|
 | 의존성 관리 불가 | npm/Vite 빌드 시스템 — `package.json` 기반 의존성 추적 |
-| UI/로직 재사용 불가 | 컴포넌트(UI 재사용) + 커스텀 훅(로직 재사용) |
+| UI/로직 재사용 불가 | 컴포넌트(UI 재사용) + 커스텀 훅(로직 재사용) + 필드 단위 공통 Zod 스키마(검증 재사용) |
 | 명령형 DOM 조작 | JSX 선언적 렌더링 + shadcn/ui, 값 삽입 시 자동 이스케이프 |
 | 초기 로딩 성능 & 전역 UI 부재 | Shell 즉시 렌더링 + 스켈레톤, Provider 기반 모달/토스트, Sentry |
 | 비동기 상태 수동 관리 | React Query(`useQuery`/`useMutation`) — 로딩·에러·캐싱·화면 간 동기화 자동화 |
 | 마크업 작성 비용 & 클래스명 결합 | Tailwind 유틸리티 클래스 + state 기반 렌더링 — 스타일용 클래스명과 동작 로직 분리 |
 
-#### 대안 비교
+### 대안 비교
 
 - **Vue**: 이미 학습하고 실무에 적용한 React로 검증 범위를 좁혀, 심층 비교는 하지 않음
-- **Next.js**: 제외 — Supabase 도입으로 서버 코드 필요성이 낮아 SSR 이점이 없고, Vite 기반 React가 구조 설계에 더 유연
+- **Next.js**: 이 앱에서는 제외 — 로그인 기반 웹뷰라 SSR/SEO 이점이 없고, Supabase 도입으로 서버 코드 필요성도 낮음 (SEO가 중요한 회사 홈페이지는 Next.js로 진행 중)
 
-#### 목표 / 성공 기준
+### 목표 / 성공 기준
 
 - [x] 회원·고객 핵심 사용자 흐름 구현 및 Vercel 배포
 - [x] Sentry 연동 및 오류 수집 확인
@@ -55,7 +58,9 @@ JSP만의 한계가 아니라, 프론트엔드 빌드/컴포넌트 생태계가 
 
 https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 
-#### 회원 앱
+<img width="1500" alt="01-user-flow-compact" src="https://github.com/user-attachments/assets/cee2606c-1e00-4468-99f9-2d7591a63516" />
+
+### 회원 앱
 
 - 회원가입 / 로그인
 - 홈 화면에서 고객 선택 없이 바로 분석 시작 가능 (분석 후 고객을 등록·연결하거나, 연결 없이 종료 가능)
@@ -64,43 +69,48 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 - 기간별 분석 통계 대시보드
 - (의도적 설계) 회원 측에는 과거 분석 기록을 재조회하는 페이지가 없음 — 얼굴 사진 등 민감 정보 보호를 위해 조회는 고객 본인 채널로 제한
 
-#### 고객 앱
+### 고객 앱
 
 - 별도 회원가입 없이, 고객 등록 시 입력한 이메일 인증으로 로그인
 - 본인 분석 기록 조회
 - 고객이 직접 분석 진행 가능
 
-#### 데모로 확인하기
+### 데모로 확인하기
 
 배포 주소: https://tgoabc-react-migration-poc.vercel.app/   
 아래 계정으로 로그인하면 대시보드 등 데이터가 필요한 화면도 바로 확인할 수 있다.
 
 | 역할 | 이메일 | 로그인 방법 |
 |---|---|---|
-| 회원 | demo@example.com | 비밀번호: 123456 |
-| 고객 | demo@example.com | 이메일 인증 코드 로그인 (비밀번호 없음) |
+| 회원 | demo@example.com | [매장] 탭 → 비밀번호 `123456` |
+| 고객 | demo@example.com | [고객] 탭 → 인증요청 → 화면에 잠시 표시되는 6자리 인증번호 입력 (POC 모드: 실제 메일 대신 toast로 제공) |
 
 | 회원 앱 | 고객 앱 |
 |---|---|
-| 홈<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/92bc233c-d6f5-44ee-b153-f3b7b165d257" />| 홈<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/30287aa0-5838-4197-90ba-2ecd565364cf" />|
-| 대시보드<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/91206f7d-a502-44fb-934d-bba7bba1dbd5" />| 분석 기록<br><img width="250" alt="image" src="https://github.com/user-attachments/assets/5f5cf62c-973c-4f57-82b7-a7a3bf720894" />|
+| 홈<br><img width="250" alt="01-home" src="https://github.com/user-attachments/assets/9c052f1d-b9c6-42cf-a1b5-f905423dd65b" />| 홈<br><img width="250" alt="07-portal" src="https://github.com/user-attachments/assets/597a4e02-296a-4a5b-b239-41f6a38311e7" />|
+| 대시보드<br><img width="250" alt="03-dashboard" src="https://github.com/user-attachments/assets/1b9ea5ca-bf46-43b8-9753-a52bdee73298" />| 분석 기록<br><img width="250" alt="08-portal-list" src="https://github.com/user-attachments/assets/6f9c7082-32a7-40d3-9f5b-4148ed445ff9" />|
 
 ## 아키텍처 결정
 정적 파일은 Vercel이, 데이터는 Supabase가 처리하며, 커스텀 백엔드 서버 없이 React가 두 계층을 직접 조합한다.
 
 - **TypeScript**: Supabase CLI 생성 타입과 Zod `z.infer`로 DB 스키마·폼 검증 규칙을 타입의 단일 출처로 삼아, 스키마 변경 시 영향 범위를 컴파일 단계에서 확인
 - **React Query**: 서버 상태(로딩/에러/캐싱) 관리 
-- **Zustand**: 클라이언트 전역 상태 관리 
-- **React Router**: 라우팅
+- **Zustand**: 클라이언트 전역 상태 관리 (세션, 현재 역할, 모달) 
+- **React Router**: 라우팅 + 권한별 레이아웃 라우트
+- **React Hook Form + Zod**: 필드 단위 공통 스키마로 폼 검증 규칙 재사용
 - **Tailwind CSS + shadcn/ui**: 유틸리티 기반 스타일링 + Radix 기반 접근성 있는 컴포넌트
 - **Supabase**: 인증 및 데이터 계층(BaaS)
 - **Sentry**: 프로덕션 에러 모니터링
+- **Playwright**: E2E 스모크 테스트
 
 **배포**: 현재 Vercel에 배포. 사내 서버 배포는 실사용 여부 결정 시 별도 검토.
 
-**폴더 구조**: 기능 단위가 아닌 타입(계층) 단위로 구성 — `pages/`(화면), `hooks/queries·mutations/`(서버 상태), `store/`(클라이언트 상태), `api/`(Supabase 쿼리)로 관심사 분리.
+**폴더 구조**: 기능 단위가 아닌 타입(계층) 단위로 구성 — `pages/`(화면), `hooks/queries·mutations/`(서버 상태), `store/`(클라이언트 상태), `api/`(Supabase 쿼리)로 관심사 분리. PoC 규모에서는 계층 단위가 탐색이 쉬워 선택했고, 한 페이지에서만 쓰는 컴포넌트는 `pages/<page>/components/`에 함께 둠.
 
 ## 트레이드오프 / 고민 지점
+
+### 프론트엔드
+
 #### 1. 회원/고객 역할 분기 — 신원 검증(app_metadata)과 세션 모드(activeRole)의 분리
 
 한 계정이 회원과 고객 역할을 동시에 가질 수 있어, 로그인 세션 존재만으로는 "지금 회원으로 들어온 건지 고객으로 들어온 건지" 구분할 수 없었다.
@@ -112,7 +122,17 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 | `activeRole`을 서버가 아닌 로컬(기기)에 저장 | 서버(계정 단위) 저장 시 한 기기의 로그인이 다른 기기의 역할 상태에 영향을 줌 |
 | `activeRole` 조회 시 서버 `roles`와 대조 검증 | 로컬 상태 위변조 방지 |
 
-#### 2. 고객 등록 — 독립 개체로서의 고객과 N:M 매핑, RLS 대신 Edge Function
+#### 2. 화면 공통 구조 — 반복되는 처리를 한 곳으로 모으기
+
+| 결정 | 이유 |
+|---|---|
+| 권한별 레이아웃 라우트(`MemberOnly`·`CustomerOnly` 등 + `<Outlet />`), 세션 복원 전엔 전역 로더 | 페이지마다 권한 체크를 반복하지 않고 라우트 트리만으로 접근 정책이 드러남. 세션 확인 전 잘못된 리다이렉트 방지 |
+| 모달별 Zustand 스토어 + 단일 `ModalProvider`(Portal), 상태는 `isOpen` 판별 유니온 | 화면은 `open()` 호출만 담당하고, 열린 상태에서만 내용 필드에 접근하도록 타입으로 강제 |
+| `QueryCache`·`MutationCache` `onError`에서 Sentry 일괄 수집, 화면은 `UseMutationCallback`으로 toast만 전달 | 에러 로깅과 화면별 UI 반응의 책임 분리 |
+
+### 데이터 설계 (Supabase)
+
+#### 3. 고객 등록 — 독립 개체로서의 고객과 N:M 매핑, RLS 대신 Edge Function
 
 고객은 특정 회원에게 종속된 존재가 아니라, 여러 회원이 각자 등록(같은 이메일로 식별)할 수 있는 독립적인 개체로 설계했다.
 
@@ -123,7 +143,7 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 | 고객 존재 확인 → Auth 유저 생성 → `customer` insert → 매핑 insert를 Edge Function 하나로 처리 | 여러 테이블에 걸친 연속 작업을 프론트에 흩어놓지 않기 위함 |
 | `customer` insert RLS 정책을 두지 않음 (매핑된 회원에게도 미허용) | 회원이 고객 정보를 임의로 조작할 위험 차단 |
 
-#### 3. 공유 링크 — 컬럼 단위 노출 제한이 필요해 RLS 대신 SECURITY DEFINER RPC
+#### 4. 공유 링크 — 컬럼 단위 노출 제한이 필요해 RLS 대신 SECURITY DEFINER RPC
 
 공유 링크는 로그인 없이(anon) 접근 가능해야 하지만, `analysis` 테이블에는 결과 외에도 고객/회원 식별 정보 등 노출되면 안 되는 컬럼이 섞여 있다. RLS는 행(row) 단위로만 접근을 제어할 뿐 컬럼 단위로는 제한할 수 없어, RLS만으로는 이 요구사항을 만족할 수 없었다.
 
@@ -133,7 +153,7 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 | 함수의 반환 타입을 `result`, `result_image_url` 두 컬럼으로 제한 | RLS로는 불가능한 컬럼 단위 노출 제한을 함수 반환값으로 대신 강제 |
 | 함수 내부에서 `share_expires_at > now()` 조건 체크 | 7일 공유 기한을 DB 레벨에서 강제, 만료된 링크는 결과 자체를 반환하지 않음 |
 
-### 4. 고객 이메일 중복 처리 — 등록 시 인증을 강제하지 않는 구조에서 생기는 충돌
+#### 5. 고객 이메일 중복 처리 — 등록 시 인증을 강제하지 않는 구조에서 생기는 충돌
 
 고객 이메일은 등록 시 인증을 강제하지 않는 구조라(기획 의도), 오타로 잘못 등록된 고객이 나중에 이메일을 고치려 하면 그 이메일을 이미 다른(대개 오등록된) 고객이 쓰고 있는 충돌이 생길 수 있다. 단순 에러로는 정당한 오타 수정까지 막아버려서, 이 경우를 어떻게 풀지 고민했다.
 
@@ -146,14 +166,14 @@ https://github.com/user-attachments/assets/e6e4b42d-0f82-4040-8f91-75c5edaa08db
 
 ## 결과 / 다음 단계
 
-개발 총괄 팀장에게 PoC를 공유해 검토받았다. 프론트엔드 생태계 도입 방향은 긍정적으로 평가받았으나, 현재 운영 중인 앱을 곧바로 마이그레이션하기엔 조직 리소스 제약이 크다는 판단이 나왔다.
-
-- 현재 앱은 원래 Java 백엔드 2명 + 퍼블리셔 2명 + 디자이너 1명 규모로 개발됐다.
-- 현재 가용 인력은 프론트엔드 1명(주니어) + 퍼블리셔 1명이고, 조직 자체도 Java 백엔드 중심이다.
-- 이 격차로 운영 중인 앱을 바로 전환하는 건 리스크가 크다고 판단해, **상대적으로 단순한 회사 홈페이지를 먼저 마이그레이션 대상으로 선정**하기로 했다.
+개발 총괄 팀장에게 PoC를 공유해 검토받았다. 프론트엔드 생태계 도입 방향은 긍정적으로 평가받았으나, 원래 Java 백엔드 2 + 퍼블리셔 2 + 디자이너 1로 만든 앱을 현재 프론트엔드 1 + 퍼블리셔 1로 바로 전환하기엔 리스크가 커, **상대적으로 단순한 회사 홈페이지를 먼저 마이그레이션 대상으로 선정**했다.
 
 **다음 단계**
 
 - 회사 홈페이지 JSP → Next.js 마이그레이션 진행 중 (2026.12 완료 예정)
 - 이후 이 앱은 페이지 단위의 점진적 React 전환으로 방향을 정했고,
   API 계약 전환(서버 DTO → API 응답)과 렌더링 방식은 퍼스널컬러 기능 출시 후 구체화 예정
+
+## 로컬 실행
+
+`npm install` → `npm run dev`. `.env`에는 공개용 클라이언트 값만 있으며, 고객 OTP 화면 표시(`VITE_POC_MODE`)와 Playwright 계정은 `.env.local`에 설정한다.
